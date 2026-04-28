@@ -411,6 +411,12 @@ img{display:block;max-width:100%}
               <div class="field"><label>Срок стр-ва (мес)</label><input id="lf-buildtime" type="number" placeholder="6" /></div>
               <div class="field"><label>Площадь участка (сот)</label><input id="lf-landarea" type="number" placeholder="8" /></div>
             </div>
+            <div style="margin-top:10px;">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.78rem;">
+                <input type="checkbox" id="lf-readytomove" style="width:16px;height:16px;accent-color:var(--green);" />
+                <span>Дом сдан / готов к заселению (вместо срока строительства)</span>
+              </label>
+            </div>
             <div class="fg" style="margin-top:12px;">
               <div class="field">
                 <label>Материал *</label>
@@ -432,6 +438,17 @@ img{display:block;max-width:100%}
             <div class="fg" style="margin-top:12px;">
               <div class="field"><label>Широта</label><input id="lf-lat" type="number" step="0.0001" placeholder="45.1834" /></div>
               <div class="field"><label>Долгота</label><input id="lf-lng" type="number" step="0.0001" placeholder="39.2069" /></div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Формы оплаты</div>
+            <div style="display:flex;flex-wrap:wrap;gap:14px 28px;margin-top:6px;">
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="lf-pay-family" style="accent-color:var(--orange);" /> Семейная ипотека</label>
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="lf-pay-standard" style="accent-color:var(--orange);" /> Стандартная ипотека</label>
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="lf-pay-military" style="accent-color:var(--orange);" /> Военная ипотека</label>
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="lf-pay-cash" style="accent-color:var(--orange);" /> Наличный расчёт</label>
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="lf-pay-it" style="accent-color:var(--orange);" /> IT ипотека</label>
             </div>
           </div>
 
@@ -819,6 +836,11 @@ function openAddListing() {
   document.getElementById('lf-floors').value = '1';
   document.getElementById('lf-rooms').value = '3';
   document.getElementById('lf-bathrooms').value = '1';
+  document.getElementById('lf-readytomove').checked = false;
+  ['family','standard','military','cash','it'].forEach(k => {
+    const el = document.getElementById('lf-pay-' + k);
+    if (el) el.checked = false;
+  });
   listingPhotos = [];
   renderPhotoPreview('listing');
   showPanel('add-listing');
@@ -847,8 +869,14 @@ function editListing(i) {
   document.getElementById('lf-description').value = h.description || '';
   document.getElementById('lf-features').value = (h.features || []).join('\n');
   document.getElementById('lf-mainphoto').value = h.mainPhoto || '';
-  document.getElementById('lf-photos').value = (h.photos || []).join('\n');
-  listingPhotos = (h.photos || []).map((url, idx) => ({ url, isMain: idx === 0 }));
+  document.getElementById('lf-photos').value = (h.photos || []).filter(u => !u.startsWith('data:')).join('\n');
+  document.getElementById('lf-readytomove').checked = !!h.readyToMove;
+  const pmMap = {family:'Семейная ипотека',standard:'Стандартная ипотека',military:'Военная ипотека',cash:'Наличный расчёт',it:'IT ипотека'};
+  Object.entries(pmMap).forEach(([k, v]) => {
+    const el = document.getElementById('lf-pay-' + k);
+    if (el) el.checked = (h.paymentMethods || []).includes(v);
+  });
+  listingPhotos = (h.photos || []).filter(u => !u.startsWith('data:')).map((url, idx) => ({ url, isMain: idx === 0 }));
   renderPhotoPreview('listing');
   showPanel('add-listing');
 }
@@ -862,12 +890,18 @@ function saveListing() {
   const existingId = document.getElementById('lf-id').value;
   const id = existingId || 'dom-' + Date.now();
 
-  // Merge photo URLs: from uploader + manual textarea
-  const manualPhotos = document.getElementById('lf-photos').value.split('\n').map(s=>s.trim()).filter(Boolean);
-  const uploaderPhotos = listingPhotos.map(p => p.url);
+  // Merge photo URLs: from uploader + manual textarea; strip data:// (local previews)
+  const manualPhotos = document.getElementById('lf-photos').value.split('\n').map(s=>s.trim()).filter(s => s && !s.startsWith('data:'));
+  const uploaderPhotos = listingPhotos.map(p => p.url).filter(u => !u.startsWith('data:'));
   const allPhotos = [...new Set([...uploaderPhotos, ...manualPhotos])];
   const manualMain = document.getElementById('lf-mainphoto').value.trim();
-  const mainPhoto = manualMain || (allPhotos[0] || '');
+  const mainPhoto = (manualMain && !manualMain.startsWith('data:')) ? manualMain : (allPhotos[0] || '');
+
+  // Collect payment methods
+  const pmMap = {family:'Семейная ипотека',standard:'Стандартная ипотека',military:'Военная ипотека',cash:'Наличный расчёт',it:'IT ипотека'};
+  const paymentMethods = Object.entries(pmMap)
+    .filter(([k]) => document.getElementById('lf-pay-' + k)?.checked)
+    .map(([, v]) => v);
 
   const h = {
     id, slug: id,
@@ -882,12 +916,14 @@ function saveListing() {
     bathrooms: parseInt(document.getElementById('lf-bathrooms').value) || 1,
     technology: document.getElementById('lf-technology').value,
     buildTimeMonths: parseInt(document.getElementById('lf-buildtime').value) || 0,
+    readyToMove: document.getElementById('lf-readytomove').checked,
     landArea: parseInt(document.getElementById('lf-landarea').value) || 0,
     address: document.getElementById('lf-address').value.trim(),
     lat: parseFloat(document.getElementById('lf-lat').value) || null,
     lng: parseFloat(document.getElementById('lf-lng').value) || null,
     mainPhoto,
     photos: allPhotos,
+    paymentMethods,
     description: document.getElementById('lf-description').value.trim(),
     features: document.getElementById('lf-features').value.split('\n').map(s=>s.trim()).filter(Boolean),
     completionDate: document.getElementById('lf-completion').value.trim(),
@@ -1070,8 +1106,9 @@ async function handleFiles(prefix, files) {
     try {
       const base64 = await readFileAsBase64(file);
       const ext = file.name.split('.').pop().toLowerCase();
-      const timestamp = Date.now();
-      const ghPath = `${folder}/${timestamp}.${ext}`;
+      // Unique filename: timestamp + random suffix → prevents SHA conflicts on rapid uploads
+      const uid = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+      const ghPath = `${folder}/${uid}.${ext}`;
 
       await pushBinaryToGitHub(owner, repo, ghPath, base64, token, `upload: ${ghPath}`);
 
@@ -1082,8 +1119,27 @@ async function handleFiles(prefix, files) {
       statusEl.className = 'imgbb-status ok';
       statusEl.textContent = `✅ Загружено → ${ghPath} · Netlify опубликует за ~60 сек`;
     } catch(err) {
-      statusEl.className = 'imgbb-status err';
-      statusEl.textContent = `❌ Ошибка загрузки: ${err.message}`;
+      // If SHA conflict (race condition), retry once with fresh SHA
+      const isConflict = err.message && (err.message.includes('but expected') || err.message.includes('409'));
+      if (isConflict) {
+        try {
+          const base64 = await readFileAsBase64(file);
+          const ext = file.name.split('.').pop().toLowerCase();
+          const uid = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+          const ghPath = `${folder}/${uid}.${ext}`;
+          await pushBinaryToGitHub(owner, repo, ghPath, base64, token, `upload: ${ghPath}`);
+          entry.url = ghPath;
+          renderPhotoPreview(prefix);
+          statusEl.className = 'imgbb-status ok';
+          statusEl.textContent = `✅ Загружено (повтор) → ${ghPath}`;
+        } catch(err2) {
+          statusEl.className = 'imgbb-status err';
+          statusEl.textContent = `❌ Ошибка загрузки: ${err2.message}`;
+        }
+      } else {
+        statusEl.className = 'imgbb-status err';
+        statusEl.textContent = `❌ Ошибка загрузки: ${err.message}`;
+      }
     }
   }
 }
@@ -1219,8 +1275,19 @@ async function deployToGitHub() {
   banner.querySelector('button').disabled = true;
 
   try {
-    const homesJson = JSON.stringify(homes, null, 2);
-    const projJson  = JSON.stringify(projects, null, 2);
+    // Strip any accidental data:// URLs (local previews) before publishing
+    const cleanHomes = homes.map(h => ({
+      ...h,
+      photos: (h.photos || []).filter(u => !u.startsWith('data:')),
+      mainPhoto: (h.mainPhoto && h.mainPhoto.startsWith('data:')) ? ((h.photos||[]).filter(u=>!u.startsWith('data:'))[0]||'') : (h.mainPhoto||''),
+    }));
+    const cleanProjects = projects.map(p => ({
+      ...p,
+      photos: (p.photos || []).filter(u => !u.startsWith('data:')),
+      mainPhoto: (p.mainPhoto && p.mainPhoto.startsWith('data:')) ? ((p.photos||[]).filter(u=>!u.startsWith('data:'))[0]||'') : (p.mainPhoto||''),
+    }));
+    const homesJson = JSON.stringify(cleanHomes, null, 2);
+    const projJson  = JSON.stringify(cleanProjects, null, 2);
     await pushFileToGitHub(owner, repo, 'data/homes.json', homesJson, token, 'panel: update homes.json');
     await pushFileToGitHub(owner, repo, 'data/projects.json', projJson, token, 'panel: update projects.json');
     markClean();

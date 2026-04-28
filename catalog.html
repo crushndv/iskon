@@ -230,7 +230,7 @@ function renderList(homes){
         <span class="h-card__spec" style="opacity:.3;">·</span>
         <span class="h-card__spec"><strong>${h.technology}</strong></span>
         <span class="h-card__spec" style="opacity:.3;">·</span>
-        <span class="h-card__spec"><strong>${h.buildTimeMonths}</strong> мес</span>
+        <span class="h-card__spec">${h.readyToMove ? '<strong>Дом сдан</strong>' : (h.buildTimeMonths > 0 ? `<strong>${h.buildTimeMonths}</strong> мес` : '<strong>—</strong>')}</span>
       </div>
       <div class="h-card__foot">
         <span class="h-card__price">${fmt(h.price)}</span>
@@ -267,8 +267,10 @@ function openModal(h){
           <div style="font-family:var(--f-body);font-size:.58rem;color:var(--grey);">Стоимость под ключ</div>
           <div style="font-family:var(--f-head);font-size:1.6rem;color:var(--black);letter-spacing:-.02em;">${fmt(h.price)}</div>
           <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;">
-            <span class="ipoteka-badge">Семейная ипотека</span>
-            <span class="ipoteka-badge">Стандартная ипотека</span>
+            ${(h.paymentMethods && h.paymentMethods.length
+              ? h.paymentMethods
+              : ['Семейная ипотека','Стандартная ипотека']
+            ).map(m=>`<span class="ipoteka-badge">${m}</span>`).join('')}
           </div>
         </div>
       </div>
@@ -276,11 +278,19 @@ function openModal(h){
         <div class="modal__spec"><span class="spec-val">${h.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
         <div class="modal__spec"><span class="spec-val">${h.floors}</span><span class="spec-key">Этажей</span></div>
         <div class="modal__spec"><span class="spec-val">${h.rooms}</span><span class="spec-key">Комнат</span></div>
-        <div class="modal__spec"><span class="spec-val">${h.buildTimeMonths}<span class="spec-unit">мес</span></span><span class="spec-key">Срок</span></div>
+        <div class="modal__spec">${h.readyToMove ? `<span class="spec-val" style="font-size:.52rem;color:var(--green);">Дом сдан</span>` : (h.buildTimeMonths > 0 ? `<span class="spec-val">${h.buildTimeMonths}<span class="spec-unit">мес</span></span>` : `<span class="spec-val">—</span>`)}<span class="spec-key">Срок</span></div>
         <div class="modal__spec"><span class="spec-val" style="font-size:.56rem;">${h.technology}</span><span class="spec-key">Материал</span></div>
       </div>
-      ${h.description?`<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);">${h.description}</p>`:''}
+      ${h.description?`<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);white-space:pre-line;">${h.description}</p>`:''}
       ${feat?`<div><div class="t-label" style="margin-bottom:7px;">Конструктив</div><div class="modal__features">${feat}</div></div>`:''}
+      ${(h.lat && h.lng)?`
+      <div style="margin-top:12px;">
+        <div class="t-label" style="margin-bottom:8px;">Расположение объекта</div>
+        <a href="https://yandex.ru/maps/?pt=${h.lng},${h.lat}&z=15&l=map" target="_blank" rel="noopener" style="display:block;border-radius:0;overflow:hidden;border:var(--divider);">
+          <img src="https://static-maps.yandex.ru/1.x/?ll=${h.lng},${h.lat}&size=440,160&z=15&pt=${h.lng},${h.lat},pm2rdm&l=map" alt="Карта" style="width:100%;height:auto;display:block;" loading="lazy" />
+        </a>
+        <div style="font-size:.68rem;color:var(--grey);margin-top:5px;">Нажмите на карту, чтобы открыть в Яндекс.Картах</div>
+      </div>`:''}
       <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:var(--divider);">
         <a href="index.html#form" class="btn btn--primary"><span>Запросить расчёт</span><span class="btn__arr"></span></a>
         <a href="tel:+79181269996" class="btn btn--ghost"><span>8 918 126 99 96</span></a>
