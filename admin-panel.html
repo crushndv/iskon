@@ -422,17 +422,16 @@ img{display:block;max-width:100%}
 
           <div class="form-sec">
             <div class="form-sec-ttl">Фотографии</div>
-            <div class="info-box" id="imgbb-hint">
-              <p><strong>Быстрая загрузка:</strong> укажите API-ключ imgbb.com в Настройках — тогда фото загрузятся автоматически.<br />
-              Без ключа: укажите пути к файлам вручную ниже.</p>
+            <div class="info-box" id="gh-photo-hint">
+              <p><strong>Фото загружаются прямо в GitHub-репозиторий</strong> — Netlify автоматически публикует их на сайте.<br />
+              Для работы нужен GitHub-токен в разделе <strong>Настройки</strong>.</p>
             </div>
 
             <div class="photo-drop" id="listing-photo-drop" onclick="document.getElementById('listing-photo-input').click()">
               <input type="file" id="listing-photo-input" accept="image/*" multiple />
               <div class="photo-drop-txt">Перетащите фото сюда или нажмите</div>
-              <div class="photo-drop-sub">JPG, PNG, WEBP · До 32 МБ каждое</div>
+              <div class="photo-drop-sub">JPG, PNG, WEBP · Фото сразу загрузятся в репозиторий</div>
             </div>
-            <div class="photo-upload-progress" id="listing-upload-progress"></div>
             <div class="imgbb-status" id="listing-imgbb-status"></div>
             <div class="photo-previews" id="listing-photo-previews"></div>
 
@@ -505,7 +504,7 @@ img{display:block;max-width:100%}
             <div class="photo-drop" id="project-photo-drop" onclick="document.getElementById('project-photo-input').click()">
               <input type="file" id="project-photo-input" accept="image/*" multiple />
               <div class="photo-drop-txt">Перетащите фото сюда или нажмите</div>
-              <div class="photo-drop-sub">Первое фото станет главным</div>
+              <div class="photo-drop-sub">Первое фото станет главным · загружается в GitHub</div>
             </div>
             <div class="imgbb-status" id="project-imgbb-status"></div>
             <div class="photo-previews" id="project-photo-previews"></div>
@@ -536,21 +535,6 @@ img{display:block;max-width:100%}
               <div class="field"><label>Повторите пароль</label><input id="s-confirmpw" type="password" placeholder="Повторите пароль" /></div>
             </div>
             <button class="btn-hdr btn-orange" style="margin-top:12px;" onclick="changePassword()">Изменить пароль</button>
-          </div>
-        </div>
-
-        <div class="form-card" style="margin-bottom:16px;">
-          <div class="form-sec">
-            <div class="form-sec-ttl">📸 imgbb.com — загрузка фотографий</div>
-            <div class="info-box">
-              <p><strong>Зачем?</strong> С API-ключом фото загружаются прямо из панели на хостинг imgbb.com (бесплатно, до 32 МБ).<br />
-              Получить ключ: <a href="https://imgbb.com/signup" target="_blank" style="color:var(--green);">imgbb.com/signup</a> → API → Add API key.</p>
-            </div>
-            <div class="field" style="max-width:480px;">
-              <label>API-ключ imgbb</label>
-              <input id="s-imgbb-key" type="text" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
-              <span class="hint">Сохраняется только в вашем браузере (localStorage)</span>
-            </div>
           </div>
         </div>
 
@@ -1013,44 +997,75 @@ function setupDrop(prefix) {
 async function handleFiles(prefix, files) {
   if (!files || !files.length) return;
   const photosArr = prefix === 'listing' ? listingPhotos : projectPhotos;
-  const apiKey = localStorage.getItem('adv_imgbb_key') || '';
   const statusEl = document.getElementById(prefix + '-imgbb-status');
+
+  const owner = localStorage.getItem('adv_gh_user');
+  const repo  = localStorage.getItem('adv_gh_repo');
+  const token = localStorage.getItem('adv_gh_token');
+  const hasGitHub = owner && repo && token;
+
+  // Determine folder based on current form's ID field
+  const currentId = document.getElementById(prefix === 'listing' ? 'lf-id' : 'pf-id').value
+    || (prefix === 'listing' ? 'dom-' + Date.now() : 'proj-' + Date.now());
+  const folder = prefix === 'listing' ? `images/homes/${currentId}` : `images/projects/${currentId}`;
 
   for (const file of files) {
     if (!file.type.startsWith('image/')) continue;
 
-    // Always show local preview immediately
+    // Show local preview immediately
     const localUrl = await readFileAsDataURL(file);
     const entry = { url: localUrl, isMain: photosArr.length === 0 };
     photosArr.push(entry);
     renderPhotoPreview(prefix);
 
-    if (apiKey) {
-      statusEl.className = 'imgbb-status uploading';
-      statusEl.textContent = `⏳ Загружаю ${file.name}...`;
-      try {
-        const formData = new FormData();
-        formData.append('image', file);
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method:'POST', body: formData });
-        const data = await res.json();
-        if (data.success) {
-          entry.url = data.data.url;
-          renderPhotoPreview(prefix);
-          statusEl.className = 'imgbb-status ok';
-          statusEl.textContent = `✅ Фото загружено: ${data.data.url}`;
-        } else {
-          statusEl.className = 'imgbb-status err';
-          statusEl.textContent = '❌ Ошибка imgbb: ' + (data.error?.message || 'неизвестная ошибка');
-        }
-      } catch(err) {
-        statusEl.className = 'imgbb-status err';
-        statusEl.textContent = '❌ Ошибка сети. Фото сохранено локально (data URL). Укажите правильный API-ключ.';
-      }
-    } else {
+    if (!hasGitHub) {
       statusEl.className = 'imgbb-status err';
-      statusEl.textContent = 'ℹ️ Фото отображается в предпросмотре. Для автозагрузки укажите imgbb API-ключ в Настройках.';
+      statusEl.textContent = 'ℹ️ Предпросмотр готов. Для авто-загрузки настройте GitHub-токен в разделе Настройки.';
+      continue;
+    }
+
+    statusEl.className = 'imgbb-status uploading';
+    statusEl.textContent = `⏳ Загружаю ${file.name} в репозиторий...`;
+
+    try {
+      const base64 = await readFileAsBase64(file);
+      const ext = file.name.split('.').pop().toLowerCase();
+      const timestamp = Date.now();
+      const ghPath = `${folder}/${timestamp}.${ext}`;
+
+      await pushBinaryToGitHub(owner, repo, ghPath, base64, token, `upload: ${ghPath}`);
+
+      // Replace local data URL with relative repo path
+      entry.url = ghPath;
+      renderPhotoPreview(prefix);
+
+      statusEl.className = 'imgbb-status ok';
+      statusEl.textContent = `✅ Загружено → ${ghPath} · Netlify опубликует за ~60 сек`;
+    } catch(err) {
+      statusEl.className = 'imgbb-status err';
+      statusEl.textContent = `❌ Ошибка загрузки: ${err.message}`;
     }
   }
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = e => resolve(e.target.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+async function pushBinaryToGitHub(owner, repo, path, base64content, token, msg) {
+  const sha = await getGitHubFileSHA(owner, repo, path, token);
+  const body = { message: msg, content: base64content, ...(sha ? { sha } : {}) };
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
 }
 
 function readFileAsDataURL(file) {
@@ -1091,7 +1106,6 @@ function removePhoto(prefix, idx) {
 
 // ── SETTINGS ──────────────────────────────────────────────────────
 function fillSettings() {
-  document.getElementById('s-imgbb-key').value = localStorage.getItem('adv_imgbb_key') || '';
   document.getElementById('s-gh-user').value = localStorage.getItem('adv_gh_user') || '';
   document.getElementById('s-gh-repo').value = localStorage.getItem('adv_gh_repo') || 'advant-site';
   document.getElementById('s-gh-token').value = localStorage.getItem('adv_gh_token') || '';
@@ -1102,7 +1116,6 @@ function fillSettings() {
 }
 
 function saveSettings() {
-  localStorage.setItem('adv_imgbb_key', document.getElementById('s-imgbb-key').value.trim());
   localStorage.setItem('adv_gh_user', document.getElementById('s-gh-user').value.trim());
   localStorage.setItem('adv_gh_repo', document.getElementById('s-gh-repo').value.trim());
   localStorage.setItem('adv_gh_token', document.getElementById('s-gh-token').value.trim());
@@ -1165,21 +1178,10 @@ async function deployToGitHub() {
 }
 
 function filterHomesForPublish() {
-  return homes.map(h => {
-    const clean = { ...h };
-    // Remove data:// URLs from photos (they are too large for GitHub)
-    if (clean.mainPhoto && clean.mainPhoto.startsWith('data:')) clean.mainPhoto = '';
-    if (clean.photos) clean.photos = clean.photos.filter(p => !p.startsWith('data:'));
-    return clean;
-  });
+  return homes;
 }
 function filterProjectsForPublish() {
-  return projects.map(p => {
-    const clean = { ...p };
-    if (clean.mainPhoto && clean.mainPhoto.startsWith('data:')) clean.mainPhoto = '';
-    if (clean.photos) clean.photos = clean.photos.filter(u => !u.startsWith('data:'));
-    return clean;
-  });
+  return projects;
 }
 
 async function testGitHubConnection() {
