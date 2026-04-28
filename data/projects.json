@@ -8,7 +8,9 @@
     "year": 2024,
     "address": "Краснодарский край, Динской р-н, ст. Динская",
     "mainPhoto": "images/homes/dom-001/main.jpg",
-    "photos": ["images/homes/dom-001/main.jpg"],
+    "photos": [
+      "images/homes/dom-001/main.jpg"
+    ],
     "description": "Двухэтажный дом из лицевого кирпича М200. Вальмовая кровля, ленточный фундамент.",
     "visible": true
   },
@@ -21,7 +23,9 @@
     "year": 2024,
     "address": "Краснодарский край, Краснодар, п. Березовый",
     "mainPhoto": "images/homes/dom-002/main.jpg",
-    "photos": ["images/homes/dom-002/main.jpg"],
+    "photos": [
+      "images/homes/dom-002/main.jpg"
+    ],
     "description": "Одноэтажный дом из газоблока D500. Тёплые стены, низкое энергопотребление.",
     "visible": true
   },
@@ -34,7 +38,9 @@
     "year": 2023,
     "address": "Краснодарский край, Краснодар, п. Пашковский",
     "mainPhoto": "images/homes/dom-003/main.jpg",
-    "photos": ["images/homes/dom-003/main.jpg"],
+    "photos": [
+      "images/homes/dom-003/main.jpg"
+    ],
     "description": "Двухэтажный кирпичный дом с вальмовой кровлей сложной формы. Участок 12 соток.",
     "visible": true
   }
