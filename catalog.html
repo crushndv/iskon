@@ -176,7 +176,9 @@ const stLbl=s=>({sale:'В продаже',reserved:'Резерв',sold:'Прод
 
 async function init(){
   try{const r=await fetch('data/homes.json');allHomes=await r.json();}catch(e){allHomes=[];}
-  renderList(allHomes);initMap();initFilters();
+  // Скрытые объявления не показываем посетителям
+  allHomes=allHomes.filter(h=>h.visible!==false&&h.visible!==0);
+  renderList(allHomes);initMap();
   const hash=location.hash.replace('#','');
   if(hash){const h=allHomes.find(x=>x.id===hash);if(h)setTimeout(()=>openModal(h),400);}
 }
@@ -306,16 +308,7 @@ function resetFilters(){
   document.querySelector('[data-filter="all"]').classList.add('active');
   renderList(allHomes);
 }
-function initFilters(){
-  document.querySelectorAll('.filter-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      if(btn.dataset.filter!==undefined){document.querySelectorAll('[data-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');af.status=btn.dataset.filter;}
-      if(btn.dataset.tech!==undefined){const s=btn.classList.contains('active');document.querySelectorAll('[data-tech]').forEach(b=>b.classList.remove('active'));af.tech=s?null:btn.dataset.tech;if(!s)btn.classList.add('active');}
-      if(btn.dataset.price!==undefined){const s=btn.classList.contains('active');document.querySelectorAll('[data-price]').forEach(b=>b.classList.remove('active'));af.price=s?null:btn.dataset.price;if(!s)btn.classList.add('active');}
-      applyFilters();
-    });
-  });
-}
+function initFilters(){/* фильтры убраны */}
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
 init();
 </script>

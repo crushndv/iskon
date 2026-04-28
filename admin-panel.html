@@ -237,6 +237,28 @@ img{display:block;max-width:100%}
 .btn-deploy:hover{background:#158a63}
 .btn-deploy:disabled{background:#aaa;cursor:not-allowed}
 
+/* PENDING BANNER */
+#pending-banner{
+  display:none;
+  background:#FF4500;color:#fff;
+  padding:10px 24px;
+  align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  position:sticky;top:58px;z-index:99;
+  animation:banner-pulse 2s ease-in-out infinite;
+}
+#pending-banner.show{display:flex}
+#pending-banner p{font-family:var(--f-head);font-size:.48rem;letter-spacing:.18em;text-transform:uppercase}
+#pending-banner button{
+  padding:7px 18px;background:#fff;color:var(--orange);border:none;
+  font-family:var(--f-head);font-size:.46rem;letter-spacing:.16em;text-transform:uppercase;
+  cursor:pointer;white-space:nowrap;transition:opacity .2s;
+}
+#pending-banner button:hover{opacity:.85}
+@keyframes banner-pulse{
+  0%,100%{background:#FF4500}
+  50%{background:#cc3700}
+}
+
 /* TOAST */
 .toast{
   position:fixed;bottom:24px;right:24px;z-index:999;
@@ -292,6 +314,11 @@ img{display:block;max-width:100%}
       <button class="btn-hdr btn-outline-w" onclick="doLogout()">Выйти</button>
     </div>
   </header>
+  <!-- Баннер: есть несохранённые изменения -->
+  <div id="pending-banner">
+    <p>⚠ Есть изменения, не опубликованные на сайте</p>
+    <button onclick="deployToGitHub()">⬆ Опубликовать сейчас</button>
+  </div>
 
   <div class="app-body">
     <div class="sidebar">
@@ -708,6 +735,19 @@ function updateBadges() {
   document.getElementById('badge-projects').textContent = projects.length;
 }
 
+// ── DIRTY STATE (несохранённые изменения) ────────────────────────
+let hasDirty = false;
+function markDirty() {
+  hasDirty = true;
+  document.getElementById('pending-banner').classList.add('show');
+  document.getElementById('global-deploy-btn').textContent = '⬆ Опубликовать ●';
+}
+function markClean() {
+  hasDirty = false;
+  document.getElementById('pending-banner').classList.remove('show');
+  document.getElementById('global-deploy-btn').textContent = '⬆ Опубликовать';
+}
+
 // ── PANELS ────────────────────────────────────────────────────────
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -751,15 +791,15 @@ function renderListings() {
 
 function toggleListingVisible(i) {
   homes[i].visible = homes[i].visible === false ? true : false;
-  renderListings();
-  toast(homes[i].visible === false ? 'Объявление скрыто' : 'Объявление показано на сайте', '');
+  renderListings(); markDirty();
+  toast((homes[i].visible === false ? 'Объявление скрыто' : 'Объявление показано') + ' — нажмите «Опубликовать»', '');
 }
 
 function deleteListing(i) {
   if (!confirm(`Удалить "${homes[i].title}"?`)) return;
   homes.splice(i, 1);
-  updateBadges(); renderListings();
-  toast('Объявление удалено', '');
+  updateBadges(); renderListings(); markDirty();
+  toast('Объявление удалено — нажмите «Опубликовать»', '');
 }
 
 // ── LISTING FORM ──────────────────────────────────────────────────
@@ -860,8 +900,8 @@ function saveListing() {
   } else {
     homes.push(h);
   }
-  updateBadges(); renderListings();
-  toast('Объявление сохранено', 'green');
+  updateBadges(); renderListings(); markDirty();
+  toast('Объявление сохранено — нажмите «Опубликовать» чтобы показать на сайте', 'green');
   showPanel('listings');
 }
 
@@ -895,14 +935,14 @@ function renderProjects() {
 
 function toggleProjectVisible(i) {
   projects[i].visible = projects[i].visible === false ? true : false;
-  renderProjects();
-  toast(projects[i].visible === false ? 'Проект скрыт' : 'Проект показан', '');
+  renderProjects(); markDirty();
+  toast((projects[i].visible === false ? 'Проект скрыт' : 'Проект показан') + ' — нажмите «Опубликовать»', '');
 }
 function deleteProject(i) {
   if (!confirm(`Удалить "${projects[i].title}"?`)) return;
   projects.splice(i, 1);
-  updateBadges(); renderProjects();
-  toast('Проект удалён', '');
+  updateBadges(); renderProjects(); markDirty();
+  toast('Проект удалён — нажмите «Опубликовать»', '');
 }
 
 // ── PROJECT FORM ──────────────────────────────────────────────────
@@ -968,8 +1008,8 @@ function saveProject() {
   } else {
     projects.push(p);
   }
-  updateBadges(); renderProjects();
-  toast('Проект сохранён', 'green');
+  updateBadges(); renderProjects(); markDirty();
+  toast('Проект сохранён — нажмите «Опубликовать» чтобы показать на сайте', 'green');
   showPanel('projects');
 }
 
@@ -1154,27 +1194,54 @@ async function pushFileToGitHub(owner, repo, path, content, token, msg) {
 }
 
 async function deployToGitHub() {
-  saveSettings();
+  // Сначала сохраняем настройки из формы в localStorage
+  const ghUserEl  = document.getElementById('s-gh-user');
+  const ghRepoEl  = document.getElementById('s-gh-repo');
+  const ghTokenEl = document.getElementById('s-gh-token');
+  if (ghUserEl?.value.trim())  localStorage.setItem('adv_gh_user',  ghUserEl.value.trim());
+  if (ghRepoEl?.value.trim())  localStorage.setItem('adv_gh_repo',  ghRepoEl.value.trim());
+  if (ghTokenEl?.value.trim()) localStorage.setItem('adv_gh_token', ghTokenEl.value.trim());
+
   const owner = localStorage.getItem('adv_gh_user');
   const repo  = localStorage.getItem('adv_gh_repo');
   const token = localStorage.getItem('adv_gh_token');
+
   if (!owner || !repo || !token) {
-    toast('Настройте GitHub в разделе Настройки', 'orange');
+    toast('⚙️ Настройте GitHub-токен в разделе Настройки', 'orange');
     showPanel('settings');
     return;
   }
+
   const btn = document.getElementById('global-deploy-btn');
-  btn.disabled = true; btn.textContent = '⏳ Публикую...';
+  const banner = document.getElementById('pending-banner');
+  btn.disabled = true;
+  btn.textContent = '⏳ Публикую...';
+  banner.querySelector('button').disabled = true;
+
   try {
-    const homesJson = JSON.stringify(filterHomesForPublish(), null, 2);
-    const projJson  = JSON.stringify(filterProjectsForPublish(), null, 2);
-    await pushFileToGitHub(owner, repo, 'data/homes.json', homesJson, token, 'update homes.json');
-    await pushFileToGitHub(owner, repo, 'data/projects.json', projJson, token, 'update projects.json');
+    const homesJson = JSON.stringify(homes, null, 2);
+    const projJson  = JSON.stringify(projects, null, 2);
+    await pushFileToGitHub(owner, repo, 'data/homes.json', homesJson, token, 'panel: update homes.json');
+    await pushFileToGitHub(owner, repo, 'data/projects.json', projJson, token, 'panel: update projects.json');
+    markClean();
     toast('✅ Опубликовано! Сайт обновится через ~60 сек.', 'green');
   } catch(err) {
-    toast('❌ Ошибка: ' + err.message, 'red');
+    let errMsg = err.message || 'Неизвестная ошибка';
+    if (errMsg.includes('401') || errMsg.includes('Bad credentials')) {
+      errMsg = 'Неверный токен GitHub. Проверьте в Настройках.';
+    } else if (errMsg.includes('404') || errMsg.includes('Not Found')) {
+      errMsg = 'Репозиторий не найден. Проверьте имя пользователя и репозитория в Настройках.';
+    } else if (errMsg.includes('403')) {
+      errMsg = 'Нет прав записи. Токен должен иметь разрешение repo.';
+    }
+    toast('❌ ' + errMsg, 'red');
+    btn.disabled = false;
+    btn.textContent = '⬆ Опубликовать ●';
+    banner.querySelector('button').disabled = false;
   }
-  btn.disabled = false; btn.textContent = '⬆ Опубликовать';
+  if (!hasDirty) {
+    btn.disabled = false;
+  }
 }
 
 function filterHomesForPublish() {

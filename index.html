@@ -751,8 +751,12 @@ document.querySelectorAll('input[type="tel"]').forEach(el => {
 async function loadProjectsPreview() {
   try {
     const res = await fetch('data/projects.json');
-    const projects = await res.json();
-    document.getElementById('projects-preview').innerHTML = projects.slice(0, 3).map(buildProjectCard).join('');
+    const all = await res.json();
+    // Показываем только видимые проекты
+    const visible = all.filter(p => p.visible !== false && p.visible !== 0);
+    document.getElementById('projects-preview').innerHTML =
+      visible.slice(0, 3).map(buildProjectCard).join('') ||
+      '<p style="padding:40px;text-align:center;color:var(--grey);grid-column:1/-1;">Проекты скоро появятся</p>';
   } catch(e) { console.warn('Projects JSON not loaded', e); }
 }
 
