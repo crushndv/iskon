@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>АДВАНТ — Управление сайтом</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+:root{
+  --snow:#F5F5F7;--orange:#FF4500;--black:#0D0D0D;--grey:#8E8E93;
+  --green:#1D9E75;--red:#CC3333;--bg:#EBEBED;
+  --f-head:'Michroma',sans-serif;--f-body:'Inter',sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --border:1px solid rgba(142,142,147,0.25);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f-body);background:var(--bg);color:var(--black);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+img{display:block;max-width:100%}
+
+/* ── LOGIN ── */
+#login-screen{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;gap:28px;padding:24px;background:var(--black);
+}
+.login-logo{font-family:var(--f-head);font-size:1.6rem;letter-spacing:.1em;color:#fff}
+.login-logo span{color:var(--orange)}
+.login-sub{font-size:.72rem;color:rgba(255,255,255,.3);letter-spacing:.15em;text-transform:uppercase}
+.login-box{width:100%;max-width:340px;display:flex;flex-direction:column;gap:0;border:1px solid rgba(255,255,255,.1)}
+.login-box input[type=password]{
+  padding:18px 20px;background:rgba(255,255,255,.05);border:none;border-bottom:1px solid rgba(255,255,255,.1);
+  color:#fff;font-size:1rem;letter-spacing:.12em;outline:none;
+}
+.login-box input[type=password]::placeholder{color:rgba(255,255,255,.2);letter-spacing:.05em}
+.login-box input[type=password]:focus{background:rgba(255,255,255,.08)}
+.login-box button{
+  padding:16px;background:var(--orange);color:#fff;border:none;
+  font-family:var(--f-head);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  transition:background .2s;
+}
+.login-box button:hover{background:#e03d00}
+.login-err{font-size:.72rem;color:var(--orange);height:20px;text-align:center}
+.login-lock{font-size:.68rem;color:rgba(255,69,0,.7);text-align:center;padding:10px 20px;background:rgba(255,69,0,.08);border:1px solid rgba(255,69,0,.2);display:none;max-width:340px;}
+
+/* ── APP ── */
+#app{display:none;min-height:100vh;flex-direction:column}
+#app.visible{display:flex}
+
+/* HEADER */
+.hdr{
+  background:var(--black);height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;border-bottom:1px solid rgba(255,255,255,.07);
+  position:sticky;top:0;z-index:100;flex-shrink:0;
+}
+.hdr-logo{font-family:var(--f-head);font-size:.95rem;letter-spacing:.08em;color:#fff}
+.hdr-logo em{color:var(--orange);font-style:normal}
+.hdr-sub{font-size:.4rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.btn-hdr{
+  padding:7px 14px;font-family:var(--f-head);font-size:.46rem;
+  letter-spacing:.16em;text-transform:uppercase;border:none;transition:all .2s;cursor:pointer;
+}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:#e03d00}
+.btn-outline-w{background:transparent;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.18)}
+.btn-outline-w:hover{color:#fff;border-color:#fff}
+
+/* BODY */
+.app-body{display:flex;flex:1;min-height:0}
+
+/* SIDEBAR */
+.sidebar{
+  width:210px;flex-shrink:0;background:var(--snow);
+  border-right:var(--border);display:flex;flex-direction:column;
+}
+.sidebar-nav{padding:16px 0;flex:1}
+.s-item{
+  display:flex;align-items:center;gap:10px;padding:11px 20px;
+  font-size:.78rem;color:var(--grey);cursor:pointer;
+  border-left:3px solid transparent;transition:all .18s;
+}
+.s-item:hover{color:var(--black);background:rgba(0,0,0,.03)}
+.s-item.active{color:var(--orange);border-left-color:var(--orange);background:rgba(255,69,0,.05)}
+.s-icon{font-size:15px;flex-shrink:0;width:20px;text-align:center}
+.s-badge{
+  margin-left:auto;min-width:18px;height:18px;border-radius:9px;
+  background:var(--orange);color:#fff;font-size:.5rem;
+  display:flex;align-items:center;justify-content:center;padding:0 4px;
+}
+.sidebar-footer{padding:16px 20px;border-top:var(--border)}
+.sidebar-footer p{font-size:.62rem;color:var(--grey);line-height:1.55}
+.sidebar-footer a{color:var(--orange)}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:24px;background:var(--bg)}
+
+/* PANELS */
+.panel{display:none}
+.panel.active{display:block}
+
+/* PANEL HEADER */
+.pnl-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:12px;
+}
+.pnl-title{font-family:var(--f-head);font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+.pnl-sub{font-size:.72rem;color:var(--grey);font-weight:300;margin-top:3px}
+
+/* LISTINGS TABLE */
+.listings{background:#fff;border:var(--border);overflow:hidden}
+.listing-row{
+  display:grid;grid-template-columns:80px 1fr 140px 120px;
+  align-items:center;border-bottom:var(--border);transition:background .15s;
+}
+.listing-row:last-child{border-bottom:none}
+.listing-row:hover{background:rgba(255,69,0,.02)}
+.listing-photo{width:80px;height:60px;overflow:hidden;background:#e8e8ea;flex-shrink:0}
+.listing-photo img{width:100%;height:100%;object-fit:cover}
+.listing-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#ccc}
+.listing-info{padding:10px 14px}
+.listing-title{font-family:var(--f-head);font-size:.65rem;text-transform:uppercase;color:var(--black)}
+.listing-meta{font-size:.65rem;color:var(--grey);font-weight:300;margin-top:3px;line-height:1.4}
+.listing-price{font-family:var(--f-head);font-size:.82rem;color:var(--black);margin-top:4px}
+.listing-status{padding:0 14px;display:flex;align-items:center;justify-content:center}
+.listing-actions{padding:0 14px;display:flex;gap:6px;justify-content:flex-end}
+
+.pill{display:inline-block;padding:3px 10px;font-family:var(--f-head);font-size:.38rem;letter-spacing:.14em;text-transform:uppercase}
+.pill-sale{background:var(--orange);color:#fff}
+.pill-reserved{border:1px solid var(--grey);color:var(--grey)}
+.pill-sold{background:var(--black);color:#fff}
+.pill-hidden{background:#e0e0e2;color:#999}
+
+.btn-act{
+  padding:6px 10px;font-family:var(--f-head);font-size:.42rem;
+  letter-spacing:.14em;text-transform:uppercase;border:none;transition:all .2s;
+}
+.btn-edit{background:rgba(0,0,0,.07);color:var(--black)}
+.btn-edit:hover{background:var(--black);color:#fff}
+.btn-toggle-vis{background:rgba(0,0,0,.07);color:var(--black)}
+.btn-toggle-vis.hidden-on{background:rgba(255,69,0,.1);color:var(--orange)}
+.btn-toggle-vis:hover{background:var(--orange);color:#fff}
+.btn-del{background:transparent;color:#ff6b6b;border:1px solid rgba(255,107,107,.3)}
+.btn-del:hover{background:#ff6b6b;color:#fff}
+
+/* FORM CARD */
+.form-card{background:#fff;border:var(--border)}
+.form-sec{padding:20px 24px;border-bottom:var(--border)}
+.form-sec:last-child{border-bottom:none}
+.form-sec-ttl{
+  font-family:var(--f-head);font-size:.5rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--orange);margin-bottom:14px;
+}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fg-full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-family:var(--f-head);font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+.field input,.field select,.field textarea{
+  padding:10px 12px;border:var(--border);background:var(--snow);
+  font-size:.88rem;color:var(--black);outline:none;transition:border-color .2s;resize:vertical;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--black)}
+.hint{font-size:.62rem;color:var(--grey);font-weight:300;line-height:1.4}
+
+/* PHOTO UPLOAD */
+.photo-drop{
+  border:2px dashed rgba(142,142,147,.35);padding:24px;
+  text-align:center;cursor:pointer;transition:all .2s;background:var(--snow);
+  position:relative;
+}
+.photo-drop:hover,.photo-drop.drag-over{border-color:var(--orange);background:rgba(255,69,0,.03)}
+.photo-drop input{display:none}
+.photo-drop-txt{font-family:var(--f-head);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+.photo-drop-sub{font-size:.65rem;color:var(--grey);font-weight:300;margin-top:6px}
+.photo-upload-progress{
+  display:none;margin-top:10px;
+  font-size:.68rem;color:var(--orange);font-weight:300;
+}
+
+.photo-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.preview-thumb{
+  position:relative;width:80px;height:64px;
+  border:var(--border);overflow:hidden;flex-shrink:0;
+}
+.preview-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.preview-thumb-rm{
+  position:absolute;top:2px;right:2px;width:18px;height:18px;
+  background:rgba(13,13,13,.75);color:#fff;border:none;cursor:pointer;
+  font-size:11px;display:flex;align-items:center;justify-content:center;
+  line-height:1;
+}
+.preview-thumb.main-photo::before{
+  content:'ГЛАВНОЕ';position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,69,0,.8);color:#fff;font-family:var(--f-head);
+  font-size:.3rem;letter-spacing:.1em;text-align:center;padding:2px;
+}
+
+/* IMGBB STATUS */
+.imgbb-status{
+  margin-top:8px;padding:8px 12px;font-size:.68rem;font-weight:300;display:none;
+}
+.imgbb-status.ok{background:rgba(29,158,117,.1);color:#0F6E56;display:block}
+.imgbb-status.err{background:rgba(204,51,51,.1);color:var(--red);display:block}
+.imgbb-status.uploading{background:rgba(255,69,0,.08);color:var(--orange);display:block}
+
+/* SETTINGS */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.info-box{
+  padding:14px 16px;background:rgba(29,158,117,.07);
+  border:1px solid rgba(29,158,117,.2);margin-bottom:16px;
+}
+.info-box p{font-size:.75rem;font-weight:300;color:#0a5940;line-height:1.6}
+.info-box strong{font-weight:500}
+.warn-box{
+  padding:14px 16px;background:rgba(255,69,0,.07);
+  border:1px solid rgba(255,69,0,.2);margin-bottom:16px;
+}
+.warn-box p{font-size:.75rem;font-weight:300;color:#7a2000;line-height:1.6}
+
+/* DEPLOY BUTTON */
+.deploy-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;
+  padding:14px 18px;background:rgba(29,158,117,.08);border:1px solid rgba(29,158,117,.25);
+  margin-bottom:20px;
+}
+.deploy-bar-txt{font-size:.78rem;font-weight:300;color:#0F6E56;line-height:1.5}
+.btn-deploy{
+  padding:10px 22px;background:var(--green);color:#fff;border:none;
+  font-family:var(--f-head);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;
+  transition:background .2s;white-space:nowrap;
+}
+.btn-deploy:hover{background:#158a63}
+.btn-deploy:disabled{background:#aaa;cursor:not-allowed}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  padding:14px 22px;background:var(--black);color:#fff;
+  font-family:var(--f-head);font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;
+  opacity:0;transition:opacity .3s;pointer-events:none;max-width:340px;line-height:1.5;
+}
+.toast.show{opacity:1}
+.toast.green{background:var(--green)}
+.toast.red{background:var(--red)}
+.toast.orange{background:var(--orange)}
+
+/* EMPTY STATE */
+.empty{padding:60px 20px;text-align:center;color:var(--grey);font-size:.82rem;font-weight:300}
+
+/* PASS CHANGE */
+.pw-change-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+
+@media(max-width:640px){
+  .sidebar{display:none}
+  .fg,.fg3,.sg{grid-template-columns:1fr}
+  .listing-row{grid-template-columns:64px 1fr}
+  .listing-status,.listing-actions{display:none}
+}
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <div style="text-align:center">
+    <div class="login-logo">АДВ<em>А</em>НТ</div>
+    <div class="login-sub" style="margin-top:6px;">Панель управления</div>
+  </div>
+  <form id="login-form" class="login-box" onsubmit="handleLogin(event)">
+    <input id="pw-input" type="password" placeholder="Введите пароль" autocomplete="current-password" />
+    <button type="submit">Войти →</button>
+  </form>
+  <div id="login-err" class="login-err"></div>
+  <div id="login-lock" class="login-lock">Слишком много попыток. Подождите <span id="lock-timer">5:00</span>.</div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <header class="hdr">
+    <div>
+      <div class="hdr-logo">АДВ<em>А</em>НТ</div>
+      <div class="hdr-sub">Панель управления</div>
+    </div>
+    <div class="hdr-right">
+      <a href="index.html" target="_blank" class="btn-hdr btn-outline-w">↗ Сайт</a>
+      <button class="btn-hdr btn-orange" id="global-deploy-btn" onclick="deployToGitHub()">⬆ Опубликовать</button>
+      <button class="btn-hdr btn-outline-w" onclick="doLogout()">Выйти</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="sidebar-nav">
+        <div class="s-item active" onclick="showPanel('listings')">
+          <span class="s-icon">🏠</span> Объявления
+          <span class="s-badge" id="badge-listings">0</span>
+        </div>
+        <div class="s-item" onclick="showPanel('add-listing')">
+          <span class="s-icon">➕</span> Добавить объявление
+        </div>
+        <div class="s-item" onclick="showPanel('projects')">
+          <span class="s-icon">📸</span> Реализованные проекты
+          <span class="s-badge" id="badge-projects">0</span>
+        </div>
+        <div class="s-item" onclick="showPanel('add-project')">
+          <span class="s-icon">➕</span> Добавить проект
+        </div>
+        <div class="s-item" onclick="showPanel('settings')">
+          <span class="s-icon">⚙️</span> Настройки
+        </div>
+        <div class="s-item" onclick="showPanel('export')">
+          <span class="s-icon">📂</span> Экспорт
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <p>Вопросы? <a href="mailto:info@advant.ru">info@advant.ru</a></p>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── LISTINGS ── -->
+      <div class="panel active" id="panel-listings">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title">Объявления о продаже</div>
+            <div class="pnl-sub">Все дома в каталоге. Скрытые — не видны покупателям.</div>
+          </div>
+          <button class="btn-hdr btn-orange" onclick="openAddListing()">+ Добавить</button>
+        </div>
+        <div class="listings" id="listings-table"></div>
+      </div>
+
+      <!-- ── ADD / EDIT LISTING ── -->
+      <div class="panel" id="panel-add-listing">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title" id="listing-form-title">Добавить объявление</div>
+            <div class="pnl-sub">Заполните данные. Фото загружаются прямо здесь.</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-hdr btn-outline-w" style="color:var(--grey);border-color:rgba(0,0,0,.2);" onclick="showPanel('listings')">← Назад</button>
+            <button class="btn-hdr btn-orange" onclick="saveListing()">Сохранить</button>
+          </div>
+        </div>
+        <div class="form-card">
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Основная информация</div>
+            <div class="fg">
+              <div class="field"><label>Название *</label><input id="lf-title" type="text" placeholder="Кирпич A1-140" /></div>
+              <div class="field"><label>Серия</label><input id="lf-series" type="text" placeholder="Серия КИРПИЧ" /></div>
+              <div class="field">
+                <label>Статус *</label>
+                <select id="lf-status">
+                  <option value="sale">В продаже</option>
+                  <option value="reserved">Резерв</option>
+                  <option value="sold">Продан</option>
+                </select>
+              </div>
+              <div class="field"><label>Цена (₽) *</label><input id="lf-price" type="number" placeholder="6200000" /></div>
+              <div class="field">
+                <label>Видимость</label>
+                <select id="lf-visible">
+                  <option value="1">Показывать на сайте</option>
+                  <option value="0">Скрыть</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Характеристики</div>
+            <div class="fg3">
+              <div class="field"><label>Площадь м² *</label><input id="lf-area" type="number" placeholder="140" /></div>
+              <div class="field"><label>Этажей</label><input id="lf-floors" type="number" value="1" /></div>
+              <div class="field"><label>Комнат</label><input id="lf-rooms" type="number" value="3" /></div>
+              <div class="field"><label>Санузлов</label><input id="lf-bathrooms" type="number" value="1" /></div>
+              <div class="field"><label>Срок стр-ва (мес)</label><input id="lf-buildtime" type="number" placeholder="6" /></div>
+              <div class="field"><label>Площадь участка (сот)</label><input id="lf-landarea" type="number" placeholder="8" /></div>
+            </div>
+            <div class="fg" style="margin-top:12px;">
+              <div class="field">
+                <label>Материал *</label>
+                <select id="lf-technology">
+                  <option>Кирпич</option><option>Газоблок</option>
+                  <option>Отсевной блок</option><option>Монолит</option><option>SIP-панель</option>
+                </select>
+              </div>
+              <div class="field"><label>Срок сдачи</label><input id="lf-completion" type="text" placeholder="2025-Q3" /></div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Адрес</div>
+            <div class="field fg-full">
+              <label>Адрес объекта *</label>
+              <input id="lf-address" type="text" placeholder="Краснодарский край, Динской р-н, ст. Динская" />
+            </div>
+            <div class="fg" style="margin-top:12px;">
+              <div class="field"><label>Широта</label><input id="lf-lat" type="number" step="0.0001" placeholder="45.1834" /></div>
+              <div class="field"><label>Долгота</label><input id="lf-lng" type="number" step="0.0001" placeholder="39.2069" /></div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Описание</div>
+            <div class="field">
+              <label>Текст описания</label>
+              <textarea id="lf-description" rows="4" placeholder="Двухэтажный кирпичный дом..."></textarea>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label>Особенности (каждая с новой строки)</label>
+              <textarea id="lf-features" rows="4" placeholder="Лицевой кирпич М200&#10;Вальмовая кровля&#10;Ленточный фундамент"></textarea>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Фотографии</div>
+            <div class="info-box" id="imgbb-hint">
+              <p><strong>Быстрая загрузка:</strong> укажите API-ключ imgbb.com в Настройках — тогда фото загрузятся автоматически.<br />
+              Без ключа: укажите пути к файлам вручную ниже.</p>
+            </div>
+
+            <div class="photo-drop" id="listing-photo-drop" onclick="document.getElementById('listing-photo-input').click()">
+              <input type="file" id="listing-photo-input" accept="image/*" multiple />
+              <div class="photo-drop-txt">Перетащите фото сюда или нажмите</div>
+              <div class="photo-drop-sub">JPG, PNG, WEBP · До 32 МБ каждое</div>
+            </div>
+            <div class="photo-upload-progress" id="listing-upload-progress"></div>
+            <div class="imgbb-status" id="listing-imgbb-status"></div>
+            <div class="photo-previews" id="listing-photo-previews"></div>
+
+            <div style="margin-top:16px;">
+              <div class="field">
+                <label>Или вставьте URL главного фото вручную</label>
+                <input id="lf-mainphoto" type="text" placeholder="https://... или images/homes/dom-001/main.jpg" />
+              </div>
+              <div class="field" style="margin-top:10px;">
+                <label>Все URL фото (каждый с новой строки)</label>
+                <textarea id="lf-photos" rows="3" placeholder="https://...&#10;https://..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="lf-id" />
+        </div>
+      </div>
+
+      <!-- ── PROJECTS ── -->
+      <div class="panel" id="panel-projects">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title">Реализованные проекты</div>
+            <div class="pnl-sub">Фото завершённых объектов на странице «Услуги».</div>
+          </div>
+          <button class="btn-hdr btn-orange" onclick="openAddProject()">+ Добавить проект</button>
+        </div>
+        <div class="listings" id="projects-table"></div>
+      </div>
+
+      <!-- ── ADD / EDIT PROJECT ── -->
+      <div class="panel" id="panel-add-project">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title" id="project-form-title">Добавить проект</div>
+            <div class="pnl-sub">Реализованный объект для галереи</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-hdr btn-outline-w" style="color:var(--grey);border-color:rgba(0,0,0,.2);" onclick="showPanel('projects')">← Назад</button>
+            <button class="btn-hdr btn-orange" onclick="saveProject()">Сохранить</button>
+          </div>
+        </div>
+        <div class="form-card">
+          <div class="form-sec">
+            <div class="form-sec-ttl">Информация о проекте</div>
+            <div class="fg">
+              <div class="field"><label>Название *</label><input id="pf-title" type="text" placeholder="Кирпичный дом 140 м²" /></div>
+              <div class="field">
+                <label>Категория</label>
+                <select id="pf-category">
+                  <option>Кирпич</option><option>Газоблок</option><option>Отсевной блок</option><option>Монолит</option>
+                </select>
+              </div>
+              <div class="field"><label>Площадь м²</label><input id="pf-area" type="number" placeholder="140" /></div>
+              <div class="field"><label>Год сдачи</label><input id="pf-year" type="number" placeholder="2024" /></div>
+              <div class="field fg-full"><label>Адрес</label><input id="pf-address" type="text" placeholder="Краснодарский край, Динской р-н" /></div>
+              <div class="field fg-full"><label>Краткое описание</label><textarea id="pf-description" rows="3" placeholder="Двухэтажный дом из кирпича..."></textarea></div>
+              <div class="field">
+                <label>Видимость</label>
+                <select id="pf-visible">
+                  <option value="1">Показывать</option>
+                  <option value="0">Скрыть</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-sec">
+            <div class="form-sec-ttl">Фотографии проекта</div>
+            <div class="photo-drop" id="project-photo-drop" onclick="document.getElementById('project-photo-input').click()">
+              <input type="file" id="project-photo-input" accept="image/*" multiple />
+              <div class="photo-drop-txt">Перетащите фото сюда или нажмите</div>
+              <div class="photo-drop-sub">Первое фото станет главным</div>
+            </div>
+            <div class="imgbb-status" id="project-imgbb-status"></div>
+            <div class="photo-previews" id="project-photo-previews"></div>
+            <div style="margin-top:16px;">
+              <div class="field">
+                <label>Или вставьте URL фото (каждый с новой строки)</label>
+                <textarea id="pf-photos" rows="3" placeholder="https://...&#10;https://..."></textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="pf-id" />
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="panel" id="panel-settings">
+        <div class="pnl-hdr">
+          <div><div class="pnl-title">Настройки</div></div>
+          <button class="btn-hdr btn-orange" onclick="saveSettings()">Сохранить</button>
+        </div>
+
+        <div class="form-card" style="margin-bottom:16px;">
+          <div class="form-sec">
+            <div class="form-sec-ttl">🔒 Безопасность — смена пароля</div>
+            <div class="warn-box"><p>Пароль хранится в зашифрованном виде (SHA-256). Никто не может его увидеть в коде страницы.</p></div>
+            <div class="fg">
+              <div class="field"><label>Новый пароль</label><input id="s-newpw" type="password" placeholder="Введите новый пароль" /></div>
+              <div class="field"><label>Повторите пароль</label><input id="s-confirmpw" type="password" placeholder="Повторите пароль" /></div>
+            </div>
+            <button class="btn-hdr btn-orange" style="margin-top:12px;" onclick="changePassword()">Изменить пароль</button>
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:16px;">
+          <div class="form-sec">
+            <div class="form-sec-ttl">📸 imgbb.com — загрузка фотографий</div>
+            <div class="info-box">
+              <p><strong>Зачем?</strong> С API-ключом фото загружаются прямо из панели на хостинг imgbb.com (бесплатно, до 32 МБ).<br />
+              Получить ключ: <a href="https://imgbb.com/signup" target="_blank" style="color:var(--green);">imgbb.com/signup</a> → API → Add API key.</p>
+            </div>
+            <div class="field" style="max-width:480px;">
+              <label>API-ключ imgbb</label>
+              <input id="s-imgbb-key" type="text" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+              <span class="hint">Сохраняется только в вашем браузере (localStorage)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:16px;">
+          <div class="form-sec">
+            <div class="form-sec-ttl">🚀 GitHub — авто-публикация</div>
+            <div class="info-box">
+              <p><strong>Как работает:</strong> При нажатии «Опубликовать» данные автоматически обновляются в вашем GitHub-репозитории, и через ~60 секунд сайт обновляется.<br />
+              Токен: <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:var(--green);">github.com/settings/tokens</a> → New token → выберите scope <code>repo</code>.</p>
+            </div>
+            <div class="sg">
+              <div class="field"><label>GitHub Username</label><input id="s-gh-user" type="text" placeholder="crushndv" /></div>
+              <div class="field"><label>Репозиторий</label><input id="s-gh-repo" type="text" placeholder="advant-site" /></div>
+              <div class="field fg-full"><label>Personal Access Token</label><input id="s-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" /><span class="hint">Хранится только в вашем браузере</span></div>
+            </div>
+            <button class="btn-hdr btn-orange" style="margin-top:12px;" onclick="testGitHubConnection()">Проверить подключение</button>
+            <span id="gh-test-status" style="margin-left:12px;font-size:.72rem;color:var(--grey);"></span>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-sec">
+            <div class="form-sec-ttl">📞 Контакты сайта</div>
+            <div class="sg">
+              <div class="field"><label>Телефон</label><input id="s-phone" type="tel" placeholder="8 918 126 99 96" /></div>
+              <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="info@advant.ru" /></div>
+              <div class="field"><label>WhatsApp (без +)</label><input id="s-whatsapp" type="text" placeholder="79181269996" /></div>
+              <div class="field"><label>Telegram</label><input id="s-telegram" type="text" placeholder="@advant_krd" /></div>
+              <div class="field fg-full"><label>Адрес офиса</label><input id="s-address" type="text" placeholder="г. Краснодар, ул. Примерная, д. 1" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXPORT ── -->
+      <div class="panel" id="panel-export">
+        <div class="pnl-hdr">
+          <div><div class="pnl-title">Экспорт данных</div><div class="pnl-sub">Скачайте JSON и загрузите на GitHub вручную</div></div>
+        </div>
+        <div class="deploy-bar">
+          <div class="deploy-bar-txt"><strong>Рекомендуем:</strong> настройте GitHub в разделе «Настройки» и нажимайте «Опубликовать» — всё обновится автоматически.</div>
+          <button class="btn-deploy" onclick="deployToGitHub()">⬆ Опубликовать сейчас</button>
+        </div>
+        <div class="form-card">
+          <div class="form-sec">
+            <div class="form-sec-ttl">Скачать файлы вручную</div>
+            <div style="display:flex;flex-direction:column;gap:10px;max-width:320px;">
+              <button class="btn-hdr btn-orange" style="text-align:left;padding:12px 18px;" onclick="downloadJSON(homes,'homes.json')">⬇ homes.json (объявления)</button>
+              <button class="btn-hdr btn-orange" style="text-align:left;padding:12px 18px;" onclick="downloadJSON(projects,'projects.json')">⬇ projects.json (проекты)</button>
+            </div>
+            <div style="margin-top:20px;border:var(--border);padding:16px;">
+              <div class="form-sec-ttl" style="margin-bottom:10px;">Инструкция</div>
+              <ol style="font-size:.75rem;font-weight:300;color:var(--grey);line-height:2.1;padding-left:18px;">
+                <li>Скачайте файл кнопкой выше</li>
+                <li>Откройте <strong>github.com</strong> → ваш репозиторий → папка <strong>data/</strong></li>
+                <li>Нажмите на файл → карандаш ✏️</li>
+                <li>Выделите всё (Cmd+A) → вставьте содержимое нового файла</li>
+                <li>Нажмите <strong>Commit changes</strong></li>
+                <li>Через ~60 сек сайт обновится</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /app-body -->
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── SECURITY ──────────────────────────────────────────────────────
+// Password is stored as SHA-256 hash — plaintext never visible in source
+let PASS_HASH = localStorage.getItem('adv_pw_hash') || '5d89bf993bde7cb2bef3ba81fb44aa0dd3f661f4f235f16284872628c78982d5';
+const MAX_ATTEMPTS = 5, LOCK_MS = 5 * 60 * 1000;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const lock = JSON.parse(localStorage.getItem('adv_lock') || '{}');
+  if (lock.until && Date.now() < lock.until) { showLock(lock.until); return; }
+
+  const input = document.getElementById('pw-input').value;
+  const hash = await sha256(input);
+
+  if (hash === PASS_HASH) {
+    localStorage.removeItem('adv_lock');
+    sessionStorage.setItem('adv_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    loadAll();
+  } else {
+    const attempts = (lock.attempts || 0) + 1;
+    if (attempts >= MAX_ATTEMPTS) {
+      const until = Date.now() + LOCK_MS;
+      localStorage.setItem('adv_lock', JSON.stringify({ attempts, until }));
+      showLock(until);
+    } else {
+      localStorage.setItem('adv_lock', JSON.stringify({ attempts }));
+      document.getElementById('login-err').textContent = `Неверный пароль. Осталось попыток: ${MAX_ATTEMPTS - attempts}`;
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+}
+
+function showLock(until) {
+  document.getElementById('login-err').textContent = '';
+  document.getElementById('login-lock').style.display = 'block';
+  const tick = () => {
+    const left = Math.max(0, until - Date.now());
+    const m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
+    document.getElementById('lock-timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    if (left > 0) requestAnimationFrame(tick);
+    else { document.getElementById('login-lock').style.display = 'none'; localStorage.removeItem('adv_lock'); }
+  };
+  tick();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('adv_auth');
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+}
+
+// Auto-restore session (same browser tab reload)
+if (sessionStorage.getItem('adv_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  document.addEventListener('DOMContentLoaded', loadAll);
+} else {
+  // Check lock on page load
+  const lock = JSON.parse(localStorage.getItem('adv_lock') || '{}');
+  if (lock.until && Date.now() < lock.until) showLock(lock.until);
+}
+
+async function changePassword() {
+  const np = document.getElementById('s-newpw').value.trim();
+  const cp = document.getElementById('s-confirmpw').value.trim();
+  if (!np) { toast('Введите новый пароль', 'red'); return; }
+  if (np !== cp) { toast('Пароли не совпадают', 'red'); return; }
+  if (np.length < 6) { toast('Пароль должен быть не менее 6 символов', 'red'); return; }
+  PASS_HASH = await sha256(np);
+  localStorage.setItem('adv_pw_hash', PASS_HASH);
+  document.getElementById('s-newpw').value = '';
+  document.getElementById('s-confirmpw').value = '';
+  toast('Пароль изменён!', 'green');
+}
+
+// ── DATA ──────────────────────────────────────────────────────────
+let homes = [], projects = [];
+let siteSettings = { phone:'8 918 126 99 96', email:'info@advant.ru', whatsapp:'', telegram:'', address:'' };
+
+async function loadAll() {
+  try { const r = await fetch('data/homes.json?' + Date.now()); homes = await r.json(); } catch(e) { homes = []; }
+  try { const r = await fetch('data/projects.json?' + Date.now()); projects = await r.json(); } catch(e) { projects = []; }
+  renderListings();
+  renderProjects();
+  fillSettings();
+  updateBadges();
+}
+
+function updateBadges() {
+  document.getElementById('badge-listings').textContent = homes.length;
+  document.getElementById('badge-projects').textContent = projects.length;
+}
+
+// ── PANELS ────────────────────────────────────────────────────────
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.s-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, settings:4, export:5 };
+  document.querySelectorAll('.s-item')[map[id] ?? 0]?.classList.add('active');
+}
+
+// ── LISTINGS RENDER ───────────────────────────────────────────────
+const fmt = n => (n||0).toLocaleString('ru-RU') + ' ₽';
+const pillCls = s => ({ sale:'pill-sale', reserved:'pill-reserved', sold:'pill-sold' })[s] || 'pill-sale';
+const pillLbl = s => ({ sale:'В продаже', reserved:'Резерв', sold:'Продан' })[s] || s;
+
+function renderListings() {
+  const el = document.getElementById('listings-table');
+  if (!homes.length) { el.innerHTML = '<div class="empty">Объявлений нет. Добавьте первый дом.</div>'; return; }
+  el.innerHTML = homes.map((h, i) => {
+    const hidden = h.visible === false || h.visible === 0;
+    return `<div class="listing-row">
+      <div class="listing-photo">
+        ${h.mainPhoto ? `<img src="${h.mainPhoto}" alt="">` : '<div class="listing-ph">🏠</div>'}
+      </div>
+      <div class="listing-info">
+        <div class="listing-title">${h.title} <span class="pill ${hidden?'pill-hidden':pillCls(h.status)}">${hidden?'Скрыт':pillLbl(h.status)}</span></div>
+        <div class="listing-meta">${h.address||'—'} · ${h.area} м² · ${h.technology}</div>
+        <div class="listing-price">${fmt(h.price)}</div>
+      </div>
+      <div class="listing-status">
+        <button class="btn-act btn-toggle-vis ${hidden?'hidden-on':''}" onclick="toggleListingVisible(${i})" title="${hidden?'Показать на сайте':'Скрыть с сайта'}">
+          ${hidden ? '👁 Показать' : '🙈 Скрыть'}
+        </button>
+      </div>
+      <div class="listing-actions">
+        <button class="btn-act btn-edit" onclick="editListing(${i})">✏️ Ред.</button>
+        <button class="btn-act btn-del" onclick="deleteListing(${i})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleListingVisible(i) {
+  homes[i].visible = homes[i].visible === false ? true : false;
+  renderListings();
+  toast(homes[i].visible === false ? 'Объявление скрыто' : 'Объявление показано на сайте', '');
+}
+
+function deleteListing(i) {
+  if (!confirm(`Удалить "${homes[i].title}"?`)) return;
+  homes.splice(i, 1);
+  updateBadges(); renderListings();
+  toast('Объявление удалено', '');
+}
+
+// ── LISTING FORM ──────────────────────────────────────────────────
+let listingPhotos = []; // [{url, isMain}]
+
+function openAddListing() {
+  document.getElementById('lf-id').value = '';
+  document.getElementById('listing-form-title').textContent = 'Добавить объявление';
+  ['title','series','price','area','floors','rooms','bathrooms','buildtime','landarea',
+   'completion','address','lat','lng','description','features','mainphoto','photos'].forEach(id => {
+    const el = document.getElementById('lf-'+id);
+    if (el) el.value = '';
+  });
+  document.getElementById('lf-status').value = 'sale';
+  document.getElementById('lf-technology').value = 'Кирпич';
+  document.getElementById('lf-visible').value = '1';
+  document.getElementById('lf-floors').value = '1';
+  document.getElementById('lf-rooms').value = '3';
+  document.getElementById('lf-bathrooms').value = '1';
+  listingPhotos = [];
+  renderPhotoPreview('listing');
+  showPanel('add-listing');
+}
+
+function editListing(i) {
+  const h = homes[i];
+  document.getElementById('lf-id').value = h.id;
+  document.getElementById('listing-form-title').textContent = 'Ред.: ' + h.title;
+  document.getElementById('lf-title').value = h.title || '';
+  document.getElementById('lf-series').value = h.series || '';
+  document.getElementById('lf-status').value = h.status || 'sale';
+  document.getElementById('lf-price').value = h.price || '';
+  document.getElementById('lf-visible').value = (h.visible === false || h.visible === 0) ? '0' : '1';
+  document.getElementById('lf-area').value = h.area || '';
+  document.getElementById('lf-floors').value = h.floors || 1;
+  document.getElementById('lf-rooms').value = h.rooms || 3;
+  document.getElementById('lf-bathrooms').value = h.bathrooms || 1;
+  document.getElementById('lf-buildtime').value = h.buildTimeMonths || '';
+  document.getElementById('lf-landarea').value = h.landArea || '';
+  document.getElementById('lf-technology').value = h.technology || 'Кирпич';
+  document.getElementById('lf-completion').value = h.completionDate || '';
+  document.getElementById('lf-address').value = h.address || '';
+  document.getElementById('lf-lat').value = h.lat || '';
+  document.getElementById('lf-lng').value = h.lng || '';
+  document.getElementById('lf-description').value = h.description || '';
+  document.getElementById('lf-features').value = (h.features || []).join('\n');
+  document.getElementById('lf-mainphoto').value = h.mainPhoto || '';
+  document.getElementById('lf-photos').value = (h.photos || []).join('\n');
+  listingPhotos = (h.photos || []).map((url, idx) => ({ url, isMain: idx === 0 }));
+  renderPhotoPreview('listing');
+  showPanel('add-listing');
+}
+
+function saveListing() {
+  const title = document.getElementById('lf-title').value.trim();
+  if (!title) { toast('Введите название', 'red'); return; }
+  const price = parseInt(document.getElementById('lf-price').value) || 0;
+  if (!price) { toast('Введите цену', 'red'); return; }
+
+  const existingId = document.getElementById('lf-id').value;
+  const id = existingId || 'dom-' + Date.now();
+
+  // Merge photo URLs: from uploader + manual textarea
+  const manualPhotos = document.getElementById('lf-photos').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const uploaderPhotos = listingPhotos.map(p => p.url);
+  const allPhotos = [...new Set([...uploaderPhotos, ...manualPhotos])];
+  const manualMain = document.getElementById('lf-mainphoto').value.trim();
+  const mainPhoto = manualMain || (allPhotos[0] || '');
+
+  const h = {
+    id, slug: id,
+    title,
+    series: document.getElementById('lf-series').value.trim(),
+    status: document.getElementById('lf-status').value,
+    visible: document.getElementById('lf-visible').value === '1',
+    price,
+    area: parseInt(document.getElementById('lf-area').value) || 0,
+    floors: parseInt(document.getElementById('lf-floors').value) || 1,
+    rooms: parseInt(document.getElementById('lf-rooms').value) || 3,
+    bathrooms: parseInt(document.getElementById('lf-bathrooms').value) || 1,
+    technology: document.getElementById('lf-technology').value,
+    buildTimeMonths: parseInt(document.getElementById('lf-buildtime').value) || 0,
+    landArea: parseInt(document.getElementById('lf-landarea').value) || 0,
+    address: document.getElementById('lf-address').value.trim(),
+    lat: parseFloat(document.getElementById('lf-lat').value) || null,
+    lng: parseFloat(document.getElementById('lf-lng').value) || null,
+    mainPhoto,
+    photos: allPhotos,
+    description: document.getElementById('lf-description').value.trim(),
+    features: document.getElementById('lf-features').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    completionDate: document.getElementById('lf-completion').value.trim(),
+    documents: true,
+  };
+
+  if (existingId) {
+    const idx = homes.findIndex(x => x.id === existingId);
+    if (idx !== -1) homes[idx] = h; else homes.push(h);
+  } else {
+    homes.push(h);
+  }
+  updateBadges(); renderListings();
+  toast('Объявление сохранено', 'green');
+  showPanel('listings');
+}
+
+// ── PROJECTS RENDER ───────────────────────────────────────────────
+function renderProjects() {
+  const el = document.getElementById('projects-table');
+  if (!projects.length) { el.innerHTML = '<div class="empty">Проектов нет. Добавьте первый.</div>'; return; }
+  el.innerHTML = projects.map((p, i) => {
+    const hidden = p.visible === false || p.visible === 0;
+    return `<div class="listing-row">
+      <div class="listing-photo">
+        ${p.mainPhoto ? `<img src="${p.mainPhoto}" alt="">` : '<div class="listing-ph">📸</div>'}
+      </div>
+      <div class="listing-info">
+        <div class="listing-title">${p.title} ${hidden?'<span class="pill pill-hidden">Скрыт</span>':''}</div>
+        <div class="listing-meta">${p.address||'—'} · ${p.area||'?'} м² · ${p.year||'—'}</div>
+        <div style="font-family:var(--f-head);font-size:.5rem;color:var(--orange);margin-top:3px;">${p.category||''}</div>
+      </div>
+      <div class="listing-status">
+        <button class="btn-act btn-toggle-vis ${hidden?'hidden-on':''}" onclick="toggleProjectVisible(${i})">
+          ${hidden ? '👁 Показать' : '🙈 Скрыть'}
+        </button>
+      </div>
+      <div class="listing-actions">
+        <button class="btn-act btn-edit" onclick="editProject(${i})">✏️ Ред.</button>
+        <button class="btn-act btn-del" onclick="deleteProject(${i})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleProjectVisible(i) {
+  projects[i].visible = projects[i].visible === false ? true : false;
+  renderProjects();
+  toast(projects[i].visible === false ? 'Проект скрыт' : 'Проект показан', '');
+}
+function deleteProject(i) {
+  if (!confirm(`Удалить "${projects[i].title}"?`)) return;
+  projects.splice(i, 1);
+  updateBadges(); renderProjects();
+  toast('Проект удалён', '');
+}
+
+// ── PROJECT FORM ──────────────────────────────────────────────────
+let projectPhotos = [];
+
+function openAddProject() {
+  document.getElementById('pf-id').value = '';
+  document.getElementById('project-form-title').textContent = 'Добавить проект';
+  ['title','area','year','address','description','photos'].forEach(id => {
+    const el = document.getElementById('pf-'+id);
+    if (el) el.value = '';
+  });
+  document.getElementById('pf-category').value = 'Кирпич';
+  document.getElementById('pf-visible').value = '1';
+  projectPhotos = [];
+  renderPhotoPreview('project');
+  showPanel('add-project');
+}
+
+function editProject(i) {
+  const p = projects[i];
+  document.getElementById('pf-id').value = p.id;
+  document.getElementById('project-form-title').textContent = 'Ред.: ' + p.title;
+  document.getElementById('pf-title').value = p.title || '';
+  document.getElementById('pf-category').value = p.category || 'Кирпич';
+  document.getElementById('pf-area').value = p.area || '';
+  document.getElementById('pf-year').value = p.year || '';
+  document.getElementById('pf-address').value = p.address || '';
+  document.getElementById('pf-description').value = p.description || '';
+  document.getElementById('pf-photos').value = (p.photos || []).join('\n');
+  document.getElementById('pf-visible').value = (p.visible === false || p.visible === 0) ? '0' : '1';
+  projectPhotos = (p.photos || []).map((url, idx) => ({ url, isMain: idx === 0 }));
+  renderPhotoPreview('project');
+  showPanel('add-project');
+}
+
+function saveProject() {
+  const title = document.getElementById('pf-title').value.trim();
+  if (!title) { toast('Введите название проекта', 'red'); return; }
+  const existingId = document.getElementById('pf-id').value;
+  const id = existingId || 'proj-' + Date.now();
+
+  const manualPhotos = document.getElementById('pf-photos').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const uploaderPhotos = projectPhotos.map(p => p.url);
+  const allPhotos = [...new Set([...uploaderPhotos, ...manualPhotos])];
+
+  const p = {
+    id, title,
+    category: document.getElementById('pf-category').value,
+    technology: document.getElementById('pf-category').value,
+    area: parseInt(document.getElementById('pf-area').value) || 0,
+    year: parseInt(document.getElementById('pf-year').value) || new Date().getFullYear(),
+    address: document.getElementById('pf-address').value.trim(),
+    description: document.getElementById('pf-description').value.trim(),
+    mainPhoto: allPhotos[0] || '',
+    photos: allPhotos,
+    visible: document.getElementById('pf-visible').value === '1',
+  };
+
+  if (existingId) {
+    const idx = projects.findIndex(x => x.id === existingId);
+    if (idx !== -1) projects[idx] = p; else projects.push(p);
+  } else {
+    projects.push(p);
+  }
+  updateBadges(); renderProjects();
+  toast('Проект сохранён', 'green');
+  showPanel('projects');
+}
+
+// ── PHOTO UPLOAD (imgbb or local preview) ─────────────────────────
+function initPhotoDrops() {
+  setupDrop('listing');
+  setupDrop('project');
+}
+
+function setupDrop(prefix) {
+  const drop = document.getElementById(prefix + '-photo-drop');
+  const input = document.getElementById(prefix + '-photo-input');
+  if (!drop || !input) return;
+
+  input.addEventListener('change', e => handleFiles(prefix, e.target.files));
+
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+  drop.addEventListener('drop', e => {
+    e.preventDefault(); drop.classList.remove('drag-over');
+    handleFiles(prefix, e.dataTransfer.files);
+  });
+}
+
+async function handleFiles(prefix, files) {
+  if (!files || !files.length) return;
+  const photosArr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  const apiKey = localStorage.getItem('adv_imgbb_key') || '';
+  const statusEl = document.getElementById(prefix + '-imgbb-status');
+
+  for (const file of files) {
+    if (!file.type.startsWith('image/')) continue;
+
+    // Always show local preview immediately
+    const localUrl = await readFileAsDataURL(file);
+    const entry = { url: localUrl, isMain: photosArr.length === 0 };
+    photosArr.push(entry);
+    renderPhotoPreview(prefix);
+
+    if (apiKey) {
+      statusEl.className = 'imgbb-status uploading';
+      statusEl.textContent = `⏳ Загружаю ${file.name}...`;
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method:'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          entry.url = data.data.url;
+          renderPhotoPreview(prefix);
+          statusEl.className = 'imgbb-status ok';
+          statusEl.textContent = `✅ Фото загружено: ${data.data.url}`;
+        } else {
+          statusEl.className = 'imgbb-status err';
+          statusEl.textContent = '❌ Ошибка imgbb: ' + (data.error?.message || 'неизвестная ошибка');
+        }
+      } catch(err) {
+        statusEl.className = 'imgbb-status err';
+        statusEl.textContent = '❌ Ошибка сети. Фото сохранено локально (data URL). Укажите правильный API-ключ.';
+      }
+    } else {
+      statusEl.className = 'imgbb-status err';
+      statusEl.textContent = 'ℹ️ Фото отображается в предпросмотре. Для автозагрузки укажите imgbb API-ключ в Настройках.';
+    }
+  }
+}
+
+function readFileAsDataURL(file) {
+  return new Promise(resolve => {
+    const r = new FileReader();
+    r.onload = e => resolve(e.target.result);
+    r.readAsDataURL(file);
+  });
+}
+
+function renderPhotoPreview(prefix) {
+  const photosArr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  const container = document.getElementById(prefix + '-photo-previews');
+  if (!container) return;
+  container.innerHTML = photosArr.map((p, i) => `
+    <div class="preview-thumb ${p.isMain ? 'main-photo' : ''}" onclick="setMainPhoto('${prefix}', ${i})" title="Нажмите чтобы сделать главным">
+      <img src="${p.url}" alt="" />
+      <button class="preview-thumb-rm" onclick="event.stopPropagation();removePhoto('${prefix}',${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function setMainPhoto(prefix, idx) {
+  const arr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  arr.forEach((p, i) => p.isMain = i === idx);
+  // Move to front
+  const [item] = arr.splice(idx, 1);
+  arr.unshift(item);
+  renderPhotoPreview(prefix);
+}
+
+function removePhoto(prefix, idx) {
+  const arr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  arr.splice(idx, 1);
+  if (arr.length && !arr.some(p => p.isMain)) arr[0].isMain = true;
+  renderPhotoPreview(prefix);
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────
+function fillSettings() {
+  document.getElementById('s-imgbb-key').value = localStorage.getItem('adv_imgbb_key') || '';
+  document.getElementById('s-gh-user').value = localStorage.getItem('adv_gh_user') || '';
+  document.getElementById('s-gh-repo').value = localStorage.getItem('adv_gh_repo') || 'advant-site';
+  document.getElementById('s-gh-token').value = localStorage.getItem('adv_gh_token') || '';
+  ['phone','email','whatsapp','telegram','address'].forEach(k => {
+    const el = document.getElementById('s-'+k);
+    if (el) el.value = siteSettings[k] || '';
+  });
+}
+
+function saveSettings() {
+  localStorage.setItem('adv_imgbb_key', document.getElementById('s-imgbb-key').value.trim());
+  localStorage.setItem('adv_gh_user', document.getElementById('s-gh-user').value.trim());
+  localStorage.setItem('adv_gh_repo', document.getElementById('s-gh-repo').value.trim());
+  localStorage.setItem('adv_gh_token', document.getElementById('s-gh-token').value.trim());
+  ['phone','email','whatsapp','telegram','address'].forEach(k => {
+    const el = document.getElementById('s-'+k);
+    if (el) siteSettings[k] = el.value.trim();
+  });
+  toast('Настройки сохранены', 'green');
+}
+
+// ── GITHUB DEPLOY ─────────────────────────────────────────────────
+async function getGitHubFileSHA(owner, repo, path, token) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.ok) { const d = await res.json(); return d.sha; }
+  } catch(e) {}
+  return null;
+}
+
+async function pushFileToGitHub(owner, repo, path, content, token, msg) {
+  const sha = await getGitHubFileSHA(owner, repo, path, token);
+  const body = {
+    message: msg,
+    content: btoa(unescape(encodeURIComponent(content))),
+    ...(sha ? { sha } : {})
+  };
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
+  return true;
+}
+
+async function deployToGitHub() {
+  saveSettings();
+  const owner = localStorage.getItem('adv_gh_user');
+  const repo  = localStorage.getItem('adv_gh_repo');
+  const token = localStorage.getItem('adv_gh_token');
+  if (!owner || !repo || !token) {
+    toast('Настройте GitHub в разделе Настройки', 'orange');
+    showPanel('settings');
+    return;
+  }
+  const btn = document.getElementById('global-deploy-btn');
+  btn.disabled = true; btn.textContent = '⏳ Публикую...';
+  try {
+    const homesJson = JSON.stringify(filterHomesForPublish(), null, 2);
+    const projJson  = JSON.stringify(filterProjectsForPublish(), null, 2);
+    await pushFileToGitHub(owner, repo, 'data/homes.json', homesJson, token, 'update homes.json');
+    await pushFileToGitHub(owner, repo, 'data/projects.json', projJson, token, 'update projects.json');
+    toast('✅ Опубликовано! Сайт обновится через ~60 сек.', 'green');
+  } catch(err) {
+    toast('❌ Ошибка: ' + err.message, 'red');
+  }
+  btn.disabled = false; btn.textContent = '⬆ Опубликовать';
+}
+
+function filterHomesForPublish() {
+  return homes.map(h => {
+    const clean = { ...h };
+    // Remove data:// URLs from photos (they are too large for GitHub)
+    if (clean.mainPhoto && clean.mainPhoto.startsWith('data:')) clean.mainPhoto = '';
+    if (clean.photos) clean.photos = clean.photos.filter(p => !p.startsWith('data:'));
+    return clean;
+  });
+}
+function filterProjectsForPublish() {
+  return projects.map(p => {
+    const clean = { ...p };
+    if (clean.mainPhoto && clean.mainPhoto.startsWith('data:')) clean.mainPhoto = '';
+    if (clean.photos) clean.photos = clean.photos.filter(u => !u.startsWith('data:'));
+    return clean;
+  });
+}
+
+async function testGitHubConnection() {
+  saveSettings();
+  const owner = localStorage.getItem('adv_gh_user');
+  const repo  = localStorage.getItem('adv_gh_repo');
+  const token = localStorage.getItem('adv_gh_token');
+  const status = document.getElementById('gh-test-status');
+  if (!owner || !repo || !token) { status.textContent = '❌ Заполните все поля'; return; }
+  status.textContent = '⏳ Проверяю...';
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.ok) { status.textContent = '✅ Подключение работает'; status.style.color = 'var(--green)'; }
+    else { status.textContent = '❌ Ошибка: ' + res.status; status.style.color = 'var(--red)'; }
+  } catch(e) { status.textContent = '❌ Ошибка сети'; status.style.color = 'var(--red)'; }
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────
+function downloadJSON(data, filename) {
+  const a = document.createElement('a');
+  a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, 2));
+  a.download = filename; a.click();
+  toast(filename + ' скачан', 'green');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', initPhotoDrops);
+if (sessionStorage.getItem('adv_auth') === '1') initPhotoDrops();
+</script>
+</body>
+</html>

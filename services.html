@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Услуги строительства под заказ — АДВАНТ Краснодар</title>
+  <meta name="description" content="Строительство домов под заказ в Краснодаре и Краснодарском крае. Кирпич, газоблок, отсевной блок. Работаем по договору. Фото всех этапов." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+body{padding-top:72px}
+
+/* PAGE HERO */
+.page-hero{
+  padding:72px 5vw 64px;
+  border-bottom:var(--divider);
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;
+}
+@media(max-width:768px){.page-hero{grid-template-columns:1fr;gap:24px;padding:48px 5vw 40px;}}
+
+/* SERVICES LIST */
+.svc-detail-list{display:flex;flex-direction:column;}
+.svc-detail-item{
+  display:grid;grid-template-columns:80px 1fr;
+  border-bottom:var(--divider);
+  padding:40px 0;
+}
+.svc-detail-num{
+  font-family:var(--f-head);font-size:clamp(2rem,5vw,4rem);
+  color:var(--black);opacity:0.07;letter-spacing:-0.04em;line-height:1;
+}
+.svc-detail-body{padding-left:24px;}
+.svc-detail-title{
+  font-family:var(--f-head);font-size:clamp(0.85rem,1.6vw,1.1rem);
+  text-transform:uppercase;letter-spacing:0.04em;color:var(--black);margin-bottom:12px;
+}
+.svc-detail-desc{
+  font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.75;
+  color:var(--grey);max-width:60ch;
+}
+.svc-detail-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.svc-tag{
+  padding:4px 12px;border:var(--divider);
+  font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--grey);
+}
+
+/* MATERIALS STRIP */
+.materials-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:var(--divider);border-bottom:var(--divider);
+  margin:0 0 0 0;
+}
+.material-cell{
+  padding:36px 5vw;border-right:var(--divider);
+  display:flex;flex-direction:column;gap:10px;
+}
+.material-cell:last-child{border-right:none;}
+.material-name{
+  font-family:var(--f-head);font-size:clamp(1rem,2vw,1.5rem);
+  text-transform:uppercase;letter-spacing:-0.01em;color:var(--black);
+}
+.material-desc{font-family:var(--f-body);font-size:0.78rem;font-weight:300;color:var(--grey);line-height:1.65;}
+@media(max-width:768px){.materials-strip{grid-template-columns:1fr;}.material-cell{border-right:none;border-bottom:var(--divider);}}
+
+/* GALLERY */
+.gallery-controls{
+  display:flex;align-items:center;gap:0;
+  border-bottom:var(--divider);overflow-x:auto;
+  background:var(--snow);position:sticky;top:72px;z-index:20;
+  padding:0 5vw;
+}
+.gallery-btn{
+  padding:14px 20px;border:none;background:transparent;
+  font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--grey);cursor:pointer;
+  white-space:nowrap;transition:all 0.2s;
+  border-bottom:2px solid transparent;
+  flex-shrink:0;
+}
+.gallery-btn:hover{color:var(--black);}
+.gallery-btn.active{color:var(--orange);border-bottom-color:var(--orange);}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:var(--divider);border-left:var(--divider);
+}
+.gallery-item{
+  border-right:var(--divider);border-bottom:var(--divider);
+  overflow:hidden;cursor:pointer;position:relative;
+}
+.gallery-item__photo{
+  aspect-ratio:4/3;overflow:hidden;background:#d8d8da;
+}
+.gallery-item__photo img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.6s var(--ease);display:block;
+}
+.gallery-item:hover .gallery-item__photo img{transform:scale(1.06);}
+.gallery-item__ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#d8d8da,#c8c8cc);
+}
+.gallery-item__body{padding:18px 20px;display:flex;flex-direction:column;gap:6px;}
+.gallery-item__title{
+  font-family:var(--f-head);font-size:0.7rem;text-transform:uppercase;
+  letter-spacing:0.04em;color:var(--black);
+}
+.gallery-item__meta{
+  display:flex;gap:12px;
+  font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:var(--grey);
+}
+.gallery-empty{
+  grid-column:1/-1;padding:80px 20px;text-align:center;
+  font-family:var(--f-body);font-size:0.85rem;color:var(--grey);
+}
+@media(max-width:768px){.gallery-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.gallery-grid{grid-template-columns:1fr;}}
+
+/* PHOTO MODAL */
+.photo-modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(13,13,13,0.9);z-index:400;
+  align-items:center;justify-content:center;padding:20px;
+}
+.photo-modal.open{display:flex;}
+.photo-modal__inner{
+  position:relative;max-width:900px;width:100%;
+}
+.photo-modal__img{
+  width:100%;max-height:82vh;object-fit:contain;display:block;
+}
+.photo-modal__close{
+  position:absolute;top:-40px;right:0;
+  background:none;border:none;color:#fff;
+  font-size:1.4rem;cursor:pointer;padding:4px 10px;
+  font-family:var(--f-head);letter-spacing:0.1em;
+}
+.photo-modal__nav{
+  display:flex;justify-content:space-between;
+  margin-top:14px;
+}
+.photo-modal__nav button{
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;padding:8px 20px;cursor:pointer;
+  font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;
+  transition:background 0.2s;
+}
+.photo-modal__nav button:hover{background:rgba(255,255,255,0.2);}
+.photo-modal__caption{
+  text-align:center;margin-top:10px;
+  font-family:var(--f-body);font-size:0.75rem;font-weight:300;color:rgba(255,255,255,0.5);
+}
+  </style>
+</head>
+<body>
+
+<nav class="nav" role="navigation">
+  <a href="index.html" class="nav__logo"><img src="images/logo-black.png" alt="АДВАНТ" style="height:30px;width:auto;object-fit:contain;" /></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="catalog.html">Каталог домов</a></li>
+    <li><a href="services.html" class="active">Услуги</a></li>
+    <li><a href="contacts.html">Контакты</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="tel:+79181269996" class="nav__phone">8 918 126 99 96</a>
+    <a href="index.html#form" class="btn btn--primary"><span>Заявка</span><span class="btn__arr"></span></a>
+  </div>
+  <button class="nav__burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__mobile" id="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="catalog.html">Каталог домов</a>
+  <a href="services.html">Услуги</a>
+  <a href="contacts.html">Контакты</a>
+  <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div>
+    <div class="t-label" style="margin-bottom:14px;">Что мы строим</div>
+    <h1 class="t-h2" style="font-size:clamp(1.5rem,4vw,3rem);">Строительство<br />домов под заказ<br />в Краснодарском крае</h1>
+  </div>
+  <div>
+    <p class="t-body" style="margin-bottom:24px;">
+      Строим дома из кирпича, газоблока и отсевного блока на вашем участке или на наших землях.
+      Более 10 лет опыта. Работаем по договору — смета и сроки фиксируются письменно.
+      Каждый этап строительства документируем на фото.
+    </p>
+    <a href="index.html#form" class="btn btn--primary">
+      <span>Получить расчёт стоимости</span>
+      <span class="btn__arr"></span>
+    </a>
+  </div>
+</div>
+
+<!-- SERVICES DETAIL -->
+<section class="section" id="own-land" style="padding-bottom:0;">
+  <div class="svc-detail-list">
+
+    <div class="svc-detail-item">
+      <div class="svc-detail-num" aria-hidden="true">01</div>
+      <div class="svc-detail-body">
+        <h2 class="svc-detail-title">Строительство на вашем участке</h2>
+        <p class="svc-detail-desc">
+          Приезжаем на ваш участок в Краснодаре или Краснодарском крае, делаем замеры и геологию грунта.
+          Предлагаем проект под ваш бюджет и нужды. Строим из кирпича или газоблока на ваш выбор.
+          Сдаём в срок — каждый этап фиксируем на фото и отправляем вам в мессенджер.
+        </p>
+        <div class="svc-detail-tags">
+          <span class="svc-tag">Кирпич</span>
+          <span class="svc-tag">Газоблок</span>
+          <span class="svc-tag">Отсевной блок</span>
+          <span class="svc-tag">Договор</span>
+          <span class="svc-tag">Фото-отчёт</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-detail-item" id="roofing">
+      <div class="svc-detail-num" aria-hidden="true">02</div>
+      <div class="svc-detail-body">
+        <h2 class="svc-detail-title">Кровельные работы</h2>
+        <p class="svc-detail-desc">
+          Специализируемся на вальмовых кровлях сложной формы — они лучше всего держат краснодарский ветер
+          и ливни. Работаем с металлочерепицей, профнастилом и мягкой кровлей. Гарантия на кровлю — 5 лет.
+        </p>
+        <div class="svc-detail-tags">
+          <span class="svc-tag">Вальмовая кровля</span>
+          <span class="svc-tag">Двускатная</span>
+          <span class="svc-tag">Металлочерепица</span>
+          <span class="svc-tag">Гарантия 5 лет</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-detail-item" id="materials">
+      <div class="svc-detail-num" aria-hidden="true">03</div>
+      <div class="svc-detail-body">
+        <h2 class="svc-detail-title">Кладка стен — кирпич и газоблок</h2>
+        <p class="svc-detail-desc">
+          Используем лицевой кирпич М150–М250 (ГОСТ 530-2012) и газоблок D500–D600 (ГОСТ 31360-2007).
+          Также работаем с отсевным блоком — прочным и доступным материалом для несущих стен.
+          Все материалы — от проверенных поставщиков Краснодарского края.
+        </p>
+        <div class="svc-detail-tags">
+          <span class="svc-tag">Кирпич М150–250</span>
+          <span class="svc-tag">Газоблок D500–600</span>
+          <span class="svc-tag">Отсевной блок</span>
+          <span class="svc-tag">ГОСТ</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-detail-item" id="contract">
+      <div class="svc-detail-num" aria-hidden="true">04</div>
+      <div class="svc-detail-body">
+        <h2 class="svc-detail-title">Прозрачная работа по договору</h2>
+        <p class="svc-detail-desc">
+          Заключаем официальный договор подряда. Фиксируем смету, сроки и этапы. Принимаем наличные,
+          семейную ипотеку и стандартную ипотеку. Помогаем собрать документы для банка.
+          Без скрытых платежей — вы знаете точную стоимость с первого дня.
+        </p>
+        <div class="svc-detail-tags">
+          <span class="svc-tag">Договор подряда</span>
+          <span class="svc-tag">Семейная ипотека</span>
+          <span class="svc-tag">Стандартная ипотека</span>
+          <span class="svc-tag">Наличные</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<div class="materials-strip" style="margin:0 5vw;">
+  <div class="material-cell">
+    <div class="t-label" style="margin-bottom:8px;">Материал 01</div>
+    <div class="material-name">Кирпич</div>
+    <p class="material-desc">Лицевой и забутовочный кирпич М150–М250. Долговечность более 100 лет, высокая прочность, отличный внешний вид.</p>
+  </div>
+  <div class="material-cell">
+    <div class="t-label" style="margin-bottom:8px;">Материал 02</div>
+    <div class="material-name">Газоблок</div>
+    <p class="material-desc">Газоблок D500–D600. Тёплые стены, низкая теплопроводность, быстрый монтаж. Подходит для семейной ипотеки.</p>
+  </div>
+  <div class="material-cell">
+    <div class="t-label" style="margin-bottom:8px;">Материал 03</div>
+    <div class="material-name">Отсевной блок</div>
+    <p class="material-desc">Прочный и экономичный материал для несущих стен. Производится на основе отсева щебня, хорошо держит тепло.</p>
+  </div>
+</div>
+
+<!-- GALLERY SECTION -->
+<section class="section" id="gallery">
+  <header class="section-header">
+    <div class="section-header__left">
+      <span class="t-label">Портфолио</span>
+      <h2 class="t-h2">Реализованные<br />проекты</h2>
+    </div>
+    <div class="section-header__right">
+      <p class="t-body" style="max-width:36ch;text-align:right;">
+        Фото наших объектов. Можно выбрать по материалу или году строительства.
+      </p>
+    </div>
+  </header>
+</section>
+
+<!-- Gallery controls (sticky) -->
+<div class="gallery-controls" id="gallery-controls">
+  <button class="gallery-btn active" data-cat="all">Все</button>
+  <button class="gallery-btn" data-cat="Кирпич">Кирпич</button>
+  <button class="gallery-btn" data-cat="Газоблок">Газоблок</button>
+  <button class="gallery-btn" data-cat="Отсевной блок">Отсевной блок</button>
+</div>
+
+<div class="gallery-grid" id="gallery-grid" style="margin:0 5vw 80px;border-right:var(--divider);border-bottom:var(--divider);">
+</div>
+
+<!-- CTA -->
+<section style="background:var(--black);padding:80px 5vw;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;"></div>
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;">
+    <div>
+      <div class="t-label" style="margin-bottom:12px;">Обсудим ваш проект</div>
+      <h2 class="t-h2" style="color:#fff;max-width:24ch;">Есть участок или хотите купить готовый дом?</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end;">
+      <a href="index.html#form" class="btn btn--ghost-white">
+        <span>Оставить заявку</span>
+        <span class="btn__arr"></span>
+      </a>
+      <span style="font-family:var(--f-head);font-size:0.44rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);">Расчёт бесплатно</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__grid-bg" aria-hidden="true"></div>
+  <div class="footer__wordmark" aria-hidden="true">АДВАНТ</div>
+  <div class="footer__nav-block">
+    <div class="footer__brand">
+      <a href="index.html" class="footer__logo"><img src="images/logo-white.png" alt="АДВАНТ" style="height:26px;width:auto;object-fit:contain;filter:none;" /></a>
+      <p class="footer__tagline">Надёжное строительство<br />в Краснодаре<br />и Краснодарском крае</p>
+    </div>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Услуги</span>
+      <a href="services.html#own-land" class="footer__nav-link">Строительство на вашем участке</a>
+      <a href="catalog.html" class="footer__nav-link">Продажа готовых домов</a>
+      <a href="services.html#materials" class="footer__nav-link">Кирпич и газоблок</a>
+      <a href="services.html#roofing" class="footer__nav-link">Вальмовые кровли</a>
+    </nav>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Компания</span>
+      <a href="catalog.html" class="footer__nav-link">Каталог домов</a>
+      <a href="services.html" class="footer__nav-link">Наши услуги</a>
+      <a href="contacts.html" class="footer__nav-link">Контакты</a>
+    </nav>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Связаться</span>
+      <a href="tel:+79181269996" class="footer__nav-link">8 918 126 99 96</a>
+      <a href="mailto:info@advant.ru" class="footer__nav-link">info@advant.ru</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2015–2025 АДВАНТ. Строительство домов в Краснодарском крае.</span>
+    <div class="footer__legal"><a href="privacy.html">Политика конфиденциальности</a></div>
+  </div>
+</footer>
+
+<!-- PHOTO MODAL -->
+<div class="photo-modal" id="photo-modal">
+  <div class="photo-modal__inner">
+    <button class="photo-modal__close" id="photo-modal-close">✕ закрыть</button>
+    <img class="photo-modal__img" id="photo-modal-img" src="" alt="" />
+    <div class="photo-modal__nav">
+      <button id="photo-prev">← Назад</button>
+      <button id="photo-next">Вперёд →</button>
+    </div>
+    <div class="photo-modal__caption" id="photo-modal-caption"></div>
+  </div>
+</div>
+
+<script>
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+
+let allProjects = [], currentPhotos = [], currentPhotoIdx = 0;
+
+async function loadGallery() {
+  try {
+    const r = await fetch('data/projects.json');
+    allProjects = await r.json();
+    allProjects = allProjects.filter(p => p.visible !== false);
+  } catch(e) { allProjects = []; }
+
+  // Build category buttons dynamically
+  const cats = [...new Set(allProjects.map(p => p.category).filter(Boolean))];
+  const ctrl = document.getElementById('gallery-controls');
+  // Remove existing dynamic buttons (keep "Все")
+  ctrl.querySelectorAll('[data-cat]:not([data-cat="all"])').forEach(b => b.remove());
+  cats.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'gallery-btn';
+    b.dataset.cat = cat;
+    b.textContent = cat;
+    ctrl.appendChild(b);
+  });
+
+  renderGallery('all');
+
+  ctrl.querySelectorAll('.gallery-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      ctrl.querySelectorAll('.gallery-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGallery(btn.dataset.cat);
+    });
+  });
+}
+
+function renderGallery(cat) {
+  const filtered = cat === 'all' ? allProjects : allProjects.filter(p => p.category === cat);
+  const grid = document.getElementById('gallery-grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="gallery-empty">Проектов в этой категории пока нет.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p => {
+    const img = p.mainPhoto
+      ? `<img src="${p.mainPhoto}" alt="${p.title}" loading="lazy">`
+      : `<div class="gallery-item__ph"><svg viewBox="0 0 120 80" fill="none" width="48"><rect x="10" y="40" width="100" height="35" stroke="#0D0D0D" stroke-width="1.5"/><polygon points="10,40 60,10 110,40" stroke="#0D0D0D" stroke-width="1.5" fill="none"/></svg></div>`;
+    return `
+    <div class="gallery-item" onclick="openProjectPhotos('${p.id}')">
+      <div class="gallery-item__photo">${img}</div>
+      <div class="gallery-item__body">
+        <div class="gallery-item__title">${p.title}</div>
+        <div class="gallery-item__meta">
+          <span>${p.area} м²</span>
+          <span>${p.technology}</span>
+          <span>${p.year}</span>
+        </div>
+        <p style="font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:var(--grey);margin-top:4px;">${p.address}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openProjectPhotos(id) {
+  const p = allProjects.find(x => x.id === id);
+  if (!p) return;
+  currentPhotos = p.photos && p.photos.length ? p.photos : (p.mainPhoto ? [p.mainPhoto] : []);
+  if (!currentPhotos.length) return;
+  currentPhotoIdx = 0;
+  showPhoto(0, p.title);
+  document.getElementById('photo-modal').classList.add('open');
+}
+
+function showPhoto(idx, title) {
+  currentPhotoIdx = idx;
+  const img = document.getElementById('photo-modal-img');
+  img.src = currentPhotos[idx];
+  img.alt = title || '';
+  document.getElementById('photo-modal-caption').textContent =
+    (currentPhotos.length > 1 ? `Фото ${idx + 1} из ${currentPhotos.length}` : '');
+}
+
+document.getElementById('photo-modal-close').addEventListener('click',() => document.getElementById('photo-modal').classList.remove('open'));
+document.getElementById('photo-modal').addEventListener('click', e => { if (e.target === document.getElementById('photo-modal')) document.getElementById('photo-modal').classList.remove('open'); });
+document.getElementById('photo-prev').addEventListener('click',() => { if(currentPhotoIdx > 0) showPhoto(currentPhotoIdx - 1); });
+document.getElementById('photo-next').addEventListener('click',() => { if(currentPhotoIdx < currentPhotos.length - 1) showPhoto(currentPhotoIdx + 1); });
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('photo-modal').classList.contains('open')) return;
+  if (e.key === 'Escape') document.getElementById('photo-modal').classList.remove('open');
+  if (e.key === 'ArrowLeft' && currentPhotoIdx > 0) showPhoto(currentPhotoIdx - 1);
+  if (e.key === 'ArrowRight' && currentPhotoIdx < currentPhotos.length - 1) showPhoto(currentPhotoIdx + 1);
+});
+
+loadGallery();
+</script>
+</body>
+</html>

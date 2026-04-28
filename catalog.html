@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Каталог домов — АДВАНТ | Готовые дома в Краснодаре и крае</title>
+  <meta name="description" content="Готовые дома на продажу в Краснодаре и Краснодарском крае. Кирпич, газоблок. Ипотека." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+body{padding-top:72px}
+.page-hero{padding:36px 5vw 28px;border-bottom:var(--divider);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.filters{padding:14px 5vw;display:flex;align-items:center;gap:0;border-bottom:var(--divider);overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--snow);position:sticky;top:72px;z-index:20}
+.filter-btn{padding:8px 16px;border:var(--divider);background:transparent;font-family:var(--f-head);font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);cursor:pointer;margin-right:-1px;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.filter-btn:hover{color:var(--black);border-color:var(--black);z-index:1}
+.filter-btn.active{background:var(--black);color:#fff;border-color:var(--black);z-index:2}
+.catalog-layout{display:grid;grid-template-columns:1fr 420px;height:calc(100vh - 72px - 50px)}
+.catalog-left{overflow-y:auto;border-right:var(--divider)}
+.catalog-left::-webkit-scrollbar{width:3px}
+.catalog-left::-webkit-scrollbar-thumb{background:rgba(142,142,147,.3)}
+.results-bar{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:var(--divider);position:sticky;top:0;z-index:5;background:var(--snow)}
+.results-count{font-family:var(--f-body);font-size:.75rem;color:var(--grey)}
+.results-count strong{color:var(--black);font-weight:500}
+.h-card{display:grid;grid-template-columns:130px 1fr;border-bottom:var(--divider);cursor:pointer;transition:background .2s;text-decoration:none;color:inherit;position:relative}
+.h-card:hover,.h-card.active{background:rgba(255,69,0,.04)}
+.h-card.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--orange)}
+.h-card__photo{width:130px;height:104px;overflow:hidden;flex-shrink:0;background:#d8d8da}
+.h-card__photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.h-card:hover .h-card__photo img{transform:scale(1.06)}
+.h-card__ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d8d8da,#c8c8cc)}
+.h-card__ph svg{width:32px;opacity:.2}
+.h-card__body{padding:12px 14px;display:flex;flex-direction:column;gap:5px}
+.h-card__top{display:flex;align-items:center;gap:7px}
+.h-card__title{font-family:var(--f-head);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--black);line-height:1.2}
+.h-card__addr{font-family:var(--f-body);font-size:.65rem;font-weight:300;color:var(--grey);line-height:1.3}
+.h-card__specs{display:flex;gap:8px}
+.h-card__spec{font-family:var(--f-body);font-size:.63rem;font-weight:300;color:var(--grey)}
+.h-card__spec strong{font-weight:500;color:var(--black)}
+.h-card__foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px}
+.h-card__price{font-family:var(--f-head);font-size:.9rem;color:var(--black);letter-spacing:-.01em}
+.h-card__more{font-family:var(--f-head);font-size:.42rem;letter-spacing:.16em;text-transform:uppercase;color:var(--orange)}
+.empty-state{padding:60px 20px;text-align:center}
+.catalog-right{position:relative}
+#ymap{width:100%;height:100%}
+.map-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#e0e0e2,#d0d0d4)}
+.map-ph__txt{font-family:var(--f-head);font-size:.48rem;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+.map-ph__note{font-family:var(--f-body);font-size:.7rem;font-weight:300;color:var(--grey);text-align:center;max-width:26ch;line-height:1.6}
+.map-ph__note a{color:var(--orange)}
+.ipoteka-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,69,0,.08);border:1px solid rgba(255,69,0,.2);font-family:var(--f-head);font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.72);z-index:300;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--snow);max-width:860px;width:100%;max-height:92vh;overflow-y:auto;position:relative}
+.modal__close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:var(--black);color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal__photos{aspect-ratio:16/9;overflow:hidden;background:#d0d0d2}
+.modal__photos img{width:100%;height:100%;object-fit:cover}
+.modal__body{padding:26px;display:flex;flex-direction:column;gap:16px}
+.modal__specs{display:grid;grid-template-columns:repeat(5,1fr);border:var(--divider)}
+.modal__spec{padding:9px 12px;border-right:var(--divider);display:flex;flex-direction:column;gap:3px}
+.modal__spec:last-child{border-right:none}
+.modal__features{display:flex;flex-wrap:wrap;gap:7px}
+.modal__feature{padding:3px 9px;border:var(--divider);font-family:var(--f-head);font-size:.4rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+@media(max-width:900px){
+  .catalog-layout{grid-template-columns:1fr;height:auto}
+  .catalog-right{height:240px;border-top:var(--divider);order:-1}
+  .catalog-left{height:auto;overflow-y:visible}
+}
+@media(max-width:480px){
+  body{padding-top:60px}
+  .filters{top:60px}
+  .page-hero{padding:24px 4vw 18px;flex-direction:column;gap:10px}
+  .h-card__photo{width:96px;height:86px}
+  .catalog-right{height:190px}
+  .modal__specs{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){.modal__specs{grid-template-columns:repeat(3,1fr)}}
+  </style>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_YANDEX_MAPS_KEY&lang=ru_RU" type="text/javascript"></script>
+</head>
+<body>
+
+<nav class="nav" role="navigation">
+  <a href="index.html" class="nav__logo"><img src="images/logo-black.png" alt="АДВАНТ" style="height:30px;width:auto;object-fit:contain;" /></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="catalog.html" class="active">Каталог домов</a></li>
+    <li><a href="services.html">Услуги</a></li>
+    <li><a href="contacts.html">Контакты</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="tel:+79181269996" class="nav__phone">8 918 126 99 96</a>
+    <a href="index.html#form" class="btn btn--primary"><span>Заявка</span><span class="btn__arr"></span></a>
+  </div>
+  <button class="nav__burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__mobile" id="mobile-menu">
+  <a href="index.html">Главная</a><a href="catalog.html">Каталог домов</a>
+  <a href="services.html">Услуги</a><a href="contacts.html">Контакты</a>
+  <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a>
+</div>
+
+<div class="page-hero">
+  <div>
+    <div class="t-label" style="margin-bottom:8px;">Каталог 2025</div>
+    <h1 class="t-h2" style="font-size:clamp(1.2rem,3vw,1.9rem);">Готовые дома в Краснодарском крае</h1>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;">
+    <span class="ipoteka-badge">Семейная ипотека</span>
+    <span class="ipoteka-badge">Стандартная ипотека</span>
+    <span class="ipoteka-badge">Наличные</span>
+  </div>
+</div>
+
+
+<div class="catalog-layout">
+  <div class="catalog-left">
+    <div class="results-bar">
+      <span class="results-count">Найдено: <strong id="count">0</strong> объектов</span>
+      <a href="index.html#form" class="btn btn--ghost" style="padding:6px 13px;font-size:.46rem;"><span>Строим на вашем участке</span></a>
+    </div>
+    <div id="homes-list"></div>
+  </div>
+  <div class="catalog-right">
+    <div id="ymap">
+      <div class="map-ph" id="map-placeholder">
+        <svg width="36" height="36" viewBox="0 0 48 48" fill="none" style="opacity:.22;"><path d="M24 4C16.27 4 10 10.27 10 18c0 10.5 14 26 14 26s14-15.5 14-26c0-7.73-6.27-14-14-14zm0 18a4 4 0 110-8 4 4 0 010 8z" stroke="#0D0D0D" stroke-width="1.5"/></svg>
+        <span class="map-ph__txt">Яндекс Карта</span>
+        <p class="map-ph__note">Вставьте API-ключ в код.<br/><a href="https://developer.tech.yandex.ru/" target="_blank">developer.tech.yandex.ru</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal__close" id="modal-close" aria-label="Закрыть">×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__grid-bg" aria-hidden="true"></div>
+  <div class="footer__wordmark" aria-hidden="true">АДВАНТ</div>
+  <div class="footer__nav-block">
+    <div class="footer__brand">
+      <a href="index.html" class="footer__logo"><img src="images/logo-white.png" alt="АДВАНТ" style="height:26px;width:auto;object-fit:contain;filter:none;" /></a>
+      <p class="footer__tagline">Надёжное строительство<br/>в Краснодаре<br/>и Краснодарском крае</p>
+    </div>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Каталог</span>
+      <a href="catalog.html" class="footer__nav-link">Все дома</a>
+    </nav>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Компания</span>
+      <a href="services.html" class="footer__nav-link">Услуги</a>
+      <a href="contacts.html" class="footer__nav-link">Контакты</a>
+    </nav>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Связаться</span>
+      <a href="tel:+79181269996" class="footer__nav-link">8 918 126 99 96</a>
+      <a href="mailto:info@advant.ru" class="footer__nav-link">info@advant.ru</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2015–2025 АДВАНТ. Строительство домов в Краснодарском крае.</span>
+    <div class="footer__legal"><a href="privacy.html">Политика конфиденциальности</a></div>
+  </div>
+</footer>
+
+<script>
+let allHomes=[],yaMap=null,activeId=null;
+let af={status:'all',tech:null,price:null};
+const fmt=n=>n.toLocaleString('ru-RU')+' ₽';
+const stLbl=s=>({sale:'В продаже',reserved:'Резерв',sold:'Продан'})[s]||s;
+
+async function init(){
+  try{const r=await fetch('data/homes.json');allHomes=await r.json();}catch(e){allHomes=[];}
+  renderList(allHomes);initMap();initFilters();
+  const hash=location.hash.replace('#','');
+  if(hash){const h=allHomes.find(x=>x.id===hash);if(h)setTimeout(()=>openModal(h),400);}
+}
+
+function initMap(){
+  if(typeof ymaps==='undefined')return;
+  document.getElementById('map-placeholder').style.display='none';
+  ymaps.ready(()=>{
+    yaMap=new ymaps.Map('ymap',{center:[45.035,38.975],zoom:10,controls:['zoomControl','fullscreenControl']});
+    yaMap.options.set('suppressMapOpenBlock',true);
+    allHomes.forEach(h=>{
+      if(!h.lat||!h.lng)return;
+      const pm=new ymaps.Placemark([h.lat,h.lng],{
+        hintContent:h.title,
+        balloonContent:`<div style="font-family:sans-serif;padding:4px;min-width:180px;"><b style="font-size:13px;">${h.title}</b><br><span style="font-size:11px;color:#666;">${h.address}</span><br><b style="color:#FF4500;font-size:14px;">${fmt(h.price)}</b></div>`
+      },{preset:'islands#orangeCircleIcon',iconColor:'#FF4500'});
+      pm.events.add('click',()=>{highlightCard(h.id);openModal(h);});
+      yaMap.geoObjects.add(pm);
+    });
+  });
+}
+
+function focusMap(h){if(!yaMap||!h.lat)return;yaMap.panTo([h.lat,h.lng],{duration:500});yaMap.setZoom(13,{duration:400});}
+
+function renderList(homes){
+  document.getElementById('count').textContent=homes.length;
+  const list=document.getElementById('homes-list');
+  if(!homes.length){
+    list.innerHTML=`<div class="empty-state"><p class="t-body">По выбранным параметрам объектов не найдено.</p>
+      <button onclick="resetFilters()" class="btn btn--ghost" style="margin-top:14px;"><span>Сбросить фильтры</span></button></div>`;
+    return;
+  }
+  list.innerHTML=homes.map(h=>`
+  <a class="h-card" id="card-${h.id}" href="javascript:void(0)" onclick="cardClick('${h.id}')">
+    <div class="h-card__photo">
+      ${h.mainPhoto
+        ?`<img src="${h.mainPhoto}" alt="${h.title}" loading="lazy">`
+        :`<div class="h-card__ph"><svg viewBox="0 0 120 80" fill="none"><rect x="10" y="40" width="100" height="35" stroke="#0D0D0D" stroke-width="1.5"/><polygon points="10,40 60,10 110,40" stroke="#0D0D0D" stroke-width="1.5" fill="none"/></svg></div>`}
+    </div>
+    <div class="h-card__body">
+      <div class="h-card__top">
+        <span class="status-tag status-tag--${h.status}" style="font-size:.38rem;padding:2px 7px;">${stLbl(h.status)}</span>
+        <span style="font-family:var(--f-head);font-size:.4rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);">${h.series}</span>
+      </div>
+      <div class="h-card__title">${h.title}</div>
+      <div class="h-card__addr">${h.address}</div>
+      <div class="h-card__specs">
+        <span class="h-card__spec"><strong>${h.area}</strong> м²</span>
+        <span class="h-card__spec" style="opacity:.3;">·</span>
+        <span class="h-card__spec"><strong>${h.technology}</strong></span>
+        <span class="h-card__spec" style="opacity:.3;">·</span>
+        <span class="h-card__spec"><strong>${h.buildTimeMonths}</strong> мес</span>
+      </div>
+      <div class="h-card__foot">
+        <span class="h-card__price">${fmt(h.price)}</span>
+        <span class="h-card__more">Подробнее →</span>
+      </div>
+    </div>
+  </a>`).join('');
+}
+
+function cardClick(id){
+  const h=allHomes.find(x=>x.id===id);if(!h)return;
+  highlightCard(id);focusMap(h);openModal(h);
+}
+function highlightCard(id){
+  document.querySelectorAll('.h-card').forEach(c=>c.classList.remove('active'));
+  const card=document.getElementById('card-'+id);
+  if(card){card.classList.add('active');card.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  activeId=id;
+}
+
+function openModal(h){
+  const feat=(h.features||[]).map(f=>`<span class="modal__feature">${f}</span>`).join('');
+  const ph=h.mainPhoto?`<img src="${h.mainPhoto}" alt="${h.title}">`:`<div style="height:240px;display:flex;align-items:center;justify-content:center;background:#d8d8da;"><svg viewBox="0 0 120 80" fill="none" width="56"><rect x="10" y="40" width="100" height="35" stroke="#0D0D0D" stroke-width="1.5"/><polygon points="10,40 60,10 110,40" stroke="#0D0D0D" stroke-width="1.5" fill="none"/></svg></div>`;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal__photos">${ph}</div>
+    <div class="modal__body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+        <div>
+          <span class="t-label">${h.series}</span>
+          <h2 style="font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;margin-top:7px;">${h.title}</h2>
+          <p style="font-family:var(--f-body);font-size:.76rem;font-weight:300;color:var(--grey);margin-top:5px;">${h.address}</p>
+        </div>
+        <div>
+          <div style="font-family:var(--f-body);font-size:.58rem;color:var(--grey);">Стоимость под ключ</div>
+          <div style="font-family:var(--f-head);font-size:1.6rem;color:var(--black);letter-spacing:-.02em;">${fmt(h.price)}</div>
+          <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;">
+            <span class="ipoteka-badge">Семейная ипотека</span>
+            <span class="ipoteka-badge">Стандартная ипотека</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal__specs">
+        <div class="modal__spec"><span class="spec-val">${h.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
+        <div class="modal__spec"><span class="spec-val">${h.floors}</span><span class="spec-key">Этажей</span></div>
+        <div class="modal__spec"><span class="spec-val">${h.rooms}</span><span class="spec-key">Комнат</span></div>
+        <div class="modal__spec"><span class="spec-val">${h.buildTimeMonths}<span class="spec-unit">мес</span></span><span class="spec-key">Срок</span></div>
+        <div class="modal__spec"><span class="spec-val" style="font-size:.56rem;">${h.technology}</span><span class="spec-key">Материал</span></div>
+      </div>
+      ${h.description?`<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);">${h.description}</p>`:''}
+      ${feat?`<div><div class="t-label" style="margin-bottom:7px;">Конструктив</div><div class="modal__features">${feat}</div></div>`:''}
+      <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:var(--divider);">
+        <a href="index.html#form" class="btn btn--primary"><span>Запросить расчёт</span><span class="btn__arr"></span></a>
+        <a href="tel:+79181269996" class="btn btn--ghost"><span>8 918 126 99 96</span></a>
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+document.getElementById('modal-close').addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))document.getElementById('modal').classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal').classList.remove('open');});
+
+function applyFilters(){
+  let f=allHomes;
+  if(af.status!=='all')f=f.filter(h=>h.status===af.status);
+  if(af.tech)f=f.filter(h=>h.technology===af.tech);
+  if(af.price==='lt5')f=f.filter(h=>h.price<5000000);
+  if(af.price==='5to10')f=f.filter(h=>h.price>=5000000&&h.price<=10000000);
+  if(af.price==='gt10')f=f.filter(h=>h.price>10000000);
+  renderList(f);
+}
+function resetFilters(){
+  af={status:'all',tech:null,price:null};
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  renderList(allHomes);
+}
+function initFilters(){
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(btn.dataset.filter!==undefined){document.querySelectorAll('[data-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');af.status=btn.dataset.filter;}
+      if(btn.dataset.tech!==undefined){const s=btn.classList.contains('active');document.querySelectorAll('[data-tech]').forEach(b=>b.classList.remove('active'));af.tech=s?null:btn.dataset.tech;if(!s)btn.classList.add('active');}
+      if(btn.dataset.price!==undefined){const s=btn.classList.contains('active');document.querySelectorAll('[data-price]').forEach(b=>b.classList.remove('active'));af.price=s?null:btn.dataset.price;if(!s)btn.classList.add('active');}
+      applyFilters();
+    });
+  });
+}
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+init();
+</script>
+</body>
+</html>

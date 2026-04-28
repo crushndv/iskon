@@ -1,0 +1,98 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Разрешить регистрацию через Netlify Identity
+publish_mode: editorial_workflow
+
+# Папка для загружаемых фото
+media_folder: "images/homes"
+public_folder: "/images/homes"
+
+# Язык интерфейса
+locale: ru
+
+collections:
+  # ── КАТАЛОГ ДОМОВ ──────────────────────────────────────────────
+  - name: "homes_catalog"
+    label: "🏠 Каталог домов"
+    description: "Добавляйте и редактируйте дома в каталоге. Изменения появляются на сайте автоматически."
+    files:
+      - label: "Все дома"
+        name: "homes"
+        file: "data/homes.json"
+        format: json
+        fields:
+          - label: "Дома"
+            name: "items"
+            widget: "list"
+            label_singular: "Дом"
+            summary: "{{fields.title}} — {{fields.price}} ₽ ({{fields.status}})"
+            fields:
+              - { label: "ID объекта",  name: "id",    widget: "string",   hint: "Уникальный код, например: dom-004. Без пробелов." }
+              - { label: "Slug (URL)",   name: "slug",  widget: "string",   hint: "Для ссылки, например: dom-bazis-m3. Только латиница и дефисы." }
+              - { label: "Название",     name: "title", widget: "string",   hint: "Например: Базис M3-150" }
+              - { label: "Серия",        name: "series", widget: "string",  hint: "Например: Серия БАЗИС" }
+              - label: "Статус"
+                name: "status"
+                widget: "select"
+                options:
+                  - { label: "В продаже",    value: "sale" }
+                  - { label: "Резерв",       value: "reserved" }
+                  - { label: "Продан",       value: "sold" }
+              - { label: "Показывать в топе (featured)", name: "featured", widget: "boolean", default: false }
+              - { label: "Цена (₽, без пробелов)",       name: "price",    widget: "number",  value_type: "int", hint: "Например: 6500000" }
+              - { label: "Площадь (м²)",                 name: "area",     widget: "number",  value_type: "int" }
+              - { label: "Этажей",                       name: "floors",   widget: "number",  value_type: "int" }
+              - { label: "Комнат",                       name: "rooms",    widget: "number",  value_type: "int" }
+              - { label: "Санузлов",                     name: "bathrooms", widget: "number", value_type: "int" }
+              - label: "Технология строительства"
+                name: "technology"
+                widget: "select"
+                options:
+                  - "Газобетон"
+                  - "Монолит"
+                  - "SIP-панель"
+                  - "Кирпич"
+                  - "Клеёный брус"
+              - { label: "Срок возведения (месяцев)",    name: "buildTimeMonths", widget: "number", value_type: "int" }
+              - { label: "Площадь участка (соток)",      name: "landArea",        widget: "number", value_type: "int" }
+              - { label: "Адрес объекта",                name: "address", widget: "string", hint: "Например: МО, Истринский р-н, д. Никольское" }
+              - { label: "Широта (lat)",                 name: "lat", widget: "number", value_type: "float", hint: "Например: 55.9124 — найти на Яндекс.Картах, ПКМ → «Что здесь?»" }
+              - { label: "Долгота (lng)",                name: "lng", widget: "number", value_type: "float", hint: "Например: 36.8562" }
+              - label: "Главное фото"
+                name: "mainPhoto"
+                widget: "image"
+                allow_multiple: false
+                hint: "Это фото будет на карточке в каталоге"
+              - label: "Все фото объекта"
+                name: "photos"
+                widget: "list"
+                field: { label: "Фото", name: "photo", widget: "image" }
+              - { label: "Описание объекта",  name: "description", widget: "text",    hint: "2–4 предложения. Технически грамотно, без воды." }
+              - label: "Особенности / конструктив"
+                name: "features"
+                widget: "list"
+                field: { label: "Пункт", name: "feature", widget: "string" }
+                hint: "Например: Монолитный свайный фундамент"
+              - { label: "Документация в наличии", name: "documents",    widget: "boolean", default: true }
+              - { label: "Готов к заселению",      name: "readyToMove",  widget: "boolean", default: false }
+              - { label: "Срок сдачи",             name: "completionDate", widget: "string", hint: "Например: 2025-Q3" }
+
+  # ── НАСТРОЙКИ САЙТА ────────────────────────────────────────────
+  - name: "settings"
+    label: "⚙️ Настройки сайта"
+    files:
+      - label: "Контакты и реквизиты"
+        name: "contacts"
+        file: "data/contacts.json"
+        format: json
+        fields:
+          - { label: "Телефон",    name: "phone",   widget: "string", default: "+7 800 123-45-67" }
+          - { label: "Email",      name: "email",   widget: "string", default: "info@advant-build.ru" }
+          - { label: "Адрес офиса", name: "address", widget: "string" }
+          - { label: "WhatsApp (номер без +7)", name: "whatsapp", widget: "string" }
+          - { label: "Telegram канал", name: "telegram", widget: "string" }
+          - { label: "ИНН",       name: "inn",     widget: "string" }
+          - { label: "ОГРН",      name: "ogrn",    widget: "string" }
+          - { label: "Полное наименование", name: "company", widget: "string" }
