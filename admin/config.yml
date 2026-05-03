@@ -89,7 +89,7 @@ collections:
         format: json
         fields:
           - { label: "Телефон",    name: "phone",   widget: "string", default: "+7 800 123-45-67" }
-          - { label: "Email",      name: "email",   widget: "string", default: "info@advant-build.ru" }
+          - { label: "Email",      name: "email",   widget: "string", default: "info@iskon.pro" }
           - { label: "Адрес офиса", name: "address", widget: "string" }
           - { label: "WhatsApp (номер без +7)", name: "whatsapp", widget: "string" }
           - { label: "Telegram канал", name: "telegram", widget: "string" }

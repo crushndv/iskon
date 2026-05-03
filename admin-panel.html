@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>АДВАНТ — Управление сайтом</title>
+  <title>ИСКОН — Управление сайтом</title>
   <meta name="robots" content="noindex, nofollow" />
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -345,7 +345,7 @@ img{display:block;max-width:100%}
         </div>
       </div>
       <div class="sidebar-footer">
-        <p>Вопросы? <a href="mailto:info@advant.ru">info@advant.ru</a></p>
+        <p>Вопросы? <a href="mailto:info@iskon.pro">info@iskon.pro</a></p>
       </div>
     </div>
 
@@ -591,7 +591,7 @@ img{display:block;max-width:100%}
             </div>
             <div class="sg">
               <div class="field"><label>GitHub Username</label><input id="s-gh-user" type="text" placeholder="crushndv" /></div>
-              <div class="field"><label>Репозиторий</label><input id="s-gh-repo" type="text" placeholder="advant-site" /></div>
+              <div class="field"><label>Репозиторий</label><input id="s-gh-repo" type="text" placeholder="iskon-site" /></div>
               <div class="field fg-full"><label>Personal Access Token</label><input id="s-gh-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" /><span class="hint">Хранится только в вашем браузере</span></div>
             </div>
             <button class="btn-hdr btn-orange" style="margin-top:12px;" onclick="testGitHubConnection()">Проверить подключение</button>
@@ -604,9 +604,9 @@ img{display:block;max-width:100%}
             <div class="form-sec-ttl">📞 Контакты сайта</div>
             <div class="sg">
               <div class="field"><label>Телефон</label><input id="s-phone" type="tel" placeholder="8 918 126 99 96" /></div>
-              <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="info@advant.ru" /></div>
+              <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="info@iskon.pro" /></div>
               <div class="field"><label>WhatsApp (без +)</label><input id="s-whatsapp" type="text" placeholder="79181269996" /></div>
-              <div class="field"><label>Telegram</label><input id="s-telegram" type="text" placeholder="@advant_krd" /></div>
+              <div class="field"><label>Telegram</label><input id="s-telegram" type="text" placeholder="@iskon_pro" /></div>
               <div class="field fg-full"><label>Адрес офиса</label><input id="s-address" type="text" placeholder="г. Краснодар, ул. Примерная, д. 1" /></div>
             </div>
           </div>
@@ -736,7 +736,7 @@ async function changePassword() {
 
 // ── DATA ──────────────────────────────────────────────────────────
 let homes = [], projects = [];
-let siteSettings = { phone:'8 918 126 99 96', email:'info@advant.ru', whatsapp:'', telegram:'', address:'' };
+let siteSettings = { phone:'8 918 126 99 96', email:'info@iskon.pro', whatsapp:'', telegram:'', address:'' };
 
 async function loadAll() {
   try { const r = await fetch('data/homes.json?' + Date.now()); homes = await r.json(); } catch(e) { homes = []; }
@@ -1203,7 +1203,7 @@ function removePhoto(prefix, idx) {
 // ── SETTINGS ──────────────────────────────────────────────────────
 function fillSettings() {
   document.getElementById('s-gh-user').value = localStorage.getItem('adv_gh_user') || '';
-  document.getElementById('s-gh-repo').value = localStorage.getItem('adv_gh_repo') || 'advant-site';
+  document.getElementById('s-gh-repo').value = localStorage.getItem('adv_gh_repo') || 'iskon-site';
   document.getElementById('s-gh-token').value = localStorage.getItem('adv_gh_token') || '';
   ['phone','email','whatsapp','telegram','address'].forEach(k => {
     const el = document.getElementById('s-'+k);

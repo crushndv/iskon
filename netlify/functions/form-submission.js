@@ -52,7 +52,7 @@ async function sendTelegram(p) {
   };
 
   const text = [
-    `🔔 *Новая заявка — АДВАНТ*`,
+    `🔔 *Новая заявка — ИСКОН*`,
     ``,
     `👤 *Имя:* ${p.name}`,
     `📞 *Телефон:* ${p.phone}`,
@@ -96,7 +96,7 @@ async function sendBitrix24(p) {
 
   const body = {
     fields: {
-      TITLE:      `[АДВАНТ] ${p.name} — ${p.location}`,
+      TITLE:      `[ИСКОН] ${p.name} — ${p.location}`,
       NAME:       p.name,
       PHONE:      [{ VALUE: p.phone, VALUE_TYPE: 'WORK' }],
       SOURCE_ID:  serviceToSource[p.service] || 'WEB',

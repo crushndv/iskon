@@ -1,4 +1,4 @@
-# АДВАНТ — Управление сайтом
+# ИСКОН — Управление сайтом
 
 ## Быстрый старт: как добавить новый дом
 
@@ -16,7 +16,7 @@
 ## Структура файлов
 
 ```
-advant-site/
+iskon-site/
 ├── index.html          ← Главная страница
 ├── catalog.html        ← Каталог домов + Яндекс Карта
 ├── services.html       ← Страница услуг
@@ -26,7 +26,7 @@ advant-site/
 ├── data/
 │   └── homes.json      ← ВСЕ данные о домах (редактировать через /admin)
 ├── images/
-│   ├── logo.jpg        ← Логотип АДВАНТ
+│   ├── logo.jpg        ← Логотип ИСКОН
 │   └── homes/          ← Фото домов (загружаются через /admin)
 ├── admin/
 │   ├── index.html      ← Панель управления (Netlify CMS)
@@ -43,16 +43,16 @@ advant-site/
 ### 1. GitHub
 
 1. Создайте аккаунт на [github.com](https://github.com) (если нет)
-2. Создайте новый репозиторий: **New repository** → Название `advant-site`
+2. Создайте новый репозиторий: **New repository** → Название `iskon-site`
 3. Загрузите все файлы этой папки
 
 ### 2. Netlify (хостинг — бесплатно)
 
 1. Зайдите на [netlify.com](https://netlify.com) → **Sign up** через GitHub
-2. Нажмите **Add new site** → **Import an existing project** → выберите `advant-site`
+2. Нажмите **Add new site** → **Import an existing project** → выберите `iskon-site`
 3. Build command: *(пусто)*, Publish directory: `.` → **Deploy**
-4. Сайт появится по адресу вида `advant-site.netlify.app`
-5. В **Site settings → Domain** подключите ваш домен (advant-build.ru)
+4. Сайт появится по адресу вида `iskon-site.netlify.app`
+5. В **Site settings → Domain** подключите ваш домен (iskon.pro)
 
 ### 3. Панель управления (Netlify CMS)
 
