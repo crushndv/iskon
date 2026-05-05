@@ -321,6 +321,15 @@
 </head>
 <body>
 
+<!-- Скрытая форма для Netlify (квиз) -->
+<form name="quiz-lead" data-netlify="true" netlify-honeypot="bot-field" style="display:none;">
+  <input type="hidden" name="form-name" value="quiz-lead"/>
+  <input name="name"/><input name="phone"/><input name="messenger"/>
+  <input name="step1"/><input name="step2"/><input name="step3"/>
+  <input name="step4"/><input name="step5"/><input name="step6"/>
+  <input name="source"/><input name="url"/><input name="date"/>
+</form>
+
 <!-- NAV -->
 <nav class="nav" role="navigation">
   <a href="index.html" class="nav__logo" aria-label="ИСКОН — главная">
@@ -370,8 +379,8 @@
       <div class="tag"><div class="tag__dot"></div>Строительство и продажа</div>
     </div>
 
-    <h1 class="hero__title t-hero" style="font-size:clamp(2.2rem,5.5vw,4.8rem);">
-      
+    <h1 class="hero__title t-hero" style="font-size:clamp(2rem,3.2vw,2.7rem);">
+
       <span class="accent">СТРОИМ ИСКОННО НАДЕЖНО,</span><br />
       ЧТОБЫ ВЫ ЖИЛИ СПОКОЙНО
     </h1>
@@ -418,6 +427,109 @@
   <span class="scroll-text">Прокрутите вниз</span>
 </div>
 
+<!-- КВИЗ -->
+<section id="quiz-section" style="background:var(--black);padding:80px 5vw;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;"></div>
+  <div style="position:relative;z-index:1;max-width:860px;margin:0 auto;">
+
+    <!-- Заголовок секции -->
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="t-label" style="margin-bottom:14px;">Бесплатный подбор проекта</div>
+      <h2 class="t-h2" style="color:#fff;">Рассчитайте стоимость<br/>вашего <span style="color:var(--orange);">будущего дома</span></h2>
+      <p style="margin-top:14px;font-family:var(--f-body);font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.45);max-width:44ch;margin-left:auto;margin-right:auto;line-height:1.7;">Ответьте на 6 вопросов — пришлём точный расчёт в течение 24 часов.</p>
+    </div>
+
+    <!-- Карточка квиза -->
+    <div id="quiz-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:0;">
+
+      <!-- Прогресс-бар -->
+      <div style="height:3px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden;">
+        <div id="quiz-progress" style="position:absolute;left:0;top:0;height:100%;background:var(--orange);width:0%;transition:width 0.5s var(--ease);"></div>
+      </div>
+
+      <!-- Шапка шага -->
+      <div style="padding:28px 36px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div style="font-family:var(--f-head);font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);">
+          Шаг <span id="quiz-step-num">1</span> из 6
+        </div>
+        <button id="quiz-back" onclick="quizBack()" style="display:none;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.5)'">← Назад</button>
+      </div>
+
+      <!-- Вопрос -->
+      <div style="padding:20px 36px 32px;">
+        <h3 id="quiz-question" style="font-family:var(--f-head);font-size:clamp(1rem,2.2vw,1.5rem);text-transform:uppercase;letter-spacing:0.02em;color:#fff;line-height:1.2;margin-bottom:28px;"></h3>
+
+        <!-- Варианты ответов -->
+        <div id="quiz-options" style="display:grid;gap:12px;"></div>
+
+        <!-- Кнопка «Далее» для множественного выбора -->
+        <div id="quiz-next-wrap" style="display:none;margin-top:24px;">
+          <button onclick="quizNextMulti()" class="btn btn--primary" style="padding:16px 36px;">
+            <span>Далее</span><span class="btn__arr"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Финальный экран -->
+    <div id="quiz-final" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:48px 36px;">
+      <div style="height:3px;background:var(--orange);margin:-48px -36px 40px;"></div>
+      <div style="text-align:center;margin-bottom:32px;">
+        <div class="t-label" style="margin-bottom:12px;">Расчёт готов на 98%</div>
+        <h3 style="font-family:var(--f-head);font-size:clamp(1.1rem,2.5vw,1.7rem);text-transform:uppercase;color:#fff;line-height:1.15;">Осталось указать<br/><span style="color:var(--orange);">куда отправить</span></h3>
+        <p style="margin-top:12px;font-family:var(--f-body);font-size:0.78rem;font-weight:300;color:rgba(255,255,255,0.45);max-width:40ch;margin-left:auto;margin-right:auto;line-height:1.65;">Отправим персональный расчёт в удобный мессенджер в течение 24 часов</p>
+      </div>
+      <form id="quiz-form" style="display:flex;flex-direction:column;gap:0;max-width:480px;margin:0 auto;">
+        <div style="border:1px solid rgba(255,255,255,0.12);margin-bottom:-1px;position:relative;transition:border-color 0.2s;" onfocusin="this.style.borderColor='rgba(255,69,0,0.5)';this.style.zIndex='1'" onfocusout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.zIndex='0'">
+          <label style="position:absolute;top:9px;left:18px;font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);pointer-events:none;">Ваше имя</label>
+          <input id="qf-name" type="text" placeholder="Имя" autocomplete="given-name" required style="width:100%;padding:30px 18px 12px;background:transparent;border:none;outline:none;font-family:var(--f-body);font-size:0.95rem;color:#fff;caret-color:var(--orange);" />
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.12);margin-bottom:-1px;position:relative;transition:border-color 0.2s;" onfocusin="this.style.borderColor='rgba(255,69,0,0.5)';this.style.zIndex='1'" onfocusout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.zIndex='0'">
+          <label style="position:absolute;top:9px;left:18px;font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);pointer-events:none;">Телефон</label>
+          <input id="qf-phone" type="tel" placeholder="+7" autocomplete="tel" required style="width:100%;padding:30px 18px 12px;background:transparent;border:none;outline:none;font-family:var(--f-body);font-size:0.95rem;color:#fff;caret-color:var(--orange);" />
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.12);padding:16px 18px;margin-bottom:24px;">
+          <div style="font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;">Удобный мессенджер</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <label id="msg-wa" style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;min-height:44px;">
+              <input type="radio" name="messenger" value="WhatsApp" style="display:none;" onchange="selectMessenger('msg-wa')" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="rgba(255,255,255,0.6)"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.112 1.524 5.84L.057 23.493a.75.75 0 00.917.902l5.918-1.548A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.737-.502-5.31-1.38l-.38-.217-3.97 1.04 1.01-3.866-.233-.393A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" fill="rgba(255,255,255,0.6)"/></svg>
+              <span style="font-family:var(--f-head);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);">WhatsApp</span>
+            </label>
+            <label id="msg-tg" style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;min-height:44px;">
+              <input type="radio" name="messenger" value="Telegram" style="display:none;" onchange="selectMessenger('msg-tg')" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.008 9.457c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 14.71 4.22 13.82c-.645-.202-.658-.645.136-.953l10.895-4.202c.537-.194 1.006.12.832.947-.001 0-.521.001-.521.001z" fill="rgba(255,255,255,0.6)"/></svg>
+              <span style="font-family:var(--f-head);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Telegram</span>
+            </label>
+            <label id="msg-call" style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;min-height:44px;">
+              <input type="radio" name="messenger" value="Звонок" style="display:none;" onchange="selectMessenger('msg-call')" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C9.39 21 3 14.61 3 7c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="rgba(255,255,255,0.6)"/></svg>
+              <span style="font-family:var(--f-head);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Позвонить</span>
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;">
+          <button type="submit" class="btn btn--primary" style="padding:18px 36px;">
+            <span>Получить расчёт</span><span class="btn__arr"></span>
+          </button>
+          <span style="font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:rgba(255,255,255,0.3);line-height:1.5;max-width:24ch;">Нажимая кнопку, вы соглашаетесь с <a href="#" onclick="openPrivacyModal();return false;" style="color:rgba(255,255,255,0.5);">политикой обработки данных</a></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Экран «Спасибо» -->
+    <div id="quiz-thanks" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:64px 36px;text-align:center;">
+      <div style="width:56px;height:56px;border:2px solid var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="var(--orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="t-label" style="margin-bottom:12px;">Заявка отправлена</div>
+      <h3 style="font-family:var(--f-head);font-size:clamp(1rem,2vw,1.4rem);text-transform:uppercase;color:#fff;margin-bottom:14px;">Расчёт придёт<br/>в течение 24 часов</h3>
+      <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.7;max-width:36ch;margin:0 auto;">Наш менеджер свяжется с вами и предоставит детальный расчёт по вашим параметрам.</p>
+    </div>
+
+  </div>
+</section>
+
 <!-- ПРЕИМУЩЕСТВА -->
 <section class="section" id="advantages" style="padding-bottom:0;">
   <header class="section-header">
@@ -459,7 +571,7 @@
 </section>
 
 <!-- УСЛУГИ -->
-<section class="section" id="services">
+<section class="section" id="services" style="padding-bottom:0;">
   <header class="section-header">
     <div class="section-header__left">
       <span class="t-label">Что мы делаем</span>
@@ -620,7 +732,7 @@
         <div class="checkbox-row">
           <input type="checkbox" class="checkbox-custom" id="f-consent" name="consent" required />
           <label class="checkbox-label" for="f-consent" style="color:rgba(255,255,255,0.6);">
-            Согласен с <a href="privacy.html" style="color:rgba(255,255,255,0.85);">политикой обработки данных</a>
+            Согласен с <a href="#" onclick="openPrivacyModal();return false;" style="color:rgba(255,255,255,0.85);">политикой обработки данных</a>
           </label>
         </div>
 
@@ -644,6 +756,71 @@
     </div>
   </div>
 </section>
+
+<!-- PRIVACY MODAL -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(13,13,13,0.80);z-index:500;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:var(--snow);max-width:760px;width:100%;max-height:90vh;overflow-y:auto;position:relative;padding:48px 52px;">
+    <button onclick="closePrivacyModal()" style="position:sticky;top:0;float:right;margin:-16px -16px 0 0;width:36px;height:36px;background:var(--black);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;z-index:2;">×</button>
+    <div style="font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">Политика конфиденциальности</div>
+    <h2 style="font-family:var(--f-head);font-size:clamp(1rem,2vw,1.4rem);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:28px;line-height:1.2;">Политика обработки персональных данных</h2>
+    <div style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.85;color:#333;">
+
+      <p style="margin-bottom:16px;"><strong>1. Общие положения</strong></p>
+      <p style="margin-bottom:16px;">Настоящая Политика обработки персональных данных (далее — «Политика») разработана в соответствии с Федеральным законом от 27 июля 2006 г. № 152-ФЗ «О персональных данных» и иными нормативными правовыми актами Российской Федерации в области защиты персональных данных.</p>
+      <p style="margin-bottom:16px;">Оператором персональных данных является: Индивидуальный предприниматель, осуществляющий деятельность под брендом <strong>ИСКОН</strong>, сайт: https://iskon.pro, e-mail: info@iskon.pro, тел.: +7 918 126 99 96 (далее — «Оператор»).</p>
+
+      <p style="margin-bottom:16px;"><strong>2. Цели обработки персональных данных</strong></p>
+      <p style="margin-bottom:8px;">Оператор обрабатывает персональные данные в следующих целях:</p>
+      <ul style="margin-bottom:16px;padding-left:20px;">
+        <li style="margin-bottom:6px;">обработка заявок на строительство, расчёт стоимости и консультирование по объектам недвижимости;</li>
+        <li style="margin-bottom:6px;">заключение, исполнение и сопровождение договоров подряда, купли-продажи, ипотечных сделок;</li>
+        <li style="margin-bottom:6px;">связь с субъектом персональных данных по телефону, электронной почте, мессенджерам (WhatsApp, Telegram);</li>
+        <li style="margin-bottom:6px;">улучшение качества обслуживания и разработка коммерческих предложений;</li>
+        <li style="margin-bottom:6px;">соблюдение требований законодательства Российской Федерации.</li>
+      </ul>
+
+      <p style="margin-bottom:16px;"><strong>3. Перечень обрабатываемых персональных данных</strong></p>
+      <p style="margin-bottom:8px;">Оператор обрабатывает следующие категории персональных данных:</p>
+      <ul style="margin-bottom:16px;padding-left:20px;">
+        <li style="margin-bottom:6px;">фамилия, имя, отчество;</li>
+        <li style="margin-bottom:6px;">номер телефона;</li>
+        <li style="margin-bottom:6px;">адрес электронной почты;</li>
+        <li style="margin-bottom:6px;">сведения о земельном участке и параметрах желаемого строительства;</li>
+        <li style="margin-bottom:6px;">технические данные: IP-адрес, данные cookies, тип браузера (при использовании сайта).</li>
+      </ul>
+
+      <p style="margin-bottom:16px;"><strong>4. Правовые основания обработки</strong></p>
+      <p style="margin-bottom:16px;">Обработка персональных данных осуществляется на основании: согласия субъекта персональных данных (ст. 9 Федерального закона № 152-ФЗ); исполнения договора, стороной которого является субъект (п. 5 ч. 1 ст. 6 Федерального закона № 152-ФЗ); соблюдения требований законодательства (п. 2 ч. 1 ст. 6 Федерального закона № 152-ФЗ).</p>
+
+      <p style="margin-bottom:16px;"><strong>5. Порядок и условия обработки</strong></p>
+      <p style="margin-bottom:16px;">Обработка персональных данных осуществляется смешанным способом — с использованием средств автоматизации и без таковых. Хранение данных осуществляется на защищённых серверах на территории Российской Федерации. Срок хранения — в течение срока действия договорных отношений и 3 лет после их прекращения, если иное не предусмотрено законодательством.</p>
+      <p style="margin-bottom:16px;">Оператор не передаёт персональные данные третьим лицам без согласия субъекта, за исключением случаев, предусмотренных действующим законодательством РФ, а также при необходимости передачи банкам-партнёрам для оформления ипотеки (исключительно с согласия субъекта).</p>
+
+      <p style="margin-bottom:16px;"><strong>6. Права субъекта персональных данных</strong></p>
+      <p style="margin-bottom:8px;">Субъект персональных данных имеет право:</p>
+      <ul style="margin-bottom:16px;padding-left:20px;">
+        <li style="margin-bottom:6px;">получать информацию об обработке его персональных данных;</li>
+        <li style="margin-bottom:6px;">требовать уточнения, блокирования или уничтожения своих персональных данных;</li>
+        <li style="margin-bottom:6px;">отозвать согласие на обработку персональных данных, направив письменное заявление на e-mail: info@iskon.pro;</li>
+        <li style="margin-bottom:6px;">обжаловать действия (бездействие) Оператора в Роскомнадзор или в судебном порядке.</li>
+      </ul>
+
+      <p style="margin-bottom:16px;"><strong>7. Меры по защите персональных данных</strong></p>
+      <p style="margin-bottom:16px;">Оператор принимает необходимые правовые, организационные и технические меры для защиты персональных данных от неправомерного доступа, изменения, раскрытия или уничтожения, в том числе: использование защищённого соединения (HTTPS), ограничение доступа к данным, регулярный контроль систем обработки.</p>
+
+      <p style="margin-bottom:16px;"><strong>8. Использование cookies</strong></p>
+      <p style="margin-bottom:16px;">Сайт https://iskon.pro использует файлы cookies для корректной работы и улучшения качества обслуживания. Продолжая использование сайта, вы соглашаетесь с использованием cookies. Отказаться от cookies можно в настройках браузера.</p>
+
+      <p style="margin-bottom:16px;"><strong>9. Изменение Политики</strong></p>
+      <p style="margin-bottom:16px;">Оператор вправе вносить изменения в настоящую Политику. При существенных изменениях актуальная версия публикуется на сайте https://iskon.pro. Продолжение использования сайта после публикации изменений означает согласие с обновлённой Политикой.</p>
+
+      <p style="margin-bottom:16px;"><strong>10. Контактные данные</strong></p>
+      <p style="margin-bottom:24px;">По вопросам обработки персональных данных обращайтесь: e-mail: <a href="mailto:info@iskon.pro" style="color:var(--orange);">info@iskon.pro</a>, тел.: <a href="tel:+79181269996" style="color:var(--orange);">+7 918 126 99 96</a>.</p>
+
+      <p style="font-size:0.72rem;color:var(--grey);">Дата последнего обновления: 01 января 2026 г.</p>
+    </div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer" id="contacts">
@@ -679,7 +856,7 @@
   <div class="footer__bottom">
     <span class="footer__copy">© 2026 ИСКОН. Строительство индивидуальных домов в Краснодаре и Краснодарском крае.</span>
     <div class="footer__legal">
-      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="#" onclick="openPrivacyModal();return false;">Политика конфиденциальности</a>
       <a href="contacts.html">Реквизиты</a>
     </div>
   </div>
@@ -769,6 +946,283 @@ document.querySelectorAll('.service-item, .tech-cell, .adv-cell').forEach((el, i
   el.style.transform = 'translateY(18px)';
   el.style.transition = `opacity 0.6s var(--ease) ${i * 0.06}s, transform 0.6s var(--ease) ${i * 0.06}s`;
   io.observe(el);
+});
+
+/* ======== QUIZ ======== */
+const quizSteps = [
+  {
+    q: 'Есть ли у вас земельный участок?',
+    type: 'single',
+    icon: '🏡',
+    options: [
+      { val: 'В собственности', icon: '✅' },
+      { val: 'В поиске', icon: '🔍' },
+      { val: 'Нужна помощь с выбором', icon: '🤝' }
+    ]
+  },
+  {
+    q: 'Какой стиль дома вам близок?',
+    type: 'single',
+    options: [
+      { val: 'Минимализм', desc: 'Чистые линии, без лишних деталей' },
+      { val: 'Классика', desc: 'Традиционный облик, уютная архитектура' },
+      { val: 'Барнхаус', desc: 'Современный амбарный стиль' },
+      { val: 'Нужен дизайнер', desc: 'Помогите подобрать проект', upload: true }
+    ]
+  },
+  {
+    q: 'Желаемая площадь дома?',
+    type: 'single',
+    options: [
+      { val: 'До 100 м²', desc: 'Компактный, до 100 м²' },
+      { val: '100–150 м²', desc: 'Оптимальный размер для семьи' },
+      { val: '150–250 м²', desc: 'Просторный дом' },
+      { val: '250+ м²', desc: 'Большой, свыше 250 м²' }
+    ]
+  },
+  {
+    q: 'Какие опции хотите включить?',
+    type: 'multi',
+    hint: 'Можно выбрать несколько',
+    options: [
+      { val: 'Терраса' },
+      { val: 'Мастер-спальня' },
+      { val: 'Кабинет' },
+      { val: 'Гараж' }
+    ]
+  },
+  {
+    q: 'Когда планируете начать строительство?',
+    type: 'single',
+    options: [
+      { val: 'Сейчас', desc: 'Готов приступить в ближайшее время' },
+      { val: 'Через 3–6 месяцев', desc: 'На стадии планирования' },
+      { val: 'Прицениваюсь', desc: 'Изучаю рынок, не тороплюсь' }
+    ]
+  },
+  {
+    q: 'Какой бюджет вы рассматриваете?',
+    type: 'single',
+    options: [
+      { val: 'До 7 млн ₽' },
+      { val: '7–12 млн ₽' },
+      { val: '12+ млн ₽' },
+      { val: 'Ипотека / Рассрочка', desc: 'Помогите с оформлением' }
+    ]
+  }
+];
+
+let quizCurrentStep = 0;
+let quizAnswers = {};
+let quizMultiSelected = new Set();
+
+function quizRender() {
+  const step = quizSteps[quizCurrentStep];
+  const total = quizSteps.length;
+  const pct = (quizCurrentStep / total) * 100;
+
+  document.getElementById('quiz-progress').style.width = pct + '%';
+  document.getElementById('quiz-step-num').textContent = quizCurrentStep + 1;
+  document.getElementById('quiz-question').textContent = step.q;
+  document.getElementById('quiz-back').style.display = quizCurrentStep > 0 ? 'inline-flex' : 'none';
+
+  const hint = step.hint ? `<p style="font-family:var(--f-body);font-size:0.72rem;font-weight:300;color:rgba(255,255,255,0.35);margin-bottom:16px;">${step.hint}</p>` : '';
+
+  let cols = step.options.length <= 3 ? '1fr '.repeat(step.options.length).trim() : 'repeat(2,1fr)';
+  if (window.innerWidth < 600) cols = '1fr';
+
+  const optionsHtml = step.options.map((opt, i) => {
+    const isMulti = step.type === 'multi';
+    const desc = opt.desc ? `<span style="display:block;font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">${opt.desc}</span>` : '';
+    const uploadField = opt.upload ? `<div style="margin-top:10px;"><label style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px dashed rgba(255,255,255,0.2);cursor:pointer;font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 16V8m0 0l-3 3m3-3l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/></svg>Добавить фото<input type="file" accept="image/*" style="display:none;" onchange="quizHandlePhoto(this)"/></label></div>` : '';
+
+    if (isMulti) {
+      return `<button type="button" data-idx="${i}" onclick="quizToggleMulti(${i},this)"
+        style="text-align:left;padding:16px 20px;border:1px solid rgba(255,255,255,0.12);background:transparent;cursor:pointer;color:rgba(255,255,255,0.75);transition:all 0.2s;min-height:44px;width:100%;">
+        <span style="font-family:var(--f-head);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.06em;">${opt.val}</span>
+        ${desc}
+      </button>`;
+    }
+    return `<button type="button" onclick="quizSelect('${opt.val.replace(/'/g,"\\'")}',${i})"
+      style="text-align:left;padding:18px 22px;border:1px solid rgba(255,255,255,0.12);background:transparent;cursor:pointer;color:rgba(255,255,255,0.75);transition:all 0.2s;min-height:44px;width:100%;"
+      onmouseover="this.style.borderColor='var(--orange)';this.style.background='rgba(255,69,0,0.07)'"
+      onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.background='transparent'">
+      <span style="font-family:var(--f-head);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;">${opt.val}</span>
+      ${desc}${uploadField}
+    </button>`;
+  }).join('');
+
+  document.getElementById('quiz-options').style.gridTemplateColumns = cols;
+  document.getElementById('quiz-options').innerHTML = hint + optionsHtml;
+  document.getElementById('quiz-next-wrap').style.display = step.type === 'multi' ? 'block' : 'none';
+  quizMultiSelected.clear();
+}
+
+function quizSelect(val, idx) {
+  quizAnswers['step' + (quizCurrentStep + 1)] = val;
+  quizCurrentStep++;
+  if (quizCurrentStep >= quizSteps.length) {
+    quizShowFinal();
+  } else {
+    quizRender();
+    quizAnimate();
+  }
+}
+
+function quizToggleMulti(idx, btn) {
+  if (quizMultiSelected.has(idx)) {
+    quizMultiSelected.delete(idx);
+    btn.style.borderColor = 'rgba(255,255,255,0.12)';
+    btn.style.background = 'transparent';
+    btn.style.color = 'rgba(255,255,255,0.75)';
+  } else {
+    quizMultiSelected.add(idx);
+    btn.style.borderColor = 'var(--orange)';
+    btn.style.background = 'rgba(255,69,0,0.1)';
+    btn.style.color = '#fff';
+  }
+}
+
+function quizNextMulti() {
+  const step = quizSteps[quizCurrentStep];
+  const selected = [...quizMultiSelected].map(i => step.options[i].val);
+  quizAnswers['step' + (quizCurrentStep + 1)] = selected.length ? selected.join(', ') : 'Не выбрано';
+  quizCurrentStep++;
+  if (quizCurrentStep >= quizSteps.length) {
+    quizShowFinal();
+  } else {
+    quizRender();
+    quizAnimate();
+  }
+}
+
+function quizBack() {
+  if (quizCurrentStep > 0) {
+    quizCurrentStep--;
+    quizRender();
+    quizAnimate();
+  }
+}
+
+function quizAnimate() {
+  const card = document.getElementById('quiz-card');
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(10px)';
+  card.style.transition = 'opacity 0.3s, transform 0.3s';
+  setTimeout(() => {
+    card.style.opacity = '1';
+    card.style.transform = 'translateY(0)';
+  }, 50);
+}
+
+function quizShowFinal() {
+  document.getElementById('quiz-progress').style.width = '100%';
+  document.getElementById('quiz-card').style.display = 'none';
+  document.getElementById('quiz-final').style.display = 'block';
+  document.getElementById('quiz-final').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function quizHandlePhoto(input) {
+  if (input.files && input.files[0]) {
+    quizAnswers.stylePhoto = input.files[0].name;
+  }
+}
+
+function selectMessenger(id) {
+  ['msg-wa','msg-tg','msg-call'].forEach(mid => {
+    const el = document.getElementById(mid);
+    if (el) {
+      el.style.borderColor = 'rgba(255,255,255,0.15)';
+      el.style.background = 'transparent';
+      el.querySelector('span').style.color = 'rgba(255,255,255,0.6)';
+    }
+  });
+  const active = document.getElementById(id);
+  if (active) {
+    active.style.borderColor = 'var(--orange)';
+    active.style.background = 'rgba(255,69,0,0.08)';
+    active.querySelector('span').style.color = '#fff';
+  }
+}
+
+document.getElementById('quiz-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('qf-name').value.trim();
+  const phone = document.getElementById('qf-phone').value.trim();
+  const messengerInput = document.querySelector('input[name="messenger"]:checked');
+  const messenger = messengerInput ? messengerInput.value : 'Не указан';
+
+  const payload = {
+    name,
+    phone,
+    messenger,
+    ...quizAnswers,
+    source: 'Квиз главная страница',
+    url: window.location.href,
+    date: new Date().toLocaleString('ru-RU')
+  };
+
+  console.log('Quiz payload:', payload);
+
+  const WEBHOOK_URL = 'https://YOUR_WEBHOOK_URL'; // замените на ваш webhook
+
+  try {
+    // Отправка на ваш webhook
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => console.log('✅ Quiz data sent to webhook')).catch(() => {});
+
+    // Дублируем в Netlify форму
+    const formData = new FormData();
+    formData.append('form-name', 'quiz-lead');
+    Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    }).catch(() => {});
+
+    console.log('✅ Quiz submitted successfully');
+  } catch(err) {
+    console.warn('Quiz send error:', err);
+  }
+
+  document.getElementById('quiz-final').style.display = 'none';
+  document.getElementById('quiz-thanks').style.display = 'block';
+  document.getElementById('quiz-thanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// Phone format in quiz
+document.getElementById('qf-phone').addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.startsWith('8')) v = '7' + v.slice(1);
+  if (v.startsWith('7') && v.length > 1)
+    v = '+7 (' + v.slice(1,4) + ') ' + v.slice(4,7) + '-' + v.slice(7,9) + '-' + v.slice(9,11);
+  else if (v.length > 0) v = '+' + v;
+  e.target.value = v;
+});
+
+// Запуск квиза
+quizRender();
+/* ======== /QUIZ ======== */
+
+function openPrivacyModal() {
+  const m = document.getElementById('privacy-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closePrivacyModal() {
+  const m = document.getElementById('privacy-modal');
+  m.style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('privacy-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePrivacyModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePrivacyModal();
 });
 
 const form = document.getElementById('main-form');
