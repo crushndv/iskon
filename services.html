@@ -371,9 +371,37 @@ body{padding-top:72px}
   </div>
   <div class="footer__bottom">
     <span class="footer__copy">© 2015–2025 ИСКОН. Строительство домов в Краснодарском крае.</span>
-    <div class="footer__legal"><a href="privacy.html">Политика конфиденциальности</a></div>
+    <div class="footer__legal"><a href="#" onclick="openPrivacyModal();return false;">Политика конфиденциальности</a></div>
   </div>
 </footer>
+
+<!-- PRIVACY MODAL -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(13,13,13,0.80);z-index:500;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:var(--snow);max-width:760px;width:100%;max-height:90vh;overflow-y:auto;position:relative;padding:48px 52px;">
+    <button onclick="closePrivacyModal()" style="position:sticky;top:0;float:right;margin:-16px -16px 0 0;width:36px;height:36px;background:var(--black);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;z-index:2;">×</button>
+    <div style="font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">Политика конфиденциальности</div>
+    <h2 style="font-family:var(--f-head);font-size:clamp(1rem,2vw,1.4rem);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:28px;line-height:1.2;">Политика обработки персональных данных</h2>
+    <div style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.85;color:#333;">
+      <p style="margin-bottom:16px;"><strong>1. Общие положения</strong></p>
+      <p style="margin-bottom:16px;">Настоящая Политика разработана в соответствии с Федеральным законом от 27 июля 2006 г. № 152-ФЗ «О персональных данных». Оператором является: ИП под брендом <strong>ИСКОН</strong>, сайт: https://iskon.pro, e-mail: info@iskon.pro, тел.: +7 918 126 99 96.</p>
+      <p style="margin-bottom:16px;"><strong>2. Цели обработки</strong></p>
+      <ul style="margin-bottom:16px;padding-left:20px;"><li style="margin-bottom:6px;">Обработка заявок и консультирование по объектам недвижимости;</li><li style="margin-bottom:6px;">Заключение и исполнение договоров, сопровождение ипотечных сделок;</li><li style="margin-bottom:6px;">Связь по телефону, e-mail и мессенджерам (WhatsApp, Telegram).</li></ul>
+      <p style="margin-bottom:16px;"><strong>3. Перечень данных</strong></p>
+      <ul style="margin-bottom:16px;padding-left:20px;"><li style="margin-bottom:6px;">ФИО, номер телефона, e-mail;</li><li style="margin-bottom:6px;">Сведения о земельном участке и параметрах строительства;</li><li style="margin-bottom:6px;">Технические данные: IP-адрес, cookies, тип браузера.</li></ul>
+      <p style="margin-bottom:16px;"><strong>4. Правовые основания</strong></p>
+      <p style="margin-bottom:16px;">Согласие субъекта (ст. 9 № 152-ФЗ); исполнение договора (п. 5 ч. 1 ст. 6 № 152-ФЗ); соблюдение законодательства (п. 2 ч. 1 ст. 6 № 152-ФЗ).</p>
+      <p style="margin-bottom:16px;"><strong>5. Порядок обработки и хранения</strong></p>
+      <p style="margin-bottom:16px;">Хранение — на защищённых серверах в РФ. Срок — в течение договорных отношений и 3 года после их прекращения. Данные не передаются третьим лицам без согласия субъекта, за исключением случаев, предусмотренных законодательством.</p>
+      <p style="margin-bottom:16px;"><strong>6. Права субъекта</strong></p>
+      <ul style="margin-bottom:16px;padding-left:20px;"><li style="margin-bottom:6px;">Получать информацию об обработке своих данных;</li><li style="margin-bottom:6px;">Требовать уточнения, блокирования или уничтожения данных;</li><li style="margin-bottom:6px;">Отозвать согласие, направив заявление на info@iskon.pro;</li><li style="margin-bottom:6px;">Обжаловать действия Оператора в Роскомнадзор или в суде.</li></ul>
+      <p style="margin-bottom:16px;"><strong>7. Защита данных</strong></p>
+      <p style="margin-bottom:16px;">Применяются технические и организационные меры защиты: HTTPS, ограничение доступа, регулярный контроль систем обработки.</p>
+      <p style="margin-bottom:16px;"><strong>8. Контакты</strong></p>
+      <p style="margin-bottom:24px;">E-mail: <a href="mailto:info@iskon.pro" style="color:var(--orange);">info@iskon.pro</a>, тел.: <a href="tel:+79181269996" style="color:var(--orange);">+7 918 126 99 96</a>.</p>
+      <p style="font-size:0.72rem;color:var(--grey);">Дата обновления: 01 января 2026 г.</p>
+    </div>
+  </div>
+</div>
 
 <!-- PHOTO MODAL -->
 <div class="photo-modal" id="photo-modal">
@@ -482,6 +510,10 @@ document.addEventListener('keydown', e => {
 });
 
 loadGallery();
+
+function openPrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='flex';document.body.style.overflow='hidden';}
+function closePrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='none';document.body.style.overflow='';}
+document.getElementById('privacy-modal').addEventListener('click',function(e){if(e.target===this)closePrivacyModal();});
 </script>
 </body>
 </html>
