@@ -668,7 +668,7 @@ input, select, textarea { font-family: inherit; }
   font-size: 0.44rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
   line-height: 1.7;
 }
 .footer__nav-col   { display: flex; flex-direction: column; gap: 0; }
@@ -883,5 +883,5 @@ input, select, textarea { font-family: inherit; }
 /* — LARGE DESKTOP ≥ 1400px — */
 @media (min-width: 1400px) {
   .section { padding: 120px 5vw; }
-  .t-hero { font-size: 7rem !important; }
+  .t-hero { font-size: 3rem !important; }
 }
