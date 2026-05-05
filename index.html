@@ -317,6 +317,21 @@
     @media (max-width: 480px) {
       .hero__stats { grid-template-columns: repeat(2,1fr); }
     }
+
+    /* QUIZ RESPONSIVE */
+    @media (max-width: 768px) {
+      #quiz-section { padding: 56px 5vw; }
+      #quiz-card > div:first-child + div { padding: 18px 20px 0; }
+      #quiz-card > div:last-child { padding: 16px 20px 24px; }
+      #quiz-final { padding: 32px 20px; }
+      #quiz-final > div:first-child { margin: -32px -20px 28px; }
+      #quiz-thanks { padding: 48px 20px; }
+    }
+    @media (max-width: 480px) {
+      #quiz-section { padding: 48px 4vw; }
+      #quiz-options { grid-template-columns: 1fr !important; }
+      #quiz-form { max-width: 100% !important; }
+    }
   </style>
 </head>
 <body>
@@ -474,6 +489,9 @@
     <!-- Финальный экран -->
     <div id="quiz-final" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:48px 36px;">
       <div style="height:3px;background:var(--orange);margin:-48px -36px 40px;"></div>
+      <div style="margin-bottom:20px;">
+        <button onclick="quizBackFromFinal()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.5)'">← Назад</button>
+      </div>
       <div style="text-align:center;margin-bottom:32px;">
         <div class="t-label" style="margin-bottom:12px;">Расчёт готов на 98%</div>
         <h3 style="font-family:var(--f-head);font-size:clamp(1.1rem,2.5vw,1.7rem);text-transform:uppercase;color:#fff;line-height:1.15;">Осталось указать<br/><span style="color:var(--orange);">куда отправить</span></h3>
@@ -1106,13 +1124,16 @@ function quizBack() {
 
 function quizAnimate() {
   const card = document.getElementById('quiz-card');
+  card.style.transition = 'none';
   card.style.opacity = '0';
-  card.style.transform = 'translateY(10px)';
-  card.style.transition = 'opacity 0.3s, transform 0.3s';
-  setTimeout(() => {
-    card.style.opacity = '1';
-    card.style.transform = 'translateY(0)';
-  }, 50);
+  card.style.transform = 'translateY(14px)';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      card.style.transition = 'opacity 0.38s ease, transform 0.38s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+  });
 }
 
 function quizShowFinal() {
@@ -1120,6 +1141,14 @@ function quizShowFinal() {
   document.getElementById('quiz-card').style.display = 'none';
   document.getElementById('quiz-final').style.display = 'block';
   document.getElementById('quiz-final').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function quizBackFromFinal() {
+  document.getElementById('quiz-final').style.display = 'none';
+  document.getElementById('quiz-card').style.display = 'block';
+  quizCurrentStep = quizSteps.length - 1;
+  quizRender();
+  quizAnimate();
 }
 
 function quizHandlePhoto(input) {
