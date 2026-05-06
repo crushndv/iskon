@@ -20,12 +20,3 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: /
-          state-name: .ftp-sync-v3
-          log-level: verbose
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.claude/**
-            **/node_modules/**
-            .DS_Store
-            **/.DS_Store
