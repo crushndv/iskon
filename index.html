@@ -1194,29 +1194,31 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
 
   console.log('Quiz payload:', payload);
 
-  const WEBHOOK_URL = 'https://YOUR_WEBHOOK_URL'; // замените на ваш webhook
-
   try {
-    // Отправка на ваш webhook
-    fetch(WEBHOOK_URL, {
+    const res = await fetch('https://formsubmit.co/ajax/info@iskon.pro', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(() => console.log('✅ Quiz data sent to webhook')).catch(() => {});
-
-    // Дублируем в Netlify форму
-    const formData = new FormData();
-    formData.append('form-name', 'quiz-lead');
-    Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    }).catch(() => {});
-
-    console.log('✅ Quiz submitted successfully');
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: '📋 Квиз ИСКОН — новая заявка',
+        _captcha: 'false',
+        _template: 'table',
+        'Имя': name,
+        'Телефон': phone,
+        'Мессенджер': messenger,
+        'Участок (шаг 1)': quizAnswers.step1 || '—',
+        'Стиль дома (шаг 2)': quizAnswers.step2 || '—',
+        'Площадь (шаг 3)': quizAnswers.step3 || '—',
+        'Опции (шаг 4)': quizAnswers.step4 || '—',
+        'Сроки (шаг 5)': quizAnswers.step5 || '—',
+        'Бюджет (шаг 6)': quizAnswers.step6 || '—',
+        'Источник': 'Квиз — главная страница',
+        'Дата': new Date().toLocaleString('ru-RU')
+      })
+    });
+    const json = await res.json();
+    console.log('✅ Quiz email sent:', json);
   } catch(err) {
-    console.warn('Quiz send error:', err);
+    console.warn('Quiz email error:', err);
   }
 
   document.getElementById('quiz-final').style.display = 'none';
@@ -1261,15 +1263,35 @@ if (form) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const data = new FormData(form);
+    const btn = form.querySelector('[type="submit"]');
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
     try {
-      await fetch('/', {
+      const res = await fetch('https://formsubmit.co/ajax/info@iskon.pro', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString()
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: '🏠 Новая заявка с сайта ИСКОН',
+          _captcha: 'false',
+          _template: 'table',
+          'Имя': data.get('name') || '—',
+          'Телефон': data.get('phone') || '—',
+          'Участок / район': data.get('location') || '—',
+          'Источник': 'Форма обратной связи — главная страница',
+          'Дата': new Date().toLocaleString('ru-RU')
+        })
       });
+      const json = await res.json();
+      console.log('✅ Email sent:', json);
       form.style.display = 'none';
       successMsg.style.display = 'block';
-    } catch(err) { form.submit(); }
+    } catch(err) {
+      console.warn('Form error:', err);
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+      // Фоллбэк: обычная отправка формы
+      form.action = 'https://formsubmit.co/info@iskon.pro';
+      form.method = 'POST';
+      form.submit();
+    }
   });
 }
 </script>
