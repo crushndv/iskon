@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- v2.1.0 -->
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -394,7 +395,7 @@
       <div class="tag"><div class="tag__dot"></div>Строительство и продажа</div>
     </div>
 
-    <h1 class="hero__title t-hero" style="font-size:clamp(2rem,3.2vw,2.7rem);">
+    <h1 class="hero__title t-hero" style="font-size:clamp(1.4rem,2vw,1.8rem);">
 
       <span class="accent">СТРОИМ ИСКОННО НАДЕЖНО,</span><br />
       ЧТОБЫ ВЫ ЖИЛИ СПОКОЙНО
@@ -432,7 +433,7 @@
     </div>
     <div class="stat" role="listitem">
       <span class="stat__val">3<span class="u">вида расчётов</span></span>
-      <span class="stat__key">Оплаты: наличные, материнский капитал, все виды ипотеки</span>
+      <span class="stat__key">Наличные, материнский капитал, все виды ипотеки</span>
     </div>
   </div>
 </section>
@@ -985,7 +986,7 @@ const quizSteps = [
       { val: 'Минимализм', desc: 'Чистые линии, без лишних деталей' },
       { val: 'Классика', desc: 'Традиционный облик, уютная архитектура' },
       { val: 'Барнхаус', desc: 'Современный амбарный стиль' },
-      { val: 'Нужен дизайнер', desc: 'Помогите подобрать проект', upload: true }
+      { val: 'Нужен дизайнер', desc: 'Помогите подобрать проект' }
     ]
   },
   {
@@ -1178,6 +1179,13 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
   e.preventDefault();
   const name = document.getElementById('qf-name').value.trim();
   const phone = document.getElementById('qf-phone').value.trim();
+  const phoneDigits = phone.replace(/\D/g, '');
+  if (phoneDigits.length !== 11) {
+    document.getElementById('qf-phone').style.outline = '1px solid var(--orange)';
+    document.getElementById('qf-phone').focus();
+    return;
+  }
+  document.getElementById('qf-phone').style.outline = '';
   const messengerInput = document.querySelector('input[name="messenger"]:checked');
   const messenger = messengerInput ? messengerInput.value : 'Не указан';
 
@@ -1193,29 +1201,31 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
 
   console.log('Quiz payload:', payload);
 
-  const WEBHOOK_URL = 'https://YOUR_WEBHOOK_URL'; // замените на ваш webhook
-
   try {
-    // Отправка на ваш webhook
-    fetch(WEBHOOK_URL, {
+    const res = await fetch('https://formsubmit.co/ajax/info@iskon.pro', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(() => console.log('✅ Quiz data sent to webhook')).catch(() => {});
-
-    // Дублируем в Netlify форму
-    const formData = new FormData();
-    formData.append('form-name', 'quiz-lead');
-    Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    }).catch(() => {});
-
-    console.log('✅ Quiz submitted successfully');
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: '📋 Квиз ИСКОН — новая заявка',
+        _captcha: 'false',
+        _template: 'table',
+        'Имя': name,
+        'Телефон': phone,
+        'Мессенджер': messenger,
+        'Участок (шаг 1)': quizAnswers.step1 || '—',
+        'Стиль дома (шаг 2)': quizAnswers.step2 || '—',
+        'Площадь (шаг 3)': quizAnswers.step3 || '—',
+        'Опции (шаг 4)': quizAnswers.step4 || '—',
+        'Сроки (шаг 5)': quizAnswers.step5 || '—',
+        'Бюджет (шаг 6)': quizAnswers.step6 || '—',
+        'Источник': 'Квиз — главная страница',
+        'Дата': new Date().toLocaleString('ru-RU')
+      })
+    });
+    const json = await res.json();
+    console.log('✅ Quiz email sent:', json);
   } catch(err) {
-    console.warn('Quiz send error:', err);
+    console.warn('Quiz email error:', err);
   }
 
   document.getElementById('quiz-final').style.display = 'none';
@@ -1223,15 +1233,39 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
   document.getElementById('quiz-thanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
-// Phone format in quiz
-document.getElementById('qf-phone').addEventListener('input', e => {
-  let v = e.target.value.replace(/\D/g, '');
-  if (v.startsWith('8')) v = '7' + v.slice(1);
-  if (v.startsWith('7') && v.length > 1)
-    v = '+7 (' + v.slice(1,4) + ') ' + v.slice(4,7) + '-' + v.slice(7,9) + '-' + v.slice(9,11);
-  else if (v.length > 0) v = '+' + v;
-  e.target.value = v;
-});
+// Phone field — fixed "+7 " prefix
+(function() {
+  const ph = document.getElementById('qf-phone');
+  const PREFIX = '+7 ';
+  ph.value = PREFIX;
+
+  function formatDigits(digits) {
+    let s = PREFIX;
+    if (digits.length > 0) s += '(' + digits.slice(0, 3);
+    if (digits.length >= 3) s += ')';
+    if (digits.length > 3) s += ' ' + digits.slice(3, 6);
+    if (digits.length > 6) s += '-' + digits.slice(6, 8);
+    if (digits.length > 8) s += '-' + digits.slice(8, 10);
+    return s;
+  }
+
+  ph.addEventListener('focus', () => {
+    setTimeout(() => { if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(ph.value.length, ph.value.length); }, 0);
+  });
+  ph.addEventListener('click', () => {
+    if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(PREFIX.length, PREFIX.length);
+  });
+  ph.addEventListener('keydown', e => {
+    const s = ph.selectionStart, end = ph.selectionEnd;
+    if ((e.key === 'Backspace' || e.key === 'Delete') && s <= PREFIX.length && end <= PREFIX.length) e.preventDefault();
+  });
+  ph.addEventListener('input', () => {
+    let v = ph.value;
+    if (!v.startsWith(PREFIX)) v = PREFIX + v.replace(/^\+?7?\s?\(?/, '');
+    const digits = v.slice(PREFIX.length).replace(/\D/g, '').slice(0, 10);
+    ph.value = formatDigits(digits);
+  });
+})();
 
 // Запуск квиза
 quizRender();
@@ -1260,15 +1294,35 @@ if (form) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const data = new FormData(form);
+    const btn = form.querySelector('[type="submit"]');
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
     try {
-      await fetch('/', {
+      const res = await fetch('https://formsubmit.co/ajax/info@iskon.pro', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString()
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: '🏠 Новая заявка с сайта ИСКОН',
+          _captcha: 'false',
+          _template: 'table',
+          'Имя': data.get('name') || '—',
+          'Телефон': data.get('phone') || '—',
+          'Участок / район': data.get('location') || '—',
+          'Источник': 'Форма обратной связи — главная страница',
+          'Дата': new Date().toLocaleString('ru-RU')
+        })
       });
+      const json = await res.json();
+      console.log('✅ Email sent:', json);
       form.style.display = 'none';
       successMsg.style.display = 'block';
-    } catch(err) { form.submit(); }
+    } catch(err) {
+      console.warn('Form error:', err);
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+      // Фоллбэк: обычная отправка формы
+      form.action = 'https://formsubmit.co/info@iskon.pro';
+      form.method = 'POST';
+      form.submit();
+    }
   });
 }
 </script>
