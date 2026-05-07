@@ -24,11 +24,15 @@
     "area": 110,
     "year": 2024,
     "address": "Краснодарский край, Краснодар, п. Березовый",
-    "mainPhoto": "images/homes/dom-002/main.jpg",
+    "description": "Одноэтажный дом из газоблока D500. Тёплые стены, низкое энергопотребление.",
+    "mainPhoto": "images/projects/proj-002/1778186031726_nkd5f.jpeg",
     "photos": [
+      "images/projects/proj-002/1778186031726_nkd5f.jpeg",
+      "images/projects/proj-002/1778186023773_13p2m.jpeg",
+      "images/projects/proj-002/1778186027259_zcp42.jpeg",
+      "images/projects/proj-002/1778186029439_xok8t.jpeg",
       "images/homes/dom-002/main.jpg"
     ],
-    "description": "Одноэтажный дом из газоблока D500. Тёплые стены, низкое энергопотребление.",
     "visible": true
   },
   {
