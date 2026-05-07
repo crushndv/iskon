@@ -60,8 +60,14 @@ body{padding-top:72px}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--snow);max-width:860px;width:100%;max-height:92vh;overflow-y:auto;position:relative;}
 .modal__close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:var(--black);color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
-.modal__photos{aspect-ratio:16/9;overflow:hidden;background:#d0d0d2;}
-.modal__photos img{width:100%;height:100%;object-fit:cover;}
+.modal__photos{position:relative;aspect-ratio:16/9;overflow:hidden;background:#111;touch-action:pan-y;}
+.modal__photos img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
+.modal__arr{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(13,13,13,.6);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s;}
+.modal__arr:hover{background:rgba(13,13,13,.9);}
+.modal__arr--l{left:10px;}
+.modal__arr--r{right:10px;}
+.modal__counter{position:absolute;bottom:10px;right:12px;background:rgba(13,13,13,.6);color:#fff;font-family:var(--f-head);font-size:.4rem;letter-spacing:.14em;padding:4px 10px;pointer-events:none;}
+@media(max-width:480px){.modal__arr{width:36px;height:36px;}}
 .modal__body{padding:26px;display:flex;flex-direction:column;gap:16px;}
 .modal__specs{display:grid;grid-template-columns:repeat(5,1fr);border:var(--divider);}
 .modal__spec{padding:9px 12px;border-right:var(--divider);display:flex;flex-direction:column;gap:3px;}
@@ -284,11 +290,36 @@ function highlightCard(id){
   activeId=id;
 }
 
+let currentHome=null, modalPhotoIdx=0, modalTX=0;
+
+function _homePhotos(h){
+  const all=(h.photos||[]).filter(x=>x&&x.trim()!=='');
+  return all.length?all:(h.mainPhoto?[h.mainPhoto]:[]);
+}
+
+function _catalogSliderHtml(h){
+  const photos=_homePhotos(h);
+  const total=photos.length;
+  const src=photos[modalPhotoIdx];
+  const img=src?`<img src="${src}" alt="${h.title}" draggable="false">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#d8d8da;"><svg viewBox="0 0 120 80" fill="none" width="56"><rect x="10" y="40" width="100" height="35" stroke="#0D0D0D" stroke-width="1.5"/><polygon points="10,40 60,10 110,40" stroke="#0D0D0D" stroke-width="1.5" fill="none"/></svg></div>`;
+  const arrows=total>1?`
+    <button class="modal__arr modal__arr--l" onclick="modalPrev(event)" aria-label="Предыдущее фото">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="modal__arr modal__arr--r" onclick="modalNext(event)" aria-label="Следующее фото">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="modal__counter">${modalPhotoIdx+1} / ${total}</div>`:'' ;
+  return img+arrows;
+}
+
 function openModal(h){
+  currentHome=h; modalPhotoIdx=0;
   const feat=(h.features||[]).map(f=>`<span class="modal__feature">${f}</span>`).join('');
-  const ph=h.mainPhoto?`<img src="${h.mainPhoto}" alt="${h.title}">`:`<div style="height:240px;display:flex;align-items:center;justify-content:center;background:#d8d8da;"><svg viewBox="0 0 120 80" fill="none" width="56"><rect x="10" y="40" width="100" height="35" stroke="#0D0D0D" stroke-width="1.5"/><polygon points="10,40 60,10 110,40" stroke="#0D0D0D" stroke-width="1.5" fill="none"/></svg></div>`;
   document.getElementById('modal-content').innerHTML=`
-    <div class="modal__photos">${ph}</div>
+    <div id="modal-slider" class="modal__photos" ontouchstart="modalTouchStart(event)" ontouchend="modalTouchEnd(event)">
+      ${_catalogSliderHtml(h)}
+    </div>
     <div class="modal__body">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
         <div>
@@ -300,10 +331,7 @@ function openModal(h){
           <div style="font-family:var(--f-body);font-size:.58rem;color:var(--grey);">Стоимость под ключ</div>
           <div style="font-family:var(--f-head);font-size:1.6rem;color:var(--black);letter-spacing:-.02em;">${fmt(h.price)}</div>
           <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;">
-            ${(h.paymentMethods && h.paymentMethods.length
-              ? h.paymentMethods
-              : ['Семейная ипотека','Стандартная ипотека']
-            ).map(m=>`<span class="ipoteka-badge">${m}</span>`).join('')}
+            ${(h.paymentMethods&&h.paymentMethods.length?h.paymentMethods:['Семейная ипотека','Стандартная ипотека']).map(m=>`<span class="ipoteka-badge">${m}</span>`).join('')}
           </div>
         </div>
       </div>
@@ -311,12 +339,12 @@ function openModal(h){
         <div class="modal__spec"><span class="spec-val">${h.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
         <div class="modal__spec"><span class="spec-val">${h.floors}</span><span class="spec-key">Этажей</span></div>
         <div class="modal__spec"><span class="spec-val">${h.rooms}</span><span class="spec-key">Комнат</span></div>
-        <div class="modal__spec">${h.readyToMove ? `<span class="spec-val" style="font-size:.52rem;color:var(--green);">Дом сдан</span>` : (h.buildTimeMonths > 0 ? `<span class="spec-val">${h.buildTimeMonths}<span class="spec-unit">мес</span></span>` : `<span class="spec-val">—</span>`)}<span class="spec-key">Срок</span></div>
+        <div class="modal__spec">${h.readyToMove?`<span class="spec-val" style="font-size:.52rem;color:var(--green);">Дом сдан</span>`:(h.buildTimeMonths>0?`<span class="spec-val">${h.buildTimeMonths}<span class="spec-unit">мес</span></span>`:`<span class="spec-val">—</span>`)}<span class="spec-key">Срок</span></div>
         <div class="modal__spec"><span class="spec-val" style="font-size:.56rem;">${h.technology}</span><span class="spec-key">Материал</span></div>
       </div>
       ${h.description?`<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);white-space:pre-line;">${h.description}</p>`:''}
       ${feat?`<div><div class="t-label" style="margin-bottom:7px;">Конструктив</div><div class="modal__features">${feat}</div></div>`:''}
-      ${(h.lat && h.lng)?`
+      ${(h.lat&&h.lng)?`
       <div style="margin-top:12px;">
         <div class="t-label" style="margin-bottom:8px;">Расположение объекта</div>
         <a href="https://yandex.ru/maps/?pt=${h.lng},${h.lat}&z=15&l=map" target="_blank" rel="noopener" style="display:block;border-radius:0;overflow:hidden;border:var(--divider);">
@@ -332,9 +360,35 @@ function openModal(h){
   document.getElementById('modal').classList.add('open');
 }
 
+function modalPrev(e){
+  if(e)e.stopPropagation();
+  const photos=_homePhotos(currentHome);
+  modalPhotoIdx=(modalPhotoIdx-1+photos.length)%photos.length;
+  document.getElementById('modal-slider').innerHTML=_catalogSliderHtml(currentHome);
+}
+function modalNext(e){
+  if(e)e.stopPropagation();
+  const photos=_homePhotos(currentHome);
+  modalPhotoIdx=(modalPhotoIdx+1)%photos.length;
+  document.getElementById('modal-slider').innerHTML=_catalogSliderHtml(currentHome);
+}
+function modalTouchStart(e){modalTX=e.changedTouches[0].clientX;}
+function modalTouchEnd(e){
+  const dx=e.changedTouches[0].clientX-modalTX;
+  if(Math.abs(dx)>40){dx<0?modalNext():modalPrev();}
+}
+
 document.getElementById('modal-close').addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))document.getElementById('modal').classList.remove('open');});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal').classList.remove('open');});
+document.addEventListener('keydown',e=>{
+  const mOpen=document.getElementById('modal').classList.contains('open');
+  if(mOpen&&e.key==='ArrowLeft')modalPrev();
+  if(mOpen&&e.key==='ArrowRight')modalNext();
+  if(e.key==='Escape'){
+    document.getElementById('modal').classList.remove('open');
+    closePrivacyModal();
+  }
+});
 
 function applyFilters(){
   let f=allHomes;
