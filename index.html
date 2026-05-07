@@ -395,7 +395,7 @@
       <div class="tag"><div class="tag__dot"></div>Строительство и продажа</div>
     </div>
 
-    <h1 class="hero__title t-hero" style="font-size:clamp(2rem,3.2vw,2.7rem);">
+    <h1 class="hero__title t-hero" style="font-size:clamp(1.4rem,2vw,1.8rem);">
 
       <span class="accent">СТРОИМ ИСКОННО НАДЕЖНО,</span><br />
       ЧТОБЫ ВЫ ЖИЛИ СПОКОЙНО
@@ -986,7 +986,7 @@ const quizSteps = [
       { val: 'Минимализм', desc: 'Чистые линии, без лишних деталей' },
       { val: 'Классика', desc: 'Традиционный облик, уютная архитектура' },
       { val: 'Барнхаус', desc: 'Современный амбарный стиль' },
-      { val: 'Нужен дизайнер', desc: 'Помогите подобрать проект', upload: true }
+      { val: 'Нужен дизайнер', desc: 'Помогите подобрать проект' }
     ]
   },
   {
@@ -1179,6 +1179,13 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
   e.preventDefault();
   const name = document.getElementById('qf-name').value.trim();
   const phone = document.getElementById('qf-phone').value.trim();
+  const phoneDigits = phone.replace(/\D/g, '');
+  if (phoneDigits.length !== 11) {
+    document.getElementById('qf-phone').style.outline = '1px solid var(--orange)';
+    document.getElementById('qf-phone').focus();
+    return;
+  }
+  document.getElementById('qf-phone').style.outline = '';
   const messengerInput = document.querySelector('input[name="messenger"]:checked');
   const messenger = messengerInput ? messengerInput.value : 'Не указан';
 
@@ -1226,15 +1233,39 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
   document.getElementById('quiz-thanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
-// Phone format in quiz
-document.getElementById('qf-phone').addEventListener('input', e => {
-  let v = e.target.value.replace(/\D/g, '');
-  if (v.startsWith('8')) v = '7' + v.slice(1);
-  if (v.startsWith('7') && v.length > 1)
-    v = '+7 (' + v.slice(1,4) + ') ' + v.slice(4,7) + '-' + v.slice(7,9) + '-' + v.slice(9,11);
-  else if (v.length > 0) v = '+' + v;
-  e.target.value = v;
-});
+// Phone field — fixed "+7 " prefix
+(function() {
+  const ph = document.getElementById('qf-phone');
+  const PREFIX = '+7 ';
+  ph.value = PREFIX;
+
+  function formatDigits(digits) {
+    let s = PREFIX;
+    if (digits.length > 0) s += '(' + digits.slice(0, 3);
+    if (digits.length >= 3) s += ')';
+    if (digits.length > 3) s += ' ' + digits.slice(3, 6);
+    if (digits.length > 6) s += '-' + digits.slice(6, 8);
+    if (digits.length > 8) s += '-' + digits.slice(8, 10);
+    return s;
+  }
+
+  ph.addEventListener('focus', () => {
+    setTimeout(() => { if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(ph.value.length, ph.value.length); }, 0);
+  });
+  ph.addEventListener('click', () => {
+    if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(PREFIX.length, PREFIX.length);
+  });
+  ph.addEventListener('keydown', e => {
+    const s = ph.selectionStart, end = ph.selectionEnd;
+    if ((e.key === 'Backspace' || e.key === 'Delete') && s <= PREFIX.length && end <= PREFIX.length) e.preventDefault();
+  });
+  ph.addEventListener('input', () => {
+    let v = ph.value;
+    if (!v.startsWith(PREFIX)) v = PREFIX + v.replace(/^\+?7?\s?\(?/, '');
+    const digits = v.slice(PREFIX.length).replace(/\D/g, '').slice(0, 10);
+    ph.value = formatDigits(digits);
+  });
+})();
 
 // Запуск квиза
 quizRender();

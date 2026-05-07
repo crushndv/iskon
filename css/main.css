@@ -676,14 +676,14 @@ input, select, textarea { font-family: inherit; }
   font-size: 0.46rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.22);
+  color: rgba(255,255,255,0.5);
   margin-bottom: 10px;
 }
 .footer__nav-link {
   font-family: var(--f-body);
   font-size: 0.82rem;
   font-weight: 300;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
   padding: 5px 0;
   border-bottom: 1px solid transparent;
@@ -704,14 +704,14 @@ input, select, textarea { font-family: inherit; }
   font-family: var(--f-body);
   font-size: 0.68rem;
   font-weight: 300;
-  color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.55);
 }
 .footer__legal { display: flex; gap: 20px; flex-wrap: wrap; }
 .footer__legal a {
   font-family: var(--f-body);
   font-size: 0.68rem;
   font-weight: 300;
-  color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.5);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -776,7 +776,7 @@ input, select, textarea { font-family: inherit; }
 
   /* Hero */
   .hero { min-height: calc(100svh - 60px); padding: 0 4vw; }
-  .t-hero { font-size: clamp(2rem, 11vw, 3rem) !important; line-height: 1.05 !important; }
+  .t-hero { font-size: clamp(1.5rem, 8vw, 2.2rem) !important; line-height: 1.05 !important; }
   .hero__labels { margin-bottom: 24px; gap: 8px; }
   .tag { font-size: 0.42rem; padding: 4px 9px; }
   .hero__title { margin-bottom: 20px; }
@@ -853,7 +853,7 @@ input, select, textarea { font-family: inherit; }
   .nav__right .btn { display: none; }
   .nav__burger { display: flex; }
 
-  .t-hero { font-size: clamp(2.2rem, 8.5vw, 3.8rem) !important; }
+  .t-hero { font-size: clamp(1.8rem, 5.5vw, 2.8rem) !important; }
 
   .adv-grid { grid-template-columns: 1fr 1fr !important; }
   .catalog-grid { grid-template-columns: 1fr !important; }
@@ -882,5 +882,5 @@ input, select, textarea { font-family: inherit; }
 /* — LARGE DESKTOP ≥ 1400px — */
 @media (min-width: 1400px) {
   .section { padding: 120px 5vw; }
-  .t-hero { font-size: 3rem !important; }
+  .t-hero { font-size: 2rem !important; }
 }
