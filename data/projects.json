@@ -7,11 +7,13 @@
     "area": 140,
     "year": 2024,
     "address": "Краснодарский край, Динской р-н, ст. Динская",
-    "mainPhoto": "images/homes/dom-001/main.jpg",
+    "description": "Двухэтажный дом из лицевого кирпича М200. Вальмовая кровля, ленточный фундамент.",
+    "mainPhoto": "images/projects/proj-001/1778185869089_uzm3c.jpg",
     "photos": [
+      "images/projects/proj-001/1778185869089_uzm3c.jpg",
+      "images/projects/proj-001/1778185872225_90430.jpg",
       "images/homes/dom-001/main.jpg"
     ],
-    "description": "Двухэтажный дом из лицевого кирпича М200. Вальмовая кровля, ленточный фундамент.",
     "visible": true
   },
   {
