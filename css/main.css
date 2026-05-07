@@ -342,7 +342,7 @@ input, select, textarea { font-family: inherit; }
   pointer-events: none;
   transition: all 0.2s var(--ease);
 }
-.field-label--dark { color: rgba(255,255,255,0.3); }
+.field-label--dark { color: rgba(255,255,255,0.6); }
 
 .field-input {
   width: 100%;
@@ -614,7 +614,7 @@ input, select, textarea { font-family: inherit; }
   font-size: 0.85rem;
   font-weight: 300;
   line-height: 1.75;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.65);
   max-width: 38ch;
 }
 
@@ -635,13 +635,13 @@ input, select, textarea { font-family: inherit; }
   font-size: 0.42rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.55);
 }
 .footer__contact-val {
   font-family: var(--f-body);
   font-size: 0.9rem;
   font-weight: 400;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.85);
   text-decoration: none;
   transition: color 0.2s;
 }
