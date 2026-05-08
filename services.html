@@ -175,18 +175,33 @@ body{padding-top:72px}
 /* PROCESS STAGES */
 .process-section{padding:72px 5vw 0;}
 .process-list{display:flex;flex-direction:column;margin-top:48px;}
-.process-item{display:grid;grid-template-columns:72px 1fr;border-top:var(--divider);padding:48px 0;}
+.process-item{display:grid;grid-template-columns:72px 1fr 380px;gap:0;border-top:var(--divider);padding:48px 0;align-items:start;}
 .process-item:last-child{border-bottom:var(--divider);}
 .process-num{font-family:var(--f-head);font-size:clamp(2.5rem,5vw,4.5rem);color:var(--black);opacity:0.06;letter-spacing:-0.04em;line-height:1;padding-top:4px;}
 .process-body{padding-left:20px;display:flex;flex-direction:column;gap:14px;}
 .process-title{font-family:var(--f-head);font-size:clamp(0.85rem,1.8vw,1.15rem);text-transform:uppercase;letter-spacing:0.03em;color:var(--black);}
-.process-text{font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:var(--grey);max-width:64ch;}
+.process-text{font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:var(--grey);max-width:52ch;}
 .process-trigger{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border:1px solid rgba(255,69,0,0.25);background:rgba(255,69,0,0.03);margin-top:6px;}
 .process-trigger__icon{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
 .process-trigger__text{font-family:var(--f-body);font-size:0.78rem;font-weight:400;color:var(--black);line-height:1.65;}
 .process-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
 .process-tag{padding:3px 11px;border:var(--divider);font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);}
+/* Stage photo column */
+.process-photo{padding-left:36px;}
+.process-photo__img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+.process-photo__ph{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#e8e8ea,#d8d8dc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.process-photo__ph svg{opacity:.25;}
+.process-photo__ph span{font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey);}
+@media(max-width:1024px){.process-item{grid-template-columns:72px 1fr;}.process-photo{display:none;}}
 @media(max-width:600px){.process-item{grid-template-columns:50px 1fr;padding:32px 0;}.process-body{padding-left:12px;}}
+
+/* CONTACT FORM on services page */
+.svc-form-wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+@media(max-width:768px){.svc-form-wrap{grid-template-columns:1fr;gap:40px;}}
+.svcf-label{font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:block;margin-bottom:7px;}
+.svcf-input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#fff;font-family:var(--f-body);font-size:0.88rem;outline:none;transition:border-color 0.2s;resize:vertical;}
+.svcf-input:focus{border-color:rgba(255,255,255,0.4);}
+.svcf-input::placeholder{color:rgba(255,255,255,0.28);}
 
 /* COMPETENCE */
 .competence-section{padding:72px 5vw;}
@@ -261,7 +276,7 @@ body{padding-top:72px}
     <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:var(--grey);margin-bottom:28px;">
       Большинство заказчиков приходят к нам после того, как предыдущий подрядчик пропал или поднял цену на 40% в середине стройки. Мы работаем иначе: цена в договоре — это цена сдачи объекта. Без «а вот ещё выяснилось».
     </p>
-    <a href="index.html#form" class="btn btn--primary">
+    <a href="#svc-form" class="btn btn--primary">
       <span>Получить расчёт стоимости</span>
       <span class="btn__arr"></span>
     </a>
@@ -359,6 +374,9 @@ body{padding-top:72px}
           <span class="process-tag">ТУ на сети</span>
         </div>
       </div>
+      <div class="process-photo" id="sph-1">
+        <div class="process-photo__ph"><svg viewBox="0 0 48 32" fill="none" width="48"><rect x="2" y="12" width="44" height="18" stroke="#8E8E93" stroke-width="1.2"/><polygon points="2,12 24,2 46,12" stroke="#8E8E93" stroke-width="1.2" fill="none"/></svg><span>Фото этапа 1</span></div>
+      </div>
     </div>
 
     <!-- Этап 2 -->
@@ -382,6 +400,9 @@ body{padding-top:72px}
           <span class="process-tag">Монолит</span>
         </div>
       </div>
+      <div class="process-photo" id="sph-2">
+        <div class="process-photo__ph"><svg viewBox="0 0 48 32" fill="none" width="48"><rect x="2" y="12" width="44" height="18" stroke="#8E8E93" stroke-width="1.2"/><polygon points="2,12 24,2 46,12" stroke="#8E8E93" stroke-width="1.2" fill="none"/></svg><span>Фото этапа 2</span></div>
+      </div>
     </div>
 
     <!-- Этап 3 -->
@@ -403,6 +424,9 @@ body{padding-top:72px}
           <span class="process-tag">Монолитные перекрытия</span>
           <span class="process-tag">Гарантия 5 лет</span>
         </div>
+      </div>
+      <div class="process-photo" id="sph-3">
+        <div class="process-photo__ph"><svg viewBox="0 0 48 32" fill="none" width="48"><rect x="2" y="12" width="44" height="18" stroke="#8E8E93" stroke-width="1.2"/><polygon points="2,12 24,2 46,12" stroke="#8E8E93" stroke-width="1.2" fill="none"/></svg><span>Фото этапа 3</span></div>
       </div>
     </div>
 
@@ -427,6 +451,9 @@ body{padding-top:72px}
           <span class="process-tag">Исполнительная схема</span>
         </div>
       </div>
+      <div class="process-photo" id="sph-4">
+        <div class="process-photo__ph"><svg viewBox="0 0 48 32" fill="none" width="48"><rect x="2" y="12" width="44" height="18" stroke="#8E8E93" stroke-width="1.2"/><polygon points="2,12 24,2 46,12" stroke="#8E8E93" stroke-width="1.2" fill="none"/></svg><span>Фото этапа 4</span></div>
+      </div>
     </div>
 
     <!-- Этап 5 -->
@@ -449,6 +476,9 @@ body{padding-top:72px}
           <span class="process-tag">БТИ</span>
           <span class="process-tag">Документация</span>
         </div>
+      </div>
+      <div class="process-photo" id="sph-5">
+        <div class="process-photo__ph"><svg viewBox="0 0 48 32" fill="none" width="48"><rect x="2" y="12" width="44" height="18" stroke="#8E8E93" stroke-width="1.2"/><polygon points="2,12 24,2 46,12" stroke="#8E8E93" stroke-width="1.2" fill="none"/></svg><span>Фото этапа 5</span></div>
       </div>
     </div>
 
@@ -548,7 +578,7 @@ body{padding-top:72px}
       <div class="cta-card__num">Вариант 01</div>
       <h3 class="cta-card__title">Получите смету за 24 часа</h3>
       <p class="cta-card__text">Пришлите площадь дома, этажность и адрес участка. Мы пришлём предварительный расчёт с разбивкой по статьям — фундамент, коробка, кровля, инженерия. Без звонков до вашего разрешения.</p>
-      <a href="index.html#form" class="btn btn--primary" style="align-self:flex-start;">
+      <a href="#svc-form" class="btn btn--primary" style="align-self:flex-start;">
         <span>Отправить параметры</span>
         <span class="btn__arr"></span>
       </a>
@@ -598,20 +628,60 @@ body{padding-top:72px}
 <div class="gallery-grid" id="gallery-grid" style="margin:0 5vw 80px;border-right:var(--divider);border-bottom:var(--divider);">
 </div>
 
-<!-- CTA -->
-<section style="background:var(--black);padding:80px 5vw;position:relative;overflow:hidden;">
+<!-- CONTACT FORM -->
+<section id="svc-form" style="background:var(--black);padding:80px 5vw;position:relative;overflow:hidden;">
   <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;"></div>
-  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;">
-    <div>
-      <div class="t-label" style="margin-bottom:12px;">Обсудим ваш проект</div>
-      <h2 class="t-h2" style="color:#fff;max-width:24ch;">Есть участок или хотите купить готовый дом?</h2>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end;">
-      <a href="index.html#form" class="btn btn--ghost-white">
-        <span>Оставить заявку</span>
-        <span class="btn__arr"></span>
-      </a>
-      <span style="font-family:var(--f-head);font-size:0.44rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);">Расчёт бесплатно</span>
+  <div style="position:relative;z-index:1;">
+    <div class="svc-form-wrap">
+      <!-- Left: heading + contacts -->
+      <div>
+        <div class="t-label" style="margin-bottom:14px;">Обсудим ваш проект</div>
+        <h2 class="t-h2" style="color:#fff;max-width:22ch;">Есть участок или хотите купить готовый дом?</h2>
+        <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.8;margin-top:16px;max-width:38ch;">
+          Оставьте заявку — расчёт бесплатно и без обязательств. Позвоним в удобное время, ответим на все вопросы.
+        </p>
+        <div style="margin-top:36px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <span class="svcf-label">Телефон</span>
+            <a href="tel:+79181269996" style="font-family:var(--f-head);font-size:1.05rem;color:#fff;text-decoration:none;letter-spacing:0.02em;">8 918 126 99 96</a>
+          </div>
+          <div>
+            <span class="svcf-label">Email</span>
+            <a href="mailto:info@iskon.pro" style="font-family:var(--f-head);font-size:0.85rem;color:rgba(255,255,255,0.7);text-decoration:none;">info@iskon.pro</a>
+          </div>
+        </div>
+      </div>
+      <!-- Right: form -->
+      <div>
+        <form id="svcf" onsubmit="submitSvcForm(event)" novalidate style="display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <label class="svcf-label" for="svcf-name">Ваше имя</label>
+            <input id="svcf-name" class="svcf-input" type="text" placeholder="Иван" autocomplete="given-name" />
+          </div>
+          <div>
+            <label class="svcf-label" for="svcf-phone">Телефон *</label>
+            <input id="svcf-phone" class="svcf-input" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" />
+          </div>
+          <div>
+            <label class="svcf-label" for="svcf-comment">Что строим?</label>
+            <textarea id="svcf-comment" class="svcf-input" rows="3" placeholder="Площадь, этажность, участок, материал..."></textarea>
+          </div>
+          <div>
+            <button type="submit" class="btn btn--primary" id="svcf-btn">
+              <span>Получить расчёт</span>
+              <span class="btn__arr"></span>
+            </button>
+          </div>
+          <p style="font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:rgba(255,255,255,0.3);line-height:1.6;margin-top:-4px;">
+            Нажимая кнопку, вы соглашаетесь с <a href="#" onclick="openPrivacyModal();return false;" style="color:rgba(255,255,255,0.5);text-decoration:underline;">политикой конфиденциальности</a>
+          </p>
+        </form>
+        <div id="svcf-success" style="display:none;padding:48px 0;">
+          <div style="font-family:var(--f-head);font-size:2.4rem;color:var(--orange);margin-bottom:14px;line-height:1;">✓</div>
+          <p style="font-family:var(--f-head);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#fff;margin-bottom:10px;">Заявка принята!</p>
+          <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.7;">Мы свяжемся с вами в ближайшее время.<br/>Если срочно — звоните: <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a></p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -785,6 +855,89 @@ document.addEventListener('keydown', e => {
 });
 
 loadGallery();
+
+// ── STAGE PHOTOS ──────────────────────────────────────────────────
+async function loadStagePhotos() {
+  try {
+    const r = await fetch('data/services.json?' + Date.now());
+    const data = await r.json();
+    (data.stage_photos || []).forEach(stage => {
+      const num = stage.id.replace('stage-', '');
+      const el = document.getElementById('sph-' + num);
+      if (el && stage.photo && stage.photo.trim()) {
+        el.innerHTML = '<img class="process-photo__img" src="' + stage.photo + '" alt="' + stage.title + '" loading="lazy">';
+      }
+    });
+  } catch(e) {}
+}
+loadStagePhotos();
+
+// ── SVC FORM PHONE ────────────────────────────────────────────────
+(function() {
+  var ph = document.getElementById('svcf-phone');
+  if (!ph) return;
+  var PREFIX = '+7 ';
+  ph.value = PREFIX;
+  function fmt(d) {
+    var s = PREFIX;
+    if (d.length > 0) s += '(' + d.slice(0, 3);
+    if (d.length >= 3) s += ')';
+    if (d.length > 3) s += ' ' + d.slice(3, 6);
+    if (d.length > 6) s += '-' + d.slice(6, 8);
+    if (d.length > 8) s += '-' + d.slice(8, 10);
+    return s;
+  }
+  ph.addEventListener('focus', function() { setTimeout(function() { if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(ph.value.length, ph.value.length); }, 0); });
+  ph.addEventListener('click', function() { if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(PREFIX.length, PREFIX.length); });
+  ph.addEventListener('keydown', function(e) {
+    var s = ph.selectionStart, end = ph.selectionEnd;
+    if ((e.key === 'Backspace' || e.key === 'Delete') && s <= PREFIX.length && end <= PREFIX.length) e.preventDefault();
+  });
+  ph.addEventListener('input', function() {
+    var v = ph.value;
+    if (!v.startsWith(PREFIX)) v = PREFIX + v.replace(/^\+?7?\s?\(?/, '');
+    var digits = v.slice(PREFIX.length).replace(/\D/g, '').slice(0, 10);
+    ph.value = fmt(digits);
+  });
+})();
+
+// ── SVC FORM SUBMIT ───────────────────────────────────────────────
+async function submitSvcForm(e) {
+  e.preventDefault();
+  var name    = document.getElementById('svcf-name').value.trim();
+  var phone   = document.getElementById('svcf-phone').value.trim();
+  var comment = document.getElementById('svcf-comment').value.trim();
+  var phoneDigits = phone.replace(/\D/g, '');
+  if (phoneDigits.length !== 11) {
+    var ph = document.getElementById('svcf-phone');
+    ph.style.outline = '2px solid var(--orange)';
+    ph.focus();
+    return;
+  }
+  document.getElementById('svcf-phone').style.outline = '';
+  var btn = document.getElementById('svcf-btn');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Отправляю...';
+  try {
+    await fetch('https://formsubmit.co/ajax/info@iskon.pro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Заявка со страницы Услуги — ИСКОН',
+        Имя: name || 'Не указано',
+        Телефон: phone,
+        Комментарий: comment || '—',
+        _captcha: 'false'
+      })
+    });
+    document.getElementById('svcf').style.display = 'none';
+    document.getElementById('svcf-success').style.display = 'block';
+  } catch(err) {
+    btn.disabled = false;
+    btn.querySelector('span').textContent = 'Получить расчёт';
+    alert('Ошибка отправки. Позвоните нам: 8 918 126 99 96');
+  }
+}
 
 function openPrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='flex';document.body.style.overflow='hidden';}
 function closePrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='none';document.body.style.overflow='';}

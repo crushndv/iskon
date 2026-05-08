@@ -337,6 +337,9 @@ img{display:block;max-width:100%}
         <div class="s-item" onclick="showPanel('add-project')">
           <span class="s-icon">➕</span> Добавить проект
         </div>
+        <div class="s-item" onclick="showPanel('services')">
+          <span class="s-icon">🛠️</span> Страница услуг
+        </div>
         <div class="s-item" onclick="showPanel('settings')">
           <span class="s-icon">⚙️</span> Настройки
         </div>
@@ -563,6 +566,18 @@ img{display:block;max-width:100%}
         </div>
       </div>
 
+      <!-- ── SERVICES ── -->
+      <div class="panel" id="panel-services">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title">Страница услуг — Этапы</div>
+            <div class="pnl-sub">Фотографии к каждому из 5 этапов строительства. После загрузки фото сохраняется автоматически.</div>
+          </div>
+          <button class="btn-hdr btn-orange" onclick="saveServicesPhotos()">💾 Сохранить URL</button>
+        </div>
+        <div id="services-stages-list" class="form-card"></div>
+      </div>
+
       <!-- ── SETTINGS ── -->
       <div class="panel" id="panel-settings">
         <div class="pnl-hdr">
@@ -737,12 +752,21 @@ async function changePassword() {
 // ── DATA ──────────────────────────────────────────────────────────
 let homes = [], projects = [];
 let siteSettings = { phone:'8 918 126 99 96', email:'info@iskon.pro', whatsapp:'', telegram:'', address:'' };
+let servicesData = { stage_photos: [
+  { id: 'stage-1', title: 'Инженерная подготовка участка', photo: '' },
+  { id: 'stage-2', title: 'Фундамент и коробка',           photo: '' },
+  { id: 'stage-3', title: 'Перекрытия, кровля, окна',      photo: '' },
+  { id: 'stage-4', title: 'Инженерные системы',            photo: '' },
+  { id: 'stage-5', title: 'Отделка и сдача объекта',       photo: '' }
+]};
 
 async function loadAll() {
   try { const r = await fetch('data/homes.json?' + Date.now()); homes = await r.json(); } catch(e) { homes = []; }
   try { const r = await fetch('data/projects.json?' + Date.now()); projects = await r.json(); } catch(e) { projects = []; }
+  try { const r = await fetch('data/services.json?' + Date.now()); const d = await r.json(); if (d && d.stage_photos) servicesData.stage_photos = d.stage_photos; } catch(e) {}
   renderListings();
   renderProjects();
+  renderServicesPanel();
   fillSettings();
   updateBadges();
 }
@@ -770,7 +794,7 @@ function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.s-item').forEach(s => s.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
-  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, settings:4, export:5 };
+  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, services:4, settings:5, export:6 };
   document.querySelectorAll('.s-item')[map[id] ?? 0]?.classList.add('active');
 }
 
@@ -1200,6 +1224,113 @@ function removePhoto(prefix, idx) {
   renderPhotoPreview(prefix);
 }
 
+// ── SERVICES PANEL ────────────────────────────────────────────────
+function renderServicesPanel() {
+  const el = document.getElementById('services-stages-list');
+  if (!el) return;
+  el.innerHTML = servicesData.stage_photos.map((stage, i) => `
+    <div class="form-sec">
+      <div class="form-sec-ttl">Этап ${i + 1}: ${stage.title}</div>
+      ${stage.photo ? `
+        <div style="margin-bottom:14px;">
+          <img src="${stage.photo}" style="width:240px;height:160px;object-fit:cover;border:var(--border);display:block;" />
+          <div style="font-size:.62rem;color:var(--grey);margin-top:5px;word-break:break-all;">${stage.photo}</div>
+        </div>` : ''}
+      <div class="photo-drop" id="svc-drop-${i}" onclick="document.getElementById('svc-input-${i}').click()" style="margin-bottom:10px;">
+        <input type="file" id="svc-input-${i}" accept="image/*" style="display:none;" />
+        <div class="photo-drop-txt">${stage.photo ? 'Заменить фото' : 'Загрузить фото'}</div>
+        <div class="photo-drop-sub">JPG, PNG, WEBP · Загружается в GitHub и сразу сохраняется</div>
+      </div>
+      <div class="imgbb-status" id="svc-status-${i}"></div>
+      <div class="field" style="margin-top:10px;">
+        <label>Или вставьте URL вручную и нажмите «Сохранить URL»</label>
+        <input type="text" id="svc-url-${i}" value="${stage.photo || ''}" placeholder="images/services/stage-${i + 1}/photo.jpg" style="margin-top:4px;" />
+      </div>
+      ${stage.photo ? `<button class="btn-act btn-del" style="margin-top:10px;" onclick="clearServicePhoto(${i})">🗑 Удалить фото</button>` : ''}
+    </div>
+  `).join('');
+
+  // Wire up file inputs after render
+  servicesData.stage_photos.forEach((_, i) => {
+    const input = document.getElementById('svc-input-' + i);
+    if (input) {
+      input.addEventListener('change', e => handleServiceFile(i, e.target.files));
+    }
+  });
+}
+
+async function handleServiceFile(stageIdx, files) {
+  if (!files || !files.length) return;
+  const file = files[0];
+  if (!file.type.startsWith('image/')) return;
+
+  const owner = localStorage.getItem('adv_gh_user');
+  const repo  = localStorage.getItem('adv_gh_repo');
+  const token = localStorage.getItem('adv_gh_token');
+  const statusEl = document.getElementById('svc-status-' + stageIdx);
+
+  if (!owner || !repo || !token) {
+    statusEl.className = 'imgbb-status err';
+    statusEl.textContent = '⚙️ Настройте GitHub-токен в разделе Настройки';
+    return;
+  }
+
+  statusEl.className = 'imgbb-status uploading';
+  statusEl.textContent = `⏳ Загружаю ${file.name}...`;
+
+  try {
+    const base64 = await readFileAsBase64(file);
+    const ext = file.name.split('.').pop().toLowerCase();
+    const uid = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const ghPath = `images/services/stage-${stageIdx + 1}/${uid}.${ext}`;
+
+    await pushBinaryToGitHub(owner, repo, ghPath, base64, token, `upload: ${ghPath}`);
+    servicesData.stage_photos[stageIdx].photo = ghPath;
+
+    // Auto-save services.json after upload
+    await pushFileToGitHub(owner, repo, 'data/services.json', JSON.stringify(servicesData, null, 2), token, 'panel: update services.json');
+
+    statusEl.className = 'imgbb-status ok';
+    statusEl.textContent = `✅ Загружено и сохранено → ${ghPath} · Сайт обновится через ~60 сек`;
+    renderServicesPanel();
+  } catch(err) {
+    statusEl.className = 'imgbb-status err';
+    statusEl.textContent = `❌ Ошибка: ${err.message}`;
+  }
+}
+
+async function saveServicesPhotos() {
+  // Collect any manually edited URL fields
+  servicesData.stage_photos.forEach((stage, i) => {
+    const urlInput = document.getElementById('svc-url-' + i);
+    if (urlInput) stage.photo = urlInput.value.trim();
+  });
+
+  const owner = localStorage.getItem('adv_gh_user');
+  const repo  = localStorage.getItem('adv_gh_repo');
+  const token = localStorage.getItem('adv_gh_token');
+  if (!owner || !repo || !token) {
+    toast('⚙️ Настройте GitHub-токен в разделе Настройки', 'orange');
+    showPanel('settings');
+    return;
+  }
+
+  try {
+    await pushFileToGitHub(owner, repo, 'data/services.json', JSON.stringify(servicesData, null, 2), token, 'panel: update services.json');
+    toast('✅ Фото этапов сохранены! Сайт обновится через ~60 сек.', 'green');
+    renderServicesPanel();
+  } catch(err) {
+    toast('❌ Ошибка: ' + err.message, 'red');
+  }
+}
+
+function clearServicePhoto(stageIdx) {
+  if (!confirm('Удалить фото этого этапа?')) return;
+  servicesData.stage_photos[stageIdx].photo = '';
+  renderServicesPanel();
+  toast('Фото удалено. Нажмите «Сохранить URL» чтобы применить на сайте.', '');
+}
+
 // ── SETTINGS ──────────────────────────────────────────────────────
 function fillSettings() {
   document.getElementById('s-gh-user').value = localStorage.getItem('adv_gh_user') || '';
@@ -1290,6 +1421,7 @@ async function deployToGitHub() {
     const projJson  = JSON.stringify(cleanProjects, null, 2);
     await pushFileToGitHub(owner, repo, 'data/homes.json', homesJson, token, 'panel: update homes.json');
     await pushFileToGitHub(owner, repo, 'data/projects.json', projJson, token, 'panel: update projects.json');
+    await pushFileToGitHub(owner, repo, 'data/services.json', JSON.stringify(servicesData, null, 2), token, 'panel: update services.json');
     markClean();
     toast('✅ Опубликовано! Сайт обновится через ~60 сек.', 'green');
   } catch(err) {
