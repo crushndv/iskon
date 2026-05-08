@@ -753,8 +753,17 @@ input, select, textarea { font-family: inherit; }
 .geo-tag:nth-child(3)::before { animation-delay: 0.8s; }
 .geo-tag:nth-child(4)::before { animation-delay: 1.2s; }
 @media(max-width:600px){
-  .geo-strip { flex-wrap: nowrap; }
-  .geo-strip__tags { flex-wrap: nowrap; }
+  .geo-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    overflow-x: visible;
+    padding: 16px 5vw;
+  }
+  .geo-strip__sep { display: none; }
+  .geo-strip__label { font-size: 0.52rem; }
+  .geo-strip__tags { flex-wrap: wrap; gap: 6px; }
+  .geo-tag { font-size: 0.52rem; padding: 6px 12px; }
 }
 
 .footer__phone-link {
