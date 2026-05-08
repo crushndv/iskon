@@ -159,11 +159,10 @@ input, select, textarea { font-family: inherit; }
   gap: 20px;
 }
 .nav__phone {
-  font-family: var(--f-body);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-family: var(--f-head);
+  font-size: 0.78rem;
   color: var(--black);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
 /* Burger (mobile) */
@@ -690,6 +689,12 @@ input, select, textarea { font-family: inherit; }
   transition: color 0.2s;
 }
 .footer__nav-link:hover { color: #fff; }
+.footer__phone-link {
+  font-family: var(--f-head);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  font-weight: 400;
+}
 
 .footer__bottom {
   position: relative; z-index: 1;
