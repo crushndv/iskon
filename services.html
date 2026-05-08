@@ -154,6 +154,70 @@ body{padding-top:72px}
   text-align:center;margin-top:10px;
   font-family:var(--f-body);font-size:0.75rem;font-weight:300;color:rgba(255,255,255,0.5);
 }
+
+/* STATS STRIP */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:var(--divider);border-bottom:var(--divider);}
+.stats-strip__cell{padding:32px 5vw;border-right:var(--divider);display:flex;flex-direction:column;gap:6px;}
+.stats-strip__cell:last-child{border-right:none;}
+.stats-strip__num{font-family:var(--f-head);font-size:clamp(2rem,4vw,3rem);color:var(--black);letter-spacing:-0.03em;line-height:1;}
+.stats-strip__unit{font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-top:4px;}
+.stats-strip__desc{font-family:var(--f-body);font-size:0.78rem;font-weight:300;color:var(--grey);line-height:1.55;margin-top:4px;}
+@media(max-width:600px){.stats-strip{grid-template-columns:1fr;}.stats-strip__cell{border-right:none;border-bottom:var(--divider);}}
+
+/* PROBLEM BLOCK */
+.problem-block{background:var(--black);padding:72px 5vw;position:relative;overflow:hidden;}
+.problem-table{width:100%;border-collapse:collapse;margin-top:32px;}
+.problem-table th,.problem-table td{padding:14px 20px;border:1px solid rgba(255,255,255,0.1);font-family:var(--f-body);font-size:0.8rem;font-weight:300;color:rgba(255,255,255,0.7);text-align:left;}
+.problem-table th{font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-weight:400;}
+.problem-answer{margin-top:32px;padding:20px 24px;border-left:3px solid var(--orange);background:rgba(255,69,0,0.06);}
+@media(max-width:600px){.problem-table th,.problem-table td{padding:10px 14px;font-size:0.74rem;}}
+
+/* PROCESS STAGES */
+.process-section{padding:72px 5vw 0;}
+.process-list{display:flex;flex-direction:column;margin-top:48px;}
+.process-item{display:grid;grid-template-columns:72px 1fr;border-top:var(--divider);padding:48px 0;}
+.process-item:last-child{border-bottom:var(--divider);}
+.process-num{font-family:var(--f-head);font-size:clamp(2.5rem,5vw,4.5rem);color:var(--black);opacity:0.06;letter-spacing:-0.04em;line-height:1;padding-top:4px;}
+.process-body{padding-left:20px;display:flex;flex-direction:column;gap:14px;}
+.process-title{font-family:var(--f-head);font-size:clamp(0.85rem,1.8vw,1.15rem);text-transform:uppercase;letter-spacing:0.03em;color:var(--black);}
+.process-text{font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:var(--grey);max-width:64ch;}
+.process-trigger{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border:1px solid rgba(255,69,0,0.25);background:rgba(255,69,0,0.03);margin-top:6px;}
+.process-trigger__icon{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
+.process-trigger__text{font-family:var(--f-body);font-size:0.78rem;font-weight:400;color:var(--black);line-height:1.65;}
+.process-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
+.process-tag{padding:3px 11px;border:var(--divider);font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--grey);}
+@media(max-width:600px){.process-item{grid-template-columns:50px 1fr;padding:32px 0;}.process-body{padding-left:12px;}}
+
+/* COMPETENCE */
+.competence-section{padding:72px 5vw;}
+.competence-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:var(--divider);margin-top:48px;}
+.competence-cell{padding:36px 40px;border-right:var(--divider);border-bottom:var(--divider);}
+.competence-cell:nth-child(2n){border-right:none;}
+.competence-cell:nth-last-child(-n+2){border-bottom:none;}
+.competence-cell__head{font-family:var(--f-head);font-size:0.44rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.competence-cell__title{font-family:var(--f-head);font-size:clamp(0.8rem,1.6vw,1rem);text-transform:uppercase;letter-spacing:0.02em;color:var(--black);margin-bottom:12px;}
+.competence-cell__text{font-family:var(--f-body);font-size:0.8rem;font-weight:300;line-height:1.8;color:var(--grey);}
+@media(max-width:600px){.competence-grid{grid-template-columns:1fr;}.competence-cell{border-right:none;}.competence-cell:nth-last-child(-n+2){border-bottom:var(--divider);}.competence-cell:last-child{border-bottom:none;}}
+
+/* CASES */
+.cases-section{background:#F0F0F2;padding:72px 5vw;}
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:var(--divider);margin-top:48px;}
+.case-cell{padding:32px 28px;border-right:var(--divider);display:flex;flex-direction:column;gap:12px;}
+.case-cell:last-child{border-right:none;}
+.case-cell__tag{font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);}
+.case-cell__title{font-family:var(--f-head);font-size:clamp(0.78rem,1.4vw,0.92rem);text-transform:uppercase;letter-spacing:0.02em;color:var(--black);line-height:1.2;}
+.case-cell__text{font-family:var(--f-body);font-size:0.78rem;font-weight:300;line-height:1.75;color:var(--grey);flex:1;}
+.case-cell__result{font-family:var(--f-body);font-size:0.76rem;font-weight:500;color:var(--black);padding-top:12px;border-top:var(--divider);}
+@media(max-width:768px){.cases-grid{grid-template-columns:1fr;}.case-cell{border-right:none;border-bottom:var(--divider);}.case-cell:last-child{border-bottom:none;}}
+
+/* CTAs */
+.cta-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:var(--divider);border-left:var(--divider);}
+.cta-card{padding:40px 32px;border-right:var(--divider);border-bottom:var(--divider);display:flex;flex-direction:column;gap:16px;background:var(--snow);transition:background 0.2s;}
+.cta-card:hover{background:rgba(255,69,0,0.03);}
+.cta-card__num{font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(142,142,147,0.5);}
+.cta-card__title{font-family:var(--f-head);font-size:clamp(0.82rem,1.6vw,1rem);text-transform:uppercase;letter-spacing:0.02em;color:var(--black);line-height:1.2;}
+.cta-card__text{font-family:var(--f-body);font-size:0.78rem;font-weight:300;line-height:1.75;color:var(--grey);flex:1;}
+@media(max-width:768px){.cta-trio{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -181,16 +245,21 @@ body{padding-top:72px}
 </div>
 
 <!-- PAGE HERO -->
-<div class="page-hero">
+<div class="page-hero" id="own-land">
   <div>
-    <div class="t-label" style="margin-bottom:14px;">Что мы строим</div>
-    <h1 class="t-h2" style="font-size:clamp(1.5rem,4vw,3rem);">Строительство<br />домов под заказ<br />в Краснодарском крае</h1>
+    <div class="t-label" style="margin-bottom:14px;">Комплексное строительство</div>
+    <h1 style="font-family:var(--f-head);font-size:clamp(1.5rem,3.5vw,2.8rem);text-transform:uppercase;line-height:1.05;letter-spacing:-0.01em;">
+      Строим дом в срок.<br/>
+      <span style="color:var(--orange);">Смета не меняется</span><br/>
+      после подписания договора.
+    </h1>
   </div>
   <div>
-    <p class="t-body" style="margin-bottom:24px;">
-      Строим дома из кирпича, газоблока и отсевного блока на вашем участке или на наших землях.
-      Более 10 лет опыта. Работаем по договору — смета и сроки фиксируются письменно.
-      Каждый этап строительства документируем на фото.
+    <p class="t-body" style="margin-bottom:20px;">
+      Берём на себя всё: от геологии участка до финального обмера. Вы получаете ключи — мы закрываем все вопросы по пути.
+    </p>
+    <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:var(--grey);margin-bottom:28px;">
+      Большинство заказчиков приходят к нам после того, как предыдущий подрядчик пропал или поднял цену на 40% в середине стройки. Мы работаем иначе: цена в договоре — это цена сдачи объекта. Без «а вот ещё выяснилось».
     </p>
     <a href="index.html#form" class="btn btn--primary">
       <span>Получить расчёт стоимости</span>
@@ -199,78 +268,186 @@ body{padding-top:72px}
   </div>
 </div>
 
-<!-- SERVICES DETAIL -->
-<section class="section" id="own-land" style="padding-bottom:0;">
-  <div class="svc-detail-list">
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-strip__cell">
+    <div class="stats-strip__num">10</div>
+    <div class="stats-strip__unit">лет</div>
+    <p class="stats-strip__desc">Строим в Краснодарском крае, знаем местные грунты и климат</p>
+  </div>
+  <div class="stats-strip__cell">
+    <div class="stats-strip__num">0</div>
+    <div class="stats-strip__unit">объектов брошено</div>
+    <p class="stats-strip__desc">Завершаем каждый начатый проект</p>
+  </div>
+  <div class="stats-strip__cell">
+    <div class="stats-strip__num">±0</div>
+    <div class="stats-strip__unit">дней</div>
+    <p class="stats-strip__desc">Соблюдаем утверждённый график производства работ</p>
+  </div>
+</div>
 
-    <div class="svc-detail-item">
-      <div class="svc-detail-num" aria-hidden="true">01</div>
-      <div class="svc-detail-body">
-        <h2 class="svc-detail-title">Строительство на вашем участке</h2>
-        <p class="svc-detail-desc">
-          Приезжаем на ваш участок в Краснодаре или Краснодарском крае, делаем замеры и геологию грунта.
-          Предлагаем проект под ваш бюджет и нужды. Строим из кирпича или газоблока на ваш выбор.
-          Сдаём в срок — каждый этап фиксируем на фото и отправляем вам в мессенджер.
+<!-- PROBLEM BLOCK -->
+<div class="problem-block">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;"></div>
+  <div style="position:relative;z-index:1;max-width:900px;">
+    <div class="t-label" style="margin-bottom:14px;">Почему стройка идёт не так</div>
+    <h2 class="t-h2" style="color:#fff;">Три причины, по которым<br/>сроки срываются и бюджет растёт</h2>
+    <table class="problem-table">
+      <thead>
+        <tr>
+          <th>Что происходит</th>
+          <th>Почему это случается</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Смета растёт на 20–60%</td>
+          <td>Подрядчик не учёл инженерию, грунт, сезонность</td>
+        </tr>
+        <tr>
+          <td>Объект стоит месяцами</td>
+          <td>Нет синхронизации между бригадами и поставками материалов</td>
+        </tr>
+        <tr>
+          <td>Качество невозможно проверить</td>
+          <td>Скрытые работы не документируются — после закрытия стен не видно ничего</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="problem-answer">
+      <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,0.8);">
+        <strong style="color:#fff;font-weight:500;">Наш ответ:</strong> Мы закрываем эти три точки ещё до старта — через инженерный аудит участка, сводный календарный план и обязательную фотофиксацию всех скрытых конструктивов.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS: 5 STAGES -->
+<section class="process-section" id="process">
+  <header class="section-header" style="padding-bottom:0;">
+    <div class="section-header__left">
+      <span class="t-label">Как устроена стройка изнутри</span>
+      <h2 class="t-h2">Пять этапов.<br/>Без неожиданностей.</h2>
+    </div>
+    <div class="section-header__right">
+      <p class="t-body" style="max-width:38ch;text-align:right;">
+        Мы не скрываем процесс. Ниже — честная последовательность работ и то, что происходит на каждом этапе.
+      </p>
+    </div>
+  </header>
+
+  <div class="process-list">
+
+    <!-- Этап 1 -->
+    <div class="process-item">
+      <div class="process-num" aria-hidden="true">01</div>
+      <div class="process-body">
+        <h3 class="process-title">Инженерная подготовка участка</h3>
+        <p class="process-text">
+          Геологическое исследование грунта, топосъёмка участка, разработка проекта фундамента под конкретные условия. Параллельно согласовываем технические условия на подключение инженерных сетей.<br/><br/>
+          Тип фундамента определяет 30–40% итоговой сметы. Ошибка здесь — это либо переплата, либо трещины в стенах через 5 лет. Мы делаем геологию на каждом участке — даже если сосед уже строился рядом. Грунт нелинейный.
         </p>
-        <div class="svc-detail-tags">
-          <span class="svc-tag">Кирпич</span>
-          <span class="svc-tag">Газоблок</span>
-          <span class="svc-tag">Отсевной блок</span>
-          <span class="svc-tag">Договор</span>
-          <span class="svc-tag">Фото-отчёт</span>
+        <div class="process-trigger">
+          <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="process-trigger__text">По результатам геологии вы получаете письменное обоснование типа фундамента — документ, который защищает вас при любом споре с подрядчиком.</p>
+        </div>
+        <div class="process-tags">
+          <span class="process-tag">Геология</span>
+          <span class="process-tag">Топосъёмка</span>
+          <span class="process-tag">Проект фундамента</span>
+          <span class="process-tag">ТУ на сети</span>
         </div>
       </div>
     </div>
 
-    <div class="svc-detail-item" id="roofing">
-      <div class="svc-detail-num" aria-hidden="true">02</div>
-      <div class="svc-detail-body">
-        <h2 class="svc-detail-title">Кровельные работы</h2>
-        <p class="svc-detail-desc">
-          Специализируемся на вальмовых кровлях сложной формы — они лучше всего держат краснодарский ветер
-          и ливни. Работаем с металлочерепицей, профнастилом и мягкой кровлей. Гарантия на кровлю — 5 лет.
+    <!-- Этап 2 -->
+    <div class="process-item">
+      <div class="process-num" aria-hidden="true">02</div>
+      <div class="process-body">
+        <h3 class="process-title">Фундамент и коробка</h3>
+        <p class="process-text">
+          Монтаж арматурного каркаса, заливка бетоном марки не ниже М300, выдержка технологических сроков — 28 суток набора прочности, не 10, как делают «в сезон». Возведение несущих стен из согласованного материала: газоблок D500, кирпич М200, монолит или отсевной блок.<br/><br/>
+          Коробка — это скелет. Всё, что сделано на этом этапе неправильно, невозможно исправить без сноса. Поэтому мы не ускоряемся здесь за счёт технологии.
         </p>
-        <div class="svc-detail-tags">
-          <span class="svc-tag">Вальмовая кровля</span>
-          <span class="svc-tag">Двускатная</span>
-          <span class="svc-tag">Металлочерепица</span>
-          <span class="svc-tag">Гарантия 5 лет</span>
+        <div class="process-trigger">
+          <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="process-trigger__text">Арматурный каркас и укладка каждого ряда фиксируются на фото с геопривязкой и датой — вы получаете архив скрытых работ ещё до закрытия стен.</p>
+        </div>
+        <div class="process-tags">
+          <span class="process-tag">Бетон М300</span>
+          <span class="process-tag">Кирпич М200</span>
+          <span class="process-tag">Газоблок D500</span>
+          <span class="process-tag">Отсевной блок</span>
+          <span class="process-tag">Монолит</span>
         </div>
       </div>
     </div>
 
-    <div class="svc-detail-item" id="materials">
-      <div class="svc-detail-num" aria-hidden="true">03</div>
-      <div class="svc-detail-body">
-        <h2 class="svc-detail-title">Кладка стен — кирпич и газоблок</h2>
-        <p class="svc-detail-desc">
-          Используем лицевой кирпич М150–М250 (ГОСТ 530-2012) и газоблок D500–D600 (ГОСТ 31360-2007).
-          Также работаем с отсевным блоком — прочным и доступным материалом для несущих стен.
-          Все материалы — от проверенных поставщиков Краснодарского края.
+    <!-- Этап 3 -->
+    <div class="process-item">
+      <div class="process-num" aria-hidden="true">03</div>
+      <div class="process-body">
+        <h3 class="process-title">Перекрытия, кровля, окна</h3>
+        <p class="process-text">
+          Монтаж монолитных или сборных перекрытий, устройство стропильной системы, монтаж кровельного покрытия. Одновременно — установка окон и входных групп, чтобы объект перешёл в закрытый тепловой контур до зимы.<br/><br/>
+          Дом, закрытый «под крышу» до ноября, не теряет сезон. Мы синхронизируем поставку материалов с календарным планом: кровельщики не ждут металлочерепицу, металлочерепица не лежит под дождём.
         </p>
-        <div class="svc-detail-tags">
-          <span class="svc-tag">Кирпич М150–250</span>
-          <span class="svc-tag">Газоблок D500–600</span>
-          <span class="svc-tag">Отсевной блок</span>
-          <span class="svc-tag">ГОСТ</span>
+        <div class="process-trigger">
+          <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="process-trigger__text">Если мы не успели закрыть объект до первых заморозков по нашей вине — неустойка прописана в договоре заранее.</p>
+        </div>
+        <div class="process-tags">
+          <span class="process-tag">Вальмовая кровля</span>
+          <span class="process-tag">Металлочерепица</span>
+          <span class="process-tag">Монолитные перекрытия</span>
+          <span class="process-tag">Гарантия 5 лет</span>
         </div>
       </div>
     </div>
 
-    <div class="svc-detail-item" id="contract">
-      <div class="svc-detail-num" aria-hidden="true">04</div>
-      <div class="svc-detail-body">
-        <h2 class="svc-detail-title">Прозрачная работа по договору</h2>
-        <p class="svc-detail-desc">
-          Заключаем официальный договор подряда. Фиксируем смету, сроки и этапы. Принимаем наличные,
-          семейную ипотеку и стандартную ипотеку. Помогаем собрать документы для банка.
-          Без скрытых платежей — вы знаете точную стоимость с первого дня.
+    <!-- Этап 4 -->
+    <div class="process-item">
+      <div class="process-num" aria-hidden="true">04</div>
+      <div class="process-body">
+        <h3 class="process-title">Инженерные системы</h3>
+        <p class="process-text">
+          Прокладка электрики по проекту ВРУ с поэтажной схемой, монтаж водоснабжения и канализации, отопления — радиаторная система или тёплый пол — и вентиляции. Всё до штукатурки.<br/><br/>
+          Инженерия, проложенная после отделки, — это вскрытые стены и потерянные деньги. Мы делаем всё в правильной последовательности: сначала трубы и кабели, потом штукатурный слой.
         </p>
-        <div class="svc-detail-tags">
-          <span class="svc-tag">Договор подряда</span>
-          <span class="svc-tag">Семейная ипотека</span>
-          <span class="svc-tag">Стандартная ипотека</span>
-          <span class="svc-tag">Наличные</span>
+        <div class="process-trigger">
+          <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="process-trigger__text">По завершению этапа вы получаете исполнительную схему инженерных сетей — без неё невозможно ни добавить розетку, ни сделать перепланировку в будущем.</p>
+        </div>
+        <div class="process-tags">
+          <span class="process-tag">Электрика</span>
+          <span class="process-tag">Водоснабжение</span>
+          <span class="process-tag">Отопление</span>
+          <span class="process-tag">Вентиляция</span>
+          <span class="process-tag">Исполнительная схема</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Этап 5 -->
+    <div class="process-item">
+      <div class="process-num" aria-hidden="true">05</div>
+      <div class="process-body">
+        <h3 class="process-title">Отделка и сдача объекта</h3>
+        <p class="process-text">
+          Штукатурка стен, стяжка полов, разводка чистовой электрики, установка сантехники, финишные покрытия. Завершается этап актом приёма-передачи с обмером БТИ и пакетом исполнительной документации.<br/><br/>
+          Сдача — это не просто ключи. Это папка документов, по которой любой другой специалист через 10 лет поймёт, что и как построено в вашем доме.
+        </p>
+        <div class="process-trigger">
+          <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="process-trigger__text">Вы подписываете акт только после того, как лично прошли по объекту с нашим прорабом и зафиксировали все замечания. Ничего не принимается «на веру».</p>
+        </div>
+        <div class="process-tags">
+          <span class="process-tag">Штукатурка</span>
+          <span class="process-tag">Стяжка</span>
+          <span class="process-tag">Акт приёмки</span>
+          <span class="process-tag">БТИ</span>
+          <span class="process-tag">Документация</span>
         </div>
       </div>
     </div>
@@ -278,24 +455,122 @@ body{padding-top:72px}
   </div>
 </section>
 
-<!-- MATERIALS -->
-<div class="materials-strip" style="margin:0 5vw;">
-  <div class="material-cell">
-    <div class="t-label" style="margin-bottom:8px;">Материал 01</div>
-    <div class="material-name">Кирпич</div>
-    <p class="material-desc">Лицевой и забутовочный кирпич М150–М250. Долговечность более 100 лет, высокая прочность, отличный внешний вид.</p>
+<!-- COMPETENCE -->
+<section class="competence-section" id="materials">
+  <header class="section-header" style="padding-bottom:0;">
+    <div class="section-header__left">
+      <span class="t-label">Как мы устроены внутри</span>
+      <h2 class="t-h2">Не «кто мы»,<br/>а почему получается.</h2>
+    </div>
+    <div class="section-header__right">
+      <p class="t-body" style="max-width:38ch;text-align:right;">
+        Четыре принципа, которые объясняют, почему 0 объектов брошено за 10 лет.
+      </p>
+    </div>
+  </header>
+
+  <div class="competence-grid">
+    <div class="competence-cell">
+      <div class="competence-cell__head">Управление</div>
+      <h3 class="competence-cell__title">Главный инженер проекта</h3>
+      <p class="competence-cell__text">На каждом объекте есть один человек, который отвечает за технические решения от начала до конца. Не «бригадир» — инженер с допуском СРО. Он принимает арматуру, подписывает акты скрытых работ, контролирует соответствие проекту. Его номер есть у вас с первого дня.</p>
+    </div>
+    <div class="competence-cell">
+      <div class="competence-cell__head">Контроль</div>
+      <h3 class="competence-cell__title">Прораб ведёт не более 2 объектов</h3>
+      <p class="competence-cell__text">При 4–5 объектах человек физически не успевает быть везде. Мы проверили это на практике в 2019 году и сделали выводы. Наше ограничение — два объекта одновременно. Это не маркетинг, это управленческое решение.</p>
+    </div>
+    <div class="competence-cell">
+      <div class="competence-cell__head">Поставки</div>
+      <h3 class="competence-cell__title">4 поставщика по каждой позиции</h3>
+      <p class="competence-cell__text">Газоблок, кирпич, металл, кровля — по каждой позиции у нас 4 поставщика. Если один не может отгрузить в срок, переключаемся без остановки объекта. Стройка не ждёт материала.</p>
+    </div>
+    <div class="competence-cell">
+      <div class="competence-cell__head">Документация</div>
+      <h3 class="competence-cell__title">Фиксируем всё, что будет скрыто</h3>
+      <p class="competence-cell__text">Каждый этап документируется: фото с геопривязкой, акты освидетельствования скрытых работ по форме КС-2, журнал производства работ. Это не для отчётности — это ваша защита при любом страховом или юридическом случае.</p>
+    </div>
   </div>
-  <div class="material-cell">
-    <div class="t-label" style="margin-bottom:8px;">Материал 02</div>
-    <div class="material-name">Газоблок</div>
-    <p class="material-desc">Газоблок D500–D600. Тёплые стены, низкая теплопроводность, быстрый монтаж. Подходит для семейной ипотеки.</p>
+</section>
+
+<!-- CASES -->
+<section class="cases-section" id="roofing">
+  <header class="section-header" style="padding-bottom:0;">
+    <div class="section-header__left">
+      <span class="t-label">Три объекта. Три разных условия.</span>
+      <h2 class="t-h2">Реальные решения,<br/>не типовые ответы.</h2>
+    </div>
+    <div class="section-header__right">
+      <p class="t-body" style="max-width:38ch;text-align:right;">
+        Короткие кейсы без восхищённых цитат — только факты и принятые решения.
+      </p>
+    </div>
+  </header>
+
+  <div class="cases-grid">
+    <div class="case-cell">
+      <div class="case-cell__tag">Динской район · 2024</div>
+      <h3 class="case-cell__title">Кирпичный дом 140 м² — сложный грунт</h3>
+      <p class="case-cell__text">Участок с уровнем грунтовых вод 1,2 м от поверхности. Применили свайно-ростверковый фундамент вместо ленточного — это сэкономило заказчику 340 000 ₽ на дренаже. Вариант, который никто не предложил до нас.</p>
+      <div class="case-cell__result">Сдали в срок · Смета не изменилась</div>
+    </div>
+    <div class="case-cell">
+      <div class="case-cell__tag">п. Берёзовый, Краснодар · 2024</div>
+      <h3 class="case-cell__title">Газоблок 110 м² — отказ от ленточного фундамента</h3>
+      <p class="case-cell__text">Заказчик настаивал на ленточном фундаменте. Геология показала торфяную прослойку на глубине 0,8 м. Убедили перейти на плитный. Через полгода сосед с ленточным фундаментом получил трещину в стене.</p>
+      <div class="case-cell__result">Решение подтверждено практикой</div>
+    </div>
+    <div class="case-cell">
+      <div class="case-cell__tag">п. Пашковский · 2023</div>
+      <h3 class="case-cell__title">Кирпич 190 м² — сложная вальмовая кровля</h3>
+      <p class="case-cell__text">Вальмовая кровля с 14 ендовами. Заказчик сравнивал 6 подрядчиков. Мы дали самую дорогую смету и объяснили, почему. Он выбрал нас. Сдача — день в день.</p>
+      <div class="case-cell__result">Самая дорогая смета · Выбрали нас</div>
+    </div>
   </div>
-  <div class="material-cell">
-    <div class="t-label" style="margin-bottom:8px;">Материал 03</div>
-    <div class="material-name">Отсевной блок</div>
-    <p class="material-desc">Прочный и экономичный материал для несущих стен. Производится на основе отсева щебня, хорошо держит тепло.</p>
+</section>
+
+<!-- CTA TRIO -->
+<section class="section" style="padding-bottom:0;" id="contract">
+  <header class="section-header">
+    <div class="section-header__left">
+      <span class="t-label">Следующий шаг — без обязательств</span>
+      <h2 class="t-h2">Выберите удобный<br/>формат разговора.</h2>
+    </div>
+    <div class="section-header__right">
+      <p class="t-body" style="max-width:36ch;text-align:right;">
+        Три входа. Каждый снимает свой барьер.
+      </p>
+    </div>
+  </header>
+
+  <div class="cta-trio">
+    <div class="cta-card">
+      <div class="cta-card__num">Вариант 01</div>
+      <h3 class="cta-card__title">Получите смету за 24 часа</h3>
+      <p class="cta-card__text">Пришлите площадь дома, этажность и адрес участка. Мы пришлём предварительный расчёт с разбивкой по статьям — фундамент, коробка, кровля, инженерия. Без звонков до вашего разрешения.</p>
+      <a href="index.html#form" class="btn btn--primary" style="align-self:flex-start;">
+        <span>Отправить параметры</span>
+        <span class="btn__arr"></span>
+      </a>
+    </div>
+    <div class="cta-card">
+      <div class="cta-card__num">Вариант 02</div>
+      <h3 class="cta-card__title">Приедьте на объект в работе</h3>
+      <p class="cta-card__text">Покажем стройку в процессе: как ведётся журнал, как принимается арматура, как выглядит наш контроль изнутри. Выберем день, когда на объекте будут активные работы, а не «всё уже готово».</p>
+      <a href="tel:+79181269996" class="btn btn--ghost" style="align-self:flex-start;">
+        <span>Записаться на показ</span>
+      </a>
+    </div>
+    <div class="cta-card">
+      <div class="cta-card__num">Вариант 03</div>
+      <h3 class="cta-card__title">Разберём ваш проект за 30 минут</h3>
+      <p class="cta-card__text">Пришлите план дома или ссылку на типовой проект. На звонке пройдём по этапам, укажем узкие места и назовём реалистичный бюджет. Это бесплатно и ни к чему не обязывает.</p>
+      <a href="tel:+79181269996" class="btn btn--ghost" style="align-self:flex-start;">
+        <span>Назначить звонок</span>
+      </a>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- GALLERY SECTION -->
 <section class="section" id="gallery">
