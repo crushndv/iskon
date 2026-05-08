@@ -850,8 +850,9 @@ input, select, textarea { font-family: inherit; }
   /* Hero */
   .hero { min-height: calc(100svh - 60px); padding: 0 4vw; }
   .t-hero { font-size: clamp(1.8rem, 9vw, 2.6rem) !important; line-height: 1.05 !important; }
-  .hero__labels { margin-bottom: 24px; gap: 8px; }
-  .tag { font-size: 0.42rem; padding: 4px 9px; }
+  .hero__labels { margin-bottom: 24px; gap: 6px 8px; flex-wrap: wrap; }
+  .hero__labels .geo-strip__label { flex: 0 0 100%; margin-bottom: 2px; }
+  .tag { font-size: 0.5rem; padding: 5px 11px; }
   .hero__title { margin-bottom: 20px; }
   .hero__body { gap: 20px; max-width: 100%; }
   .hero__cta { flex-direction: column; align-items: flex-start; gap: 10px; }
