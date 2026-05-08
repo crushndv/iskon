@@ -195,6 +195,21 @@ body{padding-top:72px}
 @media(max-width:1024px){.process-item{grid-template-columns:72px 1fr;}.process-photo{display:none;}}
 @media(max-width:600px){.process-item{grid-template-columns:50px 1fr;padding:32px 0;}.process-body{padding-left:12px;}}
 
+/* QUIZ */
+@media(max-width:768px){
+  #quiz-section{padding:56px 5vw;}
+  #quiz-card>div:first-child+div{padding:18px 20px 0;}
+  #quiz-card>div:last-child{padding:16px 20px 24px;}
+  #quiz-final{padding:32px 20px;}
+  #quiz-final>div:first-child{margin:-32px -20px 28px;}
+  #quiz-thanks{padding:48px 20px;}
+}
+@media(max-width:480px){
+  #quiz-section{padding:48px 4vw;}
+  #quiz-options{grid-template-columns:1fr !important;}
+  #quiz-form{max-width:100% !important;}
+}
+
 /* CONTACT FORM on services page */
 .svc-form-wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
 @media(max-width:768px){.svc-form-wrap{grid-template-columns:1fr;gap:40px;}}
@@ -302,41 +317,100 @@ body{padding-top:72px}
   </div>
 </div>
 
-<!-- PROBLEM BLOCK -->
-<div class="problem-block">
+<!-- КВИЗ -->
+<section id="quiz-section" style="background:var(--black);padding:80px 5vw;position:relative;overflow:hidden;">
   <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;"></div>
-  <div style="position:relative;z-index:1;max-width:900px;">
-    <div class="t-label" style="margin-bottom:14px;">Почему стройка идёт не так</div>
-    <h2 class="t-h2" style="color:#fff;">Три причины, по которым<br/>сроки срываются и бюджет растёт</h2>
-    <table class="problem-table">
-      <thead>
-        <tr>
-          <th>Что происходит</th>
-          <th>Почему это случается</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Смета растёт на 20–60%</td>
-          <td>Подрядчик не учёл инженерию, грунт, сезонность</td>
-        </tr>
-        <tr>
-          <td>Объект стоит месяцами</td>
-          <td>Нет синхронизации между бригадами и поставками материалов</td>
-        </tr>
-        <tr>
-          <td>Качество невозможно проверить</td>
-          <td>Скрытые работы не документируются — после закрытия стен не видно ничего</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="problem-answer">
-      <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,0.8);">
-        <strong style="color:#fff;font-weight:500;">Наш ответ:</strong> Мы закрываем эти три точки ещё до старта — через инженерный аудит участка, сводный календарный план и обязательную фотофиксацию всех скрытых конструктивов.
-      </p>
+  <div style="position:relative;z-index:1;max-width:860px;margin:0 auto;">
+
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="t-label" style="margin-bottom:14px;">Бесплатный подбор проекта</div>
+      <h2 class="t-h2" style="color:#fff;">Рассчитайте стоимость<br/>вашего <span style="color:var(--orange);">будущего дома</span></h2>
+      <p style="margin-top:14px;font-family:var(--f-body);font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.7);max-width:44ch;margin-left:auto;margin-right:auto;line-height:1.7;">Ответьте на 6 вопросов — пришлём точный расчёт в течение 24 часов.</p>
     </div>
+
+    <!-- Карточка квиза -->
+    <div id="quiz-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:0;">
+      <div style="height:3px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden;">
+        <div id="quiz-progress" style="position:absolute;left:0;top:0;height:100%;background:var(--orange);width:0%;transition:width 0.5s var(--ease);"></div>
+      </div>
+      <div style="padding:28px 36px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div style="font-family:var(--f-head);font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65);">
+          Шаг <span id="quiz-step-num">1</span> из 6
+        </div>
+        <button id="quiz-back" onclick="quizBack()" style="display:none;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.5)'">← Назад</button>
+      </div>
+      <div style="padding:20px 36px 32px;">
+        <h3 id="quiz-question" style="font-family:var(--f-head);font-size:clamp(1rem,2.2vw,1.5rem);text-transform:uppercase;letter-spacing:0.02em;color:#fff;line-height:1.2;margin-bottom:28px;"></h3>
+        <div id="quiz-options" style="display:grid;gap:12px;"></div>
+        <div id="quiz-next-wrap" style="display:none;margin-top:24px;">
+          <button onclick="quizNextMulti()" class="btn btn--primary" style="padding:16px 36px;">
+            <span>Далее</span><span class="btn__arr"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Финальный экран -->
+    <div id="quiz-final" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:48px 36px;">
+      <div style="height:3px;background:var(--orange);margin:-48px -36px 40px;"></div>
+      <div style="margin-bottom:20px;">
+        <button onclick="quizBackFromFinal()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.5)'">← Назад</button>
+      </div>
+      <div style="text-align:center;margin-bottom:32px;">
+        <div class="t-label" style="margin-bottom:12px;">Расчёт готов на 98%</div>
+        <h3 style="font-family:var(--f-head);font-size:clamp(1.1rem,2.5vw,1.7rem);text-transform:uppercase;color:#fff;line-height:1.15;">Осталось указать<br/><span style="color:var(--orange);">куда отправить</span></h3>
+        <p style="margin-top:12px;font-family:var(--f-body);font-size:0.78rem;font-weight:300;color:rgba(255,255,255,0.7);max-width:40ch;margin-left:auto;margin-right:auto;line-height:1.65;">Отправим персональный расчёт в удобный мессенджер в течение 24 часов</p>
+      </div>
+      <form id="quiz-form" style="display:flex;flex-direction:column;gap:0;max-width:480px;margin:0 auto;">
+        <div style="border:1px solid rgba(255,255,255,0.12);margin-bottom:-1px;position:relative;transition:border-color 0.2s;" onfocusin="this.style.borderColor='rgba(255,69,0,0.5)';this.style.zIndex='1'" onfocusout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.zIndex='0'">
+          <label style="position:absolute;top:9px;left:18px;font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Ваше имя</label>
+          <input id="qf-name" type="text" placeholder="Имя" autocomplete="given-name" required style="width:100%;padding:30px 18px 12px;background:transparent;border:none;outline:none;font-family:var(--f-body);font-size:0.95rem;color:#fff;caret-color:var(--orange);" />
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.12);margin-bottom:-1px;position:relative;transition:border-color 0.2s;" onfocusin="this.style.borderColor='rgba(255,69,0,0.5)';this.style.zIndex='1'" onfocusout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.zIndex='0'">
+          <label style="position:absolute;top:9px;left:18px;font-family:var(--f-head);font-size:0.4rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Телефон</label>
+          <input id="qf-phone" type="tel" placeholder="+7" autocomplete="tel" required style="width:100%;padding:30px 18px 12px;background:transparent;border:none;outline:none;font-family:var(--f-body);font-size:0.95rem;color:#fff;caret-color:var(--orange);" />
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.12);padding:16px 18px;margin-bottom:24px;">
+          <div style="font-family:var(--f-head);font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:12px;">Удобный мессенджер</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <label id="msg-wa" style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;min-height:44px;">
+              <input type="radio" name="messenger" value="WhatsApp" style="display:none;" onchange="selectMessenger('msg-wa')" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="rgba(255,255,255,0.6)"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.112 1.524 5.84L.057 23.493a.75.75 0 00.917.902l5.918-1.548A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.737-.502-5.31-1.38l-.38-.217-3.97 1.04 1.01-3.866-.233-.393A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" fill="rgba(255,255,255,0.6)"/></svg>
+              <span style="font-family:var(--f-head);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);">WhatsApp</span>
+            </label>
+            <label id="msg-tg" style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;min-height:44px;">
+              <input type="radio" name="messenger" value="Telegram" style="display:none;" onchange="selectMessenger('msg-tg')" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.008 9.457c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 14.71 4.22 13.82c-.645-.202-.658-.645.136-.953l10.895-4.202c.537-.194 1.006.12.832.947-.001 0-.521.001-.521.001z" fill="rgba(255,255,255,0.6)"/></svg>
+              <span style="font-family:var(--f-head);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Telegram</span>
+            </label>
+            <label id="msg-call" style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;min-height:44px;">
+              <input type="radio" name="messenger" value="Звонок" style="display:none;" onchange="selectMessenger('msg-call')" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C9.39 21 3 14.61 3 7c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="rgba(255,255,255,0.6)"/></svg>
+              <span style="font-family:var(--f-head);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Позвонить</span>
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;">
+          <button type="submit" class="btn btn--primary" style="padding:18px 36px;">
+            <span>Получить расчёт</span><span class="btn__arr"></span>
+          </button>
+          <span style="font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.5;max-width:24ch;">Нажимая кнопку, вы соглашаетесь с <a href="#" onclick="openPrivacyModal();return false;" style="color:rgba(255,255,255,0.8);">политикой обработки данных</a></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Экран «Спасибо» -->
+    <div id="quiz-thanks" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:64px 36px;text-align:center;">
+      <div style="width:56px;height:56px;border:2px solid var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="var(--orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="t-label" style="margin-bottom:12px;">Заявка отправлена</div>
+      <h3 style="font-family:var(--f-head);font-size:clamp(1rem,2vw,1.4rem);text-transform:uppercase;color:#fff;margin-bottom:14px;">Расчёт придёт<br/>в течение 24 часов</h3>
+      <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.7;max-width:36ch;margin:0 auto;">Наш менеджер свяжется с вами и предоставит детальный расчёт по вашим параметрам.</p>
+    </div>
+
   </div>
-</div>
+</section>
 
 <!-- PROCESS: 5 STAGES -->
 <section class="process-section" id="process">
@@ -485,43 +559,6 @@ body{padding-top:72px}
   </div>
 </section>
 
-<!-- COMPETENCE -->
-<section class="competence-section" id="materials">
-  <header class="section-header" style="padding-bottom:0;">
-    <div class="section-header__left">
-      <span class="t-label">Как мы устроены внутри</span>
-      <h2 class="t-h2">Не «кто мы»,<br/>а почему получается.</h2>
-    </div>
-    <div class="section-header__right">
-      <p class="t-body" style="max-width:38ch;text-align:right;">
-        Четыре принципа, которые объясняют, почему 0 объектов брошено за 10 лет.
-      </p>
-    </div>
-  </header>
-
-  <div class="competence-grid">
-    <div class="competence-cell">
-      <div class="competence-cell__head">Управление</div>
-      <h3 class="competence-cell__title">Главный инженер проекта</h3>
-      <p class="competence-cell__text">На каждом объекте есть один человек, который отвечает за технические решения от начала до конца. Не «бригадир» — инженер с допуском СРО. Он принимает арматуру, подписывает акты скрытых работ, контролирует соответствие проекту. Его номер есть у вас с первого дня.</p>
-    </div>
-    <div class="competence-cell">
-      <div class="competence-cell__head">Контроль</div>
-      <h3 class="competence-cell__title">Прораб ведёт не более 2 объектов</h3>
-      <p class="competence-cell__text">При 4–5 объектах человек физически не успевает быть везде. Мы проверили это на практике в 2019 году и сделали выводы. Наше ограничение — два объекта одновременно. Это не маркетинг, это управленческое решение.</p>
-    </div>
-    <div class="competence-cell">
-      <div class="competence-cell__head">Поставки</div>
-      <h3 class="competence-cell__title">4 поставщика по каждой позиции</h3>
-      <p class="competence-cell__text">Газоблок, кирпич, металл, кровля — по каждой позиции у нас 4 поставщика. Если один не может отгрузить в срок, переключаемся без остановки объекта. Стройка не ждёт материала.</p>
-    </div>
-    <div class="competence-cell">
-      <div class="competence-cell__head">Документация</div>
-      <h3 class="competence-cell__title">Фиксируем всё, что будет скрыто</h3>
-      <p class="competence-cell__text">Каждый этап документируется: фото с геопривязкой, акты освидетельствования скрытых работ по форме КС-2, журнал производства работ. Это не для отчётности — это ваша защита при любом страховом или юридическом случае.</p>
-    </div>
-  </div>
-</section>
 
 <!-- CASES -->
 <section class="cases-section" id="roofing">
@@ -559,48 +596,6 @@ body{padding-top:72px}
   </div>
 </section>
 
-<!-- CTA TRIO -->
-<section class="section" style="padding-bottom:0;" id="contract">
-  <header class="section-header">
-    <div class="section-header__left">
-      <span class="t-label">Следующий шаг — без обязательств</span>
-      <h2 class="t-h2">Выберите удобный<br/>формат разговора.</h2>
-    </div>
-    <div class="section-header__right">
-      <p class="t-body" style="max-width:36ch;text-align:right;">
-        Три входа. Каждый снимает свой барьер.
-      </p>
-    </div>
-  </header>
-
-  <div class="cta-trio">
-    <div class="cta-card">
-      <div class="cta-card__num">Вариант 01</div>
-      <h3 class="cta-card__title">Получите смету за 24 часа</h3>
-      <p class="cta-card__text">Пришлите площадь дома, этажность и адрес участка. Мы пришлём предварительный расчёт с разбивкой по статьям — фундамент, коробка, кровля, инженерия. Без звонков до вашего разрешения.</p>
-      <a href="#svc-form" class="btn btn--primary" style="align-self:flex-start;">
-        <span>Отправить параметры</span>
-        <span class="btn__arr"></span>
-      </a>
-    </div>
-    <div class="cta-card">
-      <div class="cta-card__num">Вариант 02</div>
-      <h3 class="cta-card__title">Приедьте на объект в работе</h3>
-      <p class="cta-card__text">Покажем стройку в процессе: как ведётся журнал, как принимается арматура, как выглядит наш контроль изнутри. Выберем день, когда на объекте будут активные работы, а не «всё уже готово».</p>
-      <a href="tel:+79181269996" class="btn btn--ghost" style="align-self:flex-start;">
-        <span>Записаться на показ</span>
-      </a>
-    </div>
-    <div class="cta-card">
-      <div class="cta-card__num">Вариант 03</div>
-      <h3 class="cta-card__title">Разберём ваш проект за 30 минут</h3>
-      <p class="cta-card__text">Пришлите план дома или ссылку на типовой проект. На звонке пройдём по этапам, укажем узкие места и назовём реалистичный бюджет. Это бесплатно и ни к чему не обязывает.</p>
-      <a href="tel:+79181269996" class="btn btn--ghost" style="align-self:flex-start;">
-        <span>Назначить звонок</span>
-      </a>
-    </div>
-  </div>
-</section>
 
 <!-- GALLERY SECTION -->
 <section class="section" id="gallery">
@@ -855,6 +850,233 @@ document.addEventListener('keydown', e => {
 });
 
 loadGallery();
+
+// ── QUIZ ──────────────────────────────────────────────────────────
+const quizSteps = [
+  {
+    q: 'Есть ли у вас земельный участок?',
+    type: 'single',
+    options: [
+      { val: 'В собственности', icon: '✅' },
+      { val: 'В поиске', icon: '🔍' },
+      { val: 'Нужна помощь с выбором', icon: '🤝' }
+    ]
+  },
+  {
+    q: 'Какой стиль дома вам близок?',
+    type: 'single',
+    options: [
+      { val: 'Минимализм', desc: 'Чистые линии, без лишних деталей' },
+      { val: 'Классика', desc: 'Традиционный облик, уютная архитектура' },
+      { val: 'Барнхаус', desc: 'Современный амбарный стиль' },
+      { val: 'Нужен дизайнер', desc: 'Помогите подобрать проект' }
+    ]
+  },
+  {
+    q: 'Желаемая площадь дома?',
+    type: 'single',
+    options: [
+      { val: 'До 100 м²', desc: 'Компактный, до 100 м²' },
+      { val: '100–150 м²', desc: 'Оптимальный размер для семьи' },
+      { val: '150–250 м²', desc: 'Просторный дом' },
+      { val: '250+ м²', desc: 'Большой, свыше 250 м²' }
+    ]
+  },
+  {
+    q: 'Какие опции хотите включить?',
+    type: 'multi',
+    hint: 'Можно выбрать несколько',
+    options: [
+      { val: 'Терраса' },
+      { val: 'Мастер-спальня' },
+      { val: 'Кабинет' },
+      { val: 'Гараж' }
+    ]
+  },
+  {
+    q: 'Когда планируете начать строительство?',
+    type: 'single',
+    options: [
+      { val: 'Сейчас', desc: 'Готов приступить в ближайшее время' },
+      { val: 'Через 3–6 месяцев', desc: 'На стадии планирования' },
+      { val: 'Прицениваюсь', desc: 'Изучаю рынок, не тороплюсь' }
+    ]
+  },
+  {
+    q: 'Какой бюджет вы рассматриваете?',
+    type: 'single',
+    options: [
+      { val: 'До 7 млн ₽' },
+      { val: '7–12 млн ₽' },
+      { val: '12+ млн ₽' },
+      { val: 'Ипотека / Рассрочка', desc: 'Помогите с оформлением' }
+    ]
+  }
+];
+
+let quizCurrentStep = 0;
+let quizAnswers = {};
+let quizMultiSelected = new Set();
+
+function quizRender() {
+  const step = quizSteps[quizCurrentStep];
+  const total = quizSteps.length;
+  const pct = (quizCurrentStep / total) * 100;
+  document.getElementById('quiz-progress').style.width = pct + '%';
+  document.getElementById('quiz-step-num').textContent = quizCurrentStep + 1;
+  document.getElementById('quiz-question').textContent = step.q;
+  document.getElementById('quiz-back').style.display = quizCurrentStep > 0 ? 'inline-flex' : 'none';
+  const hint = step.hint ? `<p style="font-family:var(--f-body);font-size:0.72rem;font-weight:300;color:rgba(255,255,255,0.65);margin-bottom:16px;">${step.hint}</p>` : '';
+  let cols = step.options.length <= 3 ? '1fr '.repeat(step.options.length).trim() : 'repeat(2,1fr)';
+  if (window.innerWidth < 600) cols = '1fr';
+  const optionsHtml = step.options.map((opt, i) => {
+    const isMulti = step.type === 'multi';
+    const desc = opt.desc ? `<span style="display:block;font-family:var(--f-body);font-size:0.68rem;font-weight:300;color:rgba(255,255,255,0.65);margin-top:4px;line-height:1.4;">${opt.desc}</span>` : '';
+    if (isMulti) {
+      return `<button type="button" data-idx="${i}" onclick="quizToggleMulti(${i},this)"
+        style="text-align:left;padding:16px 20px;border:1px solid rgba(255,255,255,0.12);background:transparent;cursor:pointer;color:rgba(255,255,255,0.75);transition:all 0.2s;min-height:44px;width:100%;">
+        <span style="font-family:var(--f-head);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.06em;">${opt.val}</span>${desc}</button>`;
+    }
+    return `<button type="button" onclick="quizSelect('${opt.val.replace(/'/g,"\\'")}',${i})"
+      style="text-align:left;padding:18px 22px;border:1px solid rgba(255,255,255,0.12);background:transparent;cursor:pointer;color:rgba(255,255,255,0.75);transition:all 0.2s;min-height:44px;width:100%;"
+      onmouseover="this.style.borderColor='var(--orange)';this.style.background='rgba(255,69,0,0.07)'"
+      onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.background='transparent'">
+      <span style="font-family:var(--f-head);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;">${opt.val}</span>${desc}</button>`;
+  }).join('');
+  document.getElementById('quiz-options').style.gridTemplateColumns = cols;
+  document.getElementById('quiz-options').innerHTML = hint + optionsHtml;
+  document.getElementById('quiz-next-wrap').style.display = step.type === 'multi' ? 'block' : 'none';
+  quizMultiSelected.clear();
+}
+
+function quizSelect(val) {
+  quizAnswers['step' + (quizCurrentStep + 1)] = val;
+  quizCurrentStep++;
+  if (quizCurrentStep >= quizSteps.length) { quizShowFinal(); } else { quizRender(); quizAnimate(); }
+}
+
+function quizToggleMulti(idx, btn) {
+  if (quizMultiSelected.has(idx)) {
+    quizMultiSelected.delete(idx);
+    btn.style.borderColor = 'rgba(255,255,255,0.12)'; btn.style.background = 'transparent'; btn.style.color = 'rgba(255,255,255,0.75)';
+  } else {
+    quizMultiSelected.add(idx);
+    btn.style.borderColor = 'var(--orange)'; btn.style.background = 'rgba(255,69,0,0.1)'; btn.style.color = '#fff';
+  }
+}
+
+function quizNextMulti() {
+  const step = quizSteps[quizCurrentStep];
+  const selected = [...quizMultiSelected].map(i => step.options[i].val);
+  quizAnswers['step' + (quizCurrentStep + 1)] = selected.length ? selected.join(', ') : 'Не выбрано';
+  quizCurrentStep++;
+  if (quizCurrentStep >= quizSteps.length) { quizShowFinal(); } else { quizRender(); quizAnimate(); }
+}
+
+function quizBack() {
+  if (quizCurrentStep > 0) { quizCurrentStep--; quizRender(); quizAnimate(); }
+}
+
+function quizAnimate() {
+  const card = document.getElementById('quiz-card');
+  card.style.transition = 'none'; card.style.opacity = '0'; card.style.transform = 'translateY(14px)';
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    card.style.transition = 'opacity 0.38s ease, transform 0.38s ease';
+    card.style.opacity = '1'; card.style.transform = 'translateY(0)';
+  }); });
+}
+
+function quizShowFinal() {
+  document.getElementById('quiz-progress').style.width = '100%';
+  document.getElementById('quiz-card').style.display = 'none';
+  document.getElementById('quiz-final').style.display = 'block';
+  document.getElementById('quiz-final').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function quizBackFromFinal() {
+  document.getElementById('quiz-final').style.display = 'none';
+  document.getElementById('quiz-card').style.display = 'block';
+  quizCurrentStep = quizSteps.length - 1;
+  quizRender(); quizAnimate();
+}
+
+function selectMessenger(id) {
+  ['msg-wa','msg-tg','msg-call'].forEach(mid => {
+    const el = document.getElementById(mid);
+    if (el) { el.style.borderColor = 'rgba(255,255,255,0.15)'; el.style.background = 'transparent'; el.querySelector('span').style.color = 'rgba(255,255,255,0.6)'; }
+  });
+  const active = document.getElementById(id);
+  if (active) { active.style.borderColor = 'var(--orange)'; active.style.background = 'rgba(255,69,0,0.08)'; active.querySelector('span').style.color = '#fff'; }
+}
+
+document.getElementById('quiz-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('qf-name').value.trim();
+  const phone = document.getElementById('qf-phone').value.trim();
+  const phoneDigits = phone.replace(/\D/g, '');
+  if (phoneDigits.length !== 11) {
+    document.getElementById('qf-phone').style.outline = '1px solid var(--orange)';
+    document.getElementById('qf-phone').focus(); return;
+  }
+  document.getElementById('qf-phone').style.outline = '';
+  const messengerInput = document.querySelector('input[name="messenger"]:checked');
+  const messenger = messengerInput ? messengerInput.value : 'Не указан';
+  try {
+    await fetch('https://formsubmit.co/ajax/info@iskon.pro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: '📋 Квиз ИСКОН — страница Услуги',
+        _captcha: 'false',
+        _template: 'table',
+        'Имя': name || '—',
+        'Телефон': phone,
+        'Мессенджер': messenger,
+        'Участок (шаг 1)': quizAnswers.step1 || '—',
+        'Стиль дома (шаг 2)': quizAnswers.step2 || '—',
+        'Площадь (шаг 3)': quizAnswers.step3 || '—',
+        'Опции (шаг 4)': quizAnswers.step4 || '—',
+        'Сроки (шаг 5)': quizAnswers.step5 || '—',
+        'Бюджет (шаг 6)': quizAnswers.step6 || '—',
+        'Источник': 'Квиз — страница Услуги',
+        'Дата': new Date().toLocaleString('ru-RU')
+      })
+    });
+  } catch(err) { console.warn('Quiz email error:', err); }
+  document.getElementById('quiz-final').style.display = 'none';
+  document.getElementById('quiz-thanks').style.display = 'block';
+  document.getElementById('quiz-thanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// Phone — fixed +7 prefix
+(function() {
+  const ph = document.getElementById('qf-phone');
+  const PREFIX = '+7 ';
+  ph.value = PREFIX;
+  function fmt(d) {
+    let s = PREFIX;
+    if (d.length > 0) s += '(' + d.slice(0,3);
+    if (d.length >= 3) s += ')';
+    if (d.length > 3) s += ' ' + d.slice(3,6);
+    if (d.length > 6) s += '-' + d.slice(6,8);
+    if (d.length > 8) s += '-' + d.slice(8,10);
+    return s;
+  }
+  ph.addEventListener('focus', () => { setTimeout(() => { if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(ph.value.length, ph.value.length); }, 0); });
+  ph.addEventListener('click', () => { if (ph.selectionStart < PREFIX.length) ph.setSelectionRange(PREFIX.length, PREFIX.length); });
+  ph.addEventListener('keydown', e => {
+    const s = ph.selectionStart, end = ph.selectionEnd;
+    if ((e.key === 'Backspace' || e.key === 'Delete') && s <= PREFIX.length && end <= PREFIX.length) e.preventDefault();
+  });
+  ph.addEventListener('input', () => {
+    let v = ph.value;
+    if (!v.startsWith(PREFIX)) v = PREFIX + v.replace(/^\+?7?\s?\(?/, '');
+    const digits = v.slice(PREFIX.length).replace(/\D/g,'').slice(0,10);
+    ph.value = fmt(digits);
+  });
+})();
+
+quizRender();
 
 // ── STAGE PHOTOS ──────────────────────────────────────────────────
 async function loadStagePhotos() {
