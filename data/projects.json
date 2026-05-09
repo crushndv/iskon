@@ -1,13 +1,7 @@
 [
   {
     "id": "proj-001",
-    "title": "Кирпичный дом 87 м²",
-    "category": "Кирпич",
-    "technology": "Кирпич",
-    "area": 87,
-    "year": null,
-    "address": "",
-    "description": "",
+    "title": "Одноэтажный дом 87 м²",
     "mainPhoto": "images/projects/proj-001/1778185869089_uzm3c.jpg",
     "photos": [
       "images/projects/proj-001/1778185869089_uzm3c.jpg",
@@ -17,13 +11,7 @@
   },
   {
     "id": "proj-002",
-    "title": "Дом из газоблока 110 м²",
-    "category": "Кирпич",
-    "technology": "Кирпич",
-    "area": 110,
-    "year": null,
-    "address": "",
-    "description": "",
+    "title": "Одноэтажный дом 110 м²",
     "mainPhoto": "images/projects/proj-002/1778186031726_nkd5f.jpeg",
     "photos": [
       "images/projects/proj-002/1778186031726_nkd5f.jpeg",
@@ -35,17 +23,26 @@
   },
   {
     "id": "proj-003",
-    "title": "Кирпичный дом 190 м²",
-    "category": "Кирпич",
-    "technology": "Кирпич",
-    "area": 190,
-    "year": null,
-    "address": "Краснодарский край, Краснодар, п. Пашковский",
-    "mainPhoto": "images/homes/dom-003/main.jpg",
+    "title": "Двухэтажный дом 263 м²",
+    "mainPhoto": "images/projects/proj-003/1778361060140_4s3gz.jpeg",
     "photos": [
-      "images/homes/dom-003/main.jpg"
+      "images/projects/proj-003/1778361060140_4s3gz.jpeg",
+      "images/projects/proj-003/1778361062910_5xo6o.jpeg",
+      "images/projects/proj-003/1778361133052_sodte.jpeg",
+      "images/projects/proj-003/1778361220162_6xzma.jpeg"
     ],
-    "description": "Двухэтажный кирпичный дом с вальмовой кровлей сложной формы. Участок 12 соток.",
-    "visible": false
+    "visible": true
+  },
+  {
+    "id": "proj-1778361510334",
+    "title": "Двухэтажный дом 196 м2",
+    "mainPhoto": "images/projects/proj-1778361437456/1778361437497_b0sgb.jpeg",
+    "photos": [
+      "images/projects/proj-1778361437456/1778361437497_b0sgb.jpeg",
+      "images/projects/proj-1778361444069/1778361444096_06btd.jpeg",
+      "images/projects/proj-1778361457134/1778361457161_co02a.jpeg",
+      "images/projects/proj-1778361463218/1778361465191_gf8mc.jpeg"
+    ],
+    "visible": true
   }
 ]
