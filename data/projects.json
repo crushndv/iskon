@@ -32,5 +32,17 @@
       "images/projects/proj-003/1778361220162_6xzma.jpeg"
     ],
     "visible": true
+  },
+  {
+    "id": "proj-1778361510334",
+    "title": "Двухэтажный дом 196 м2",
+    "mainPhoto": "images/projects/proj-1778361437456/1778361437497_b0sgb.jpeg",
+    "photos": [
+      "images/projects/proj-1778361437456/1778361437497_b0sgb.jpeg",
+      "images/projects/proj-1778361444069/1778361444096_06btd.jpeg",
+      "images/projects/proj-1778361457134/1778361457161_co02a.jpeg",
+      "images/projects/proj-1778361463218/1778361465191_gf8mc.jpeg"
+    ],
+    "visible": true
   }
 ]
