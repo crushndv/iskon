@@ -273,12 +273,22 @@
       color: rgba(142,142,147,0.45); margin-top: 2px;
     }
 
-    /* КАТАЛОГ ПРЕВЬЮ */
-    .catalog-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      border-top: var(--divider); border-left: var(--divider);
-    }
-    .catalog-grid .card { border-right: var(--divider); border-bottom: var(--divider); }
+    /* PROJECT CAROUSEL */
+    .proj-carousel { position: relative; }
+    .proj-car__wrap { overflow: hidden; border-top: var(--divider); border-left: var(--divider); }
+    .proj-car__track { display: flex; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1); will-change: transform; }
+    .proj-car__slide { flex: 0 0 33.3333%; border-right: var(--divider); border-bottom: var(--divider); min-width: 0; }
+    .proj-car__nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 0; }
+    .proj-car__btns { display: flex; gap: 4px; }
+    .proj-car__btn { width: 42px; height: 42px; background: var(--black); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; font-size: 18px; }
+    .proj-car__btn:hover:not(:disabled) { background: var(--orange); }
+    .proj-car__btn:disabled { background: rgba(0,0,0,0.12); cursor: default; }
+    .proj-car__dots { display: flex; gap: 5px; align-items: center; }
+    .proj-car__dot { width: 6px; height: 6px; background: rgba(0,0,0,0.18); border: none; cursor: pointer; padding: 0; border-radius: 0; transition: all 0.25s; }
+    .proj-car__dot.active { background: var(--orange); width: 22px; }
+    @media (max-width: 1024px) { .proj-car__slide { flex: 0 0 50%; } }
+    @media (max-width: 640px)  { .proj-car__slide { flex: 0 0 100%; } }
+
     .photo-placeholder {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
@@ -298,7 +308,6 @@
       .tech-cell:nth-child(2) { border-right: none; }
       .tech-cell:nth-child(3) { border-top: var(--divider); }
       .tech-cell:nth-child(4) { border-right: none; border-top: var(--divider); }
-      .catalog-grid { grid-template-columns: repeat(2,1fr); }
       .adv-grid { grid-template-columns: repeat(2,1fr); }
     }
     @media (max-width: 768px) {
@@ -308,7 +317,6 @@
       .svc-content { padding: 28px 0 28px 18px; border-right: none; border-left: var(--divider); }
       .svc-arrow { display: none; }
       .tech-strip { margin: 0; grid-template-columns: repeat(2,1fr); border-left: none; border-right: none; }
-      .catalog-grid { grid-template-columns: 1fr; }
       .hero__bg-letter { display: none; }
       .adv-grid { grid-template-columns: 1fr; }
       #form > div { grid-template-columns: 1fr !important; }
@@ -692,7 +700,22 @@
       </a>
     </div>
   </header>
-  <div class="catalog-grid" id="projects-preview" role="list"></div>
+  <div class="proj-carousel">
+    <div class="proj-car__wrap">
+      <div class="proj-car__track" id="proj-car-track"></div>
+    </div>
+    <div class="proj-car__nav">
+      <div class="proj-car__dots" id="proj-car-dots"></div>
+      <div class="proj-car__btns">
+        <button class="proj-car__btn" id="proj-car-prev" onclick="carouselPrev()" aria-label="Назад">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="proj-car__btn" id="proj-car-next" onclick="carouselNext()" aria-label="Вперёд">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- MODAL РЕАЛИЗОВАННЫХ ПРОЕКТОВ -->
@@ -934,14 +957,80 @@ document.querySelectorAll('input[type="tel"]').forEach(el => {
 
 let _projects = [], _projIdx = 0, _projPhoto = 0, _projTX = 0;
 
+let _carIdx = 0;
+
+function _carVisible() {
+  return window.innerWidth <= 640 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+}
+
+function carouselRender() {
+  const vis = _carVisible();
+  const max = Math.max(0, _projects.length - vis);
+  _carIdx = Math.min(_carIdx, max);
+
+  const pct = _carIdx * (100 / vis);
+  const track = document.getElementById('proj-car-track');
+  if (track) track.style.transform = `translateX(-${pct}%)`;
+
+  const prevBtn = document.getElementById('proj-car-prev');
+  const nextBtn = document.getElementById('proj-car-next');
+  if (prevBtn) prevBtn.disabled = _carIdx === 0;
+  if (nextBtn) nextBtn.disabled = _carIdx >= max;
+
+  const dotsEl = document.getElementById('proj-car-dots');
+  if (dotsEl) {
+    const pageCount = Math.ceil(_projects.length / vis);
+    const curPage = Math.min(Math.floor(_carIdx), pageCount - 1);
+    dotsEl.innerHTML = Array.from({length: pageCount}, (_, i) =>
+      `<button class="proj-car__dot${i === curPage ? ' active' : ''}" onclick="carouselGo(${i * vis})" aria-label="Страница ${i+1}"></button>`
+    ).join('');
+  }
+}
+
+function carouselPrev() {
+  _carIdx = Math.max(0, _carIdx - 1);
+  carouselRender();
+}
+function carouselNext() {
+  const vis = _carVisible();
+  _carIdx = Math.min(_projects.length - vis, _carIdx + 1);
+  carouselRender();
+}
+function carouselGo(idx) {
+  _carIdx = idx;
+  carouselRender();
+}
+
+// Touch swipe support for carousel
+(function() {
+  let tx = 0;
+  document.addEventListener('DOMContentLoaded', () => {
+    const wrap = document.querySelector('.proj-car__wrap');
+    if (!wrap) return;
+    wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 40) dx < 0 ? carouselNext() : carouselPrev();
+    }, {passive:true});
+  });
+})();
+
+window.addEventListener('resize', () => { carouselRender(); });
+
 async function loadProjectsPreview() {
   try {
     const res = await fetch('data/projects.json');
     const all = await res.json();
     _projects = all.filter(p => p.visible !== false && p.visible !== 0);
-    document.getElementById('projects-preview').innerHTML =
-      _projects.slice(0,3).map((p,i) => buildProjectCard(p,i)).join('') ||
-      '<p style="padding:40px;text-align:center;color:var(--grey);grid-column:1/-1;">Проекты скоро появятся</p>';
+    const track = document.getElementById('proj-car-track');
+    if (!track) return;
+    if (!_projects.length) {
+      track.innerHTML = '<div style="padding:60px;text-align:center;color:var(--grey);flex:0 0 100%;">Проекты скоро появятся</div>';
+      return;
+    }
+    track.innerHTML = _projects.map((p, i) => `<div class="proj-car__slide">${buildProjectCard(p, i)}</div>`).join('');
+    _carIdx = 0;
+    carouselRender();
   } catch(e) { console.warn('Projects JSON not loaded', e); }
 }
 
@@ -954,7 +1043,7 @@ function buildProjectCard(p, idx) {
         <rect x="45" y="55" width="18" height="20" stroke="#0D0D0D" stroke-width="1"/>
        </svg></div>`;
   return `
-  <article class="card" role="listitem" onclick="openProjectModal(${idx})" style="cursor:pointer;">
+  <article class="card" role="listitem" onclick="openProjectModal(${idx})" style="cursor:pointer;height:100%;">
     <div class="card__photo">
       ${photo}
     </div>
