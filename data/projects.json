@@ -1,13 +1,13 @@
 [
   {
     "id": "proj-001",
-    "title": "Кирпичный дом 140 м²",
+    "title": "Кирпичный дом 87 м²",
     "category": "Кирпич",
     "technology": "Кирпич",
-    "area": 140,
-    "year": 2024,
-    "address": "Краснодарский край, Динской р-н, ст. Динская",
-    "description": "Двухэтажный дом из лицевого кирпича М200. Вальмовая кровля, ленточный фундамент.",
+    "area": 87,
+    "year": 2026,
+    "address": "",
+    "description": "",
     "mainPhoto": "images/projects/proj-001/1778185869089_uzm3c.jpg",
     "photos": [
       "images/projects/proj-001/1778185869089_uzm3c.jpg",
@@ -19,12 +19,12 @@
   {
     "id": "proj-002",
     "title": "Дом из газоблока 110 м²",
-    "category": "Газоблок",
-    "technology": "Газоблок",
+    "category": "Кирпич",
+    "technology": "Кирпич",
     "area": 110,
-    "year": 2024,
-    "address": "Краснодарский край, Краснодар, п. Березовый",
-    "description": "Одноэтажный дом из газоблока D500. Тёплые стены, низкое энергопотребление.",
+    "year": 2026,
+    "address": "",
+    "description": "",
     "mainPhoto": "images/projects/proj-002/1778186031726_nkd5f.jpeg",
     "photos": [
       "images/projects/proj-002/1778186031726_nkd5f.jpeg",
