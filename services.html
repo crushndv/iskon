@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=2" />
+  <link rel="stylesheet" href="css/main.css?v=3" />
   <style>
 body{padding-top:72px}
 
@@ -256,9 +256,9 @@ body{padding-top:72px}
   <a href="index.html" class="nav__logo"><img src="images/logo-black.png" alt="ИСКОН" style="height:30px;width:auto;object-fit:contain;" /></a>
   <ul class="nav__links">
     <li><a href="index.html">Главная</a></li>
-    <li><a href="catalog.html">Каталог домов</a></li>
+    <li><a href="catalog.html">Готовые дома</a></li>
     <li><a href="services.html" class="active">Услуги</a></li>
-    <li><a href="contacts.html">Контакты</a></li>
+    <li><a href="#footer">Контакты</a></li>
   </ul>
   <div class="nav__right">
     <a href="tel:+79181269996" class="nav__phone">8 918 126 99 96</a>
@@ -268,9 +268,9 @@ body{padding-top:72px}
 </nav>
 <div class="nav__mobile" id="mobile-menu">
   <a href="index.html">Главная</a>
-  <a href="catalog.html">Каталог домов</a>
+  <a href="catalog.html">Готовые дома</a>
   <a href="services.html">Услуги</a>
-  <a href="contacts.html">Контакты</a>
+  <a href="#footer">Контакты</a>
   <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a>
 </div>
 
@@ -279,17 +279,17 @@ body{padding-top:72px}
   <div>
     <div class="t-label" style="margin-bottom:14px;">Комплексное строительство</div>
     <h1 style="font-family:var(--f-head);font-size:clamp(1.5rem,3.5vw,2.8rem);text-transform:uppercase;line-height:1.05;letter-spacing:-0.01em;">
-      Строим дом в срок.<br/>
-      <span style="color:var(--orange);">Смета не меняется</span><br/>
-      после подписания договора.
+      Ставим точку<br/>
+      <span style="color:var(--orange);">в поисках лучшего</span><br/>
+      строительного подрядчика
     </h1>
   </div>
   <div>
     <p class="t-body" style="margin-bottom:20px;">
-      Берём на себя всё: от геологии участка до финального обмера. Вы получаете ключи — мы закрываем все вопросы по пути.
+      Берём на себя всё: от геологии участка до поклейки обоев в готовом доме. Вы получаете ключи — мы закрываем все вопросы со стройкой.
     </p>
     <p style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.8;color:var(--grey);margin-bottom:28px;">
-      Большинство заказчиков приходят к нам после того, как предыдущий подрядчик пропал или поднял цену на 40% в середине стройки. Мы работаем иначе: цена в договоре — это цена сдачи объекта. Без «а вот ещё выяснилось».
+      Мы исключили из стоимости строительства лишние звенья и необоснованные наценки. В ИСКОН вы платите за качественные материалы и работу профи, а не за раздутый штат или пафосные офисы. Честное строительство на вашем участке по цене, которая вас приятно удивит.
     </p>
     <a href="#svc-form" class="btn btn--primary">
       <span>Получить расчёт стоимости</span>
@@ -299,7 +299,7 @@ body{padding-top:72px}
 </div>
 
 <!-- STATS STRIP -->
-<div class="stats-strip">
+<!--<div class="stats-strip">
   <div class="stats-strip__cell">
     <div class="stats-strip__num">10</div>
     <div class="stats-strip__unit">лет</div>
@@ -316,11 +316,11 @@ body{padding-top:72px}
     <p class="stats-strip__desc">Соблюдаем утверждённый график производства работ</p>
   </div>
 </div>
-
+-->
 <!-- GEO STRIP -->
-<div class="geo-strip" aria-label="География работ">
+<div class="geo-strip geo-strip--lg" aria-label="География работ">
   <span class="geo-strip__label">
-    <svg width="11" height="14" viewBox="0 0 11 14" fill="none" aria-hidden="true"><path d="M5.5 0C3.015 0 1 2.015 1 4.5c0 3.375 4.5 9.5 4.5 9.5S10 7.875 10 4.5C10 2.015 7.985 0 5.5 0zm0 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z" fill="var(--orange)"/></svg>
+    <svg width="14" height="18" viewBox="0 0 11 14" fill="none" aria-hidden="true"><path d="M5.5 0C3.015 0 1 2.015 1 4.5c0 3.375 4.5 9.5 4.5 9.5S10 7.875 10 4.5C10 2.015 7.985 0 5.5 0zm0 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z" fill="var(--orange)"/></svg>
     Работаем в:
   </span>
   <div class="geo-strip__sep"></div>
@@ -447,20 +447,20 @@ body{padding-top:72px}
     <div class="process-item">
       <div class="process-num" aria-hidden="true">01</div>
       <div class="process-body">
-        <h3 class="process-title">Инженерная подготовка участка</h3>
+        <h3 class="process-title">Инженерная подготовка участка и фундамент</h3>
         <p class="process-text">
-          Геологическое исследование грунта, топосъёмка участка, разработка проекта фундамента под конкретные условия. Параллельно согласовываем технические условия на подключение инженерных сетей.<br/><br/>
-          Тип фундамента определяет 30–40% итоговой сметы. Ошибка здесь — это либо переплата, либо трещины в стенах через 5 лет. Мы делаем геологию на каждом участке — даже если сосед уже строился рядом. Грунт нелинейный.
+          Фундамент — это единственный элемент дома, который невозможно заменить или переделать после завершения стройки. Это база не только для стен, но и для вашей финансовой безопасности.<br/><br/>
+          Монолитные работы — это строгий технологический регламент. Мы не просто «льем бетон», мы создаем искусственный камень, который десятилетиями будет держать вес вашего дома. Контролируем всё: от шага армирования, который распределяет нагрузки, до вибрирования смеси, исключающего скрытые пустоты и раковины. Результат — ровная и прочная плита, которая не боится пучения грунта и не пропускает влагу.
         </p>
         <div class="process-trigger">
           <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p class="process-trigger__text">По результатам геологии вы получаете письменное обоснование типа фундамента — документ, который защищает вас при любом споре с подрядчиком.</p>
+          <p class="process-trigger__text">Геологическое исследование грунта, топосъёмка участка, расчет осевых нагрузок, проектирование фундамента под конкретные условия и монолитные работы.</p>
         </div>
         <div class="process-tags">
           <span class="process-tag">Геология</span>
           <span class="process-tag">Топосъёмка</span>
           <span class="process-tag">Проект фундамента</span>
-          <span class="process-tag">ТУ на сети</span>
+          <span class="process-tag">Монолитные работы</span>
         </div>
       </div>
       <div class="process-photo" id="sph-1">
@@ -472,19 +472,19 @@ body{padding-top:72px}
     <div class="process-item">
       <div class="process-num" aria-hidden="true">02</div>
       <div class="process-body">
-        <h3 class="process-title">Фундамент и коробка</h3>
+        <h3 class="process-title">Возведение стен и межкомнатных перегородок</h3>
         <p class="process-text">
-          Монтаж арматурного каркаса, заливка бетоном марки не ниже М300, выдержка технологических сроков — 28 суток набора прочности, не 10, как делают «в сезон». Возведение несущих стен из согласованного материала: газоблок D500, кирпич М200, монолит или отсевной блок.<br/><br/>
-          Коробка — это скелет. Всё, что сделано на этом этапе неправильно, невозможно исправить без сноса. Поэтому мы не ускоряемся здесь за счёт технологии.
+Стены — это сложная инженерная система, где каждый слой несет свою функцию. <br/><br/>
+Лицевой слой — это не только эстетика, но и защита конструктивa от агрессивной среды, точка росы и долговечность вашего фасада. Мы рассчитываем пирог стены так, чтобы дом «дышал», сохраняя тепло зимой и прохладу летом.<br/><br/>
+Внутренние перегородки — это ваш личный комфорт и тишина. Мы подбираем материалы исходя из функционала: высокая плотность для качественной шумоизоляции спален и влагостойкость для санузлов. Правильный выбор материала перегородок сегодня — это отсутствие трещин на дорогой отделке и возможность повесить тяжелую технику в любом месте завтра.
         </p>
         <div class="process-trigger">
           <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p class="process-trigger__text">Арматурный каркас и укладка каждого ряда фиксируются на фото с геопривязкой и датой — вы получаете архив скрытых работ ещё до закрытия стен.</p>
+          <p class="process-trigger__text">Кладка кирпичных и газоблочных стен, расчет энергоэффективности,  подбор материалов по индексам звукоизоляции.</p>
         </div>
         <div class="process-tags">
-          <span class="process-tag">Бетон М300</span>
-          <span class="process-tag">Кирпич М200</span>
-          <span class="process-tag">Газоблок D500</span>
+          <span class="process-tag">Кирпич</span>
+          <span class="process-tag">Газоблок</span>
           <span class="process-tag">Отсевной блок</span>
           <span class="process-tag">Монолит</span>
         </div>
@@ -498,20 +498,22 @@ body{padding-top:72px}
     <div class="process-item">
       <div class="process-num" aria-hidden="true">03</div>
       <div class="process-body">
-        <h3 class="process-title">Перекрытия, кровля, окна</h3>
+        <h3 class="process-title">Кровельные работы</h3>
         <p class="process-text">
-          Монтаж монолитных или сборных перекрытий, устройство стропильной системы, монтаж кровельного покрытия. Одновременно — установка окон и входных групп, чтобы объект перешёл в закрытый тепловой контур до зимы.<br/><br/>
-          Дом, закрытый «под крышу» до ноября, не теряет сезон. Мы синхронизируем поставку материалов с календарным планом: кровельщики не ждут металлочерепицу, металлочерепица не лежит под дождём.
+          Кровля — самый нагруженный элемент дома, работающий в экстремальных условиях. Мы не просто «крышу кроем», мы создаем многослойную защиту. Правильная вентиляция подкровельного пространства и пароизоляция исключают гниение стропил и намокание утеплителя. Лицевое покрытие подбирается с учетом снеговых нагрузок и эстетики проекта, чтобы дом выглядел дорого десятилетиями.<br/><br/>
+Экономия на узлах примыкания в кровельном пироге — это гарантированные убытки и риск внеплановой реконструкции уже после первой зимы. Протечки, конденсат и потеря тепла через крышу обесценивают дом быстрее любых рыночных кризисов. Мы применяем инженерные решения, которые делают вашу кровлю неуязвимой, а эксплуатацию дома — беззаботной.
+    
         </p>
         <div class="process-trigger">
           <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p class="process-trigger__text">Если мы не успели закрыть объект до первых заморозков по нашей вине — неустойка прописана в договоре заранее.</p>
+          <p class="process-trigger__text">Расчет несущей способности, проектирование стропильных систем любой сложности, устройство «умного» кровельного пирога и водосточных систем.</p>
         </div>
         <div class="process-tags">
           <span class="process-tag">Вальмовая кровля</span>
-          <span class="process-tag">Металлочерепица</span>
-          <span class="process-tag">Монолитные перекрытия</span>
-          <span class="process-tag">Гарантия 5 лет</span>
+          <span class="process-tag">Плоская эксплуатируемая кровля</span>
+          <span class="process-tag">Сложная кровля</span>
+          <span class="process-tag">Мансардная кровля</span>
+          <span class="process-tag">Многощиптовая кровля</span>
         </div>
       </div>
       <div class="process-photo" id="sph-3">
@@ -525,19 +527,18 @@ body{padding-top:72px}
       <div class="process-body">
         <h3 class="process-title">Инженерные системы</h3>
         <p class="process-text">
-          Прокладка электрики по проекту ВРУ с поэтажной схемой, монтаж водоснабжения и канализации, отопления — радиаторная система или тёплый пол — и вентиляции. Всё до штукатурки.<br/><br/>
-          Инженерия, проложенная после отделки, — это вскрытые стены и потерянные деньги. Мы делаем всё в правильной последовательности: сначала трубы и кабели, потом штукатурный слой.
-        </p>
+          Инженерные сети — это тепло, вода, свет и канализацияэто. Это то что скрыто под штукатуркой и стяжкой. Если на этом этапе совершена ошибка или использован некачественный материал, вы узнаете об этом только тогда, когда пострадает ваш ремонт.<br/><br/>
+Мы подбираем оборудование под ваш бюджет, объясняя разницу в каждом узле. Мы не предложим вам самое дорогое, но и не позволим поставить то, что потребует замены через два года. Наша цель — ваша рекомендация, а не разовая выгода на наценке.        </p>
         <div class="process-trigger">
           <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p class="process-trigger__text">По завершению этапа вы получаете исполнительную схему инженерных сетей — без неё невозможно ни добавить розетку, ни сделать перепланировку в будущем.</p>
+          <p class="process-trigger__text">Проектирование и монтаж систем отопления, водоснабжения, канализации и электроснабжения.</p>
         </div>
         <div class="process-tags">
           <span class="process-tag">Электрика</span>
           <span class="process-tag">Водоснабжение</span>
           <span class="process-tag">Отопление</span>
           <span class="process-tag">Вентиляция</span>
-          <span class="process-tag">Исполнительная схема</span>
+          <span class="process-tag">Канализация</span>
         </div>
       </div>
       <div class="process-photo" id="sph-4">
@@ -549,21 +550,20 @@ body{padding-top:72px}
     <div class="process-item">
       <div class="process-num" aria-hidden="true">05</div>
       <div class="process-body">
-        <h3 class="process-title">Отделка и сдача объекта</h3>
+        <h3 class="process-title">Внутренняя отделка и благоустройство участка</h3>
         <p class="process-text">
-          Штукатурка стен, стяжка полов, разводка чистовой электрики, установка сантехники, финишные покрытия. Завершается этап актом приёма-передачи с обмером БТИ и пакетом исполнительной документации.<br/><br/>
-          Сдача — это не просто ключи. Это папка документов, по которой любой другой специалист через 10 лет поймёт, что и как построено в вашем доме.
+          Отделка — это финальный слой, который как проявляет так маскирует все скрытые дефекты предыдущих этапов. Мы не маскируем изъяны штукатуркой, так как подходим к каждому этапу строительства основательно, а значит не нужно тратить бюджет клиента на материалы чтобы исправить ошибки по переделкам, что на 20% снижает расход черновых смесей и исключает появление трещин на финишных покрытиях.<br/><br/>
+Благоустройство и ограждение участка — это финальный контур безопасности вашего дома. Мы не просто укладываем плитку, мы создаем систему водоотведения и дренажа, которая гарантирует сухость фундамента и отсутствие сырости в цоколе.
         </p>
         <div class="process-trigger">
           <svg class="process-trigger__icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="var(--orange)" stroke-width="1.2"/><path d="M6 9l2 2 4-4" stroke="var(--orange)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p class="process-trigger__text">Вы подписываете акт только после того, как лично прошли по объекту с нашим прорабом и зафиксировали все замечания. Ничего не принимается «на веру».</p>
+          <p class="process-trigger__text">Предчистовая и финишная отделка, фасадные работы, планировка участка, устройство дренажа и благоустройство территории.</p>
         </div>
         <div class="process-tags">
           <span class="process-tag">Штукатурка</span>
           <span class="process-tag">Стяжка</span>
-          <span class="process-tag">Акт приёмки</span>
-          <span class="process-tag">БТИ</span>
-          <span class="process-tag">Документация</span>
+          <span class="process-tag">Финишная отделка</span>
+          <span class="process-tag">Благоустройство участка</span>
         </div>
       </div>
       <div class="process-photo" id="sph-5">
@@ -586,19 +586,12 @@ body{padding-top:72px}
     </div>
     <div class="section-header__right">
       <p class="t-body" style="max-width:36ch;text-align:right;">
-        Фото наших объектов. Можно выбрать по материалу или году строительства.
+        Фото наших объектов.<br />
+        Строили по своим проектам и проектам клиентов. 
       </p>
     </div>
   </header>
 </section>
-
-<!-- Gallery controls (sticky) -->
-<div class="gallery-controls" id="gallery-controls">
-  <button class="gallery-btn active" data-cat="all">Все</button>
-  <button class="gallery-btn" data-cat="Кирпич">Кирпич</button>
-  <button class="gallery-btn" data-cat="Газоблок">Газоблок</button>
-  <button class="gallery-btn" data-cat="Отсевной блок">Отсевной блок</button>
-</div>
 
 <div class="gallery-grid" id="gallery-grid" style="margin:0 5vw 80px;border-right:var(--divider);border-bottom:var(--divider);">
 </div>
@@ -662,26 +655,26 @@ body{padding-top:72px}
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="footer__grid-bg" aria-hidden="true"></div>
   <div class="footer__wordmark" aria-hidden="true">ИСКОН</div>
   <div class="footer__nav-block">
     <div class="footer__brand">
       <a href="index.html" class="footer__logo"><img src="images/logo-white.png" alt="ИСКОН" style="height:26px;width:auto;object-fit:contain;filter:none;" /></a>
-      <p class="footer__tagline">Надёжное строительство<br />в Краснодаре<br />и Краснодарском крае</p>
+      <p class="footer__tagline">Индивидуальное жилищное<br/> строительство<br/>в Краснодарском крае</p>
     </div>
     <nav class="footer__nav-col">
-      <span class="footer__nav-head">Услуги</span>
-      <a href="services.html#own-land" class="footer__nav-link">Строительство на вашем участке</a>
-      <a href="catalog.html" class="footer__nav-link">Продажа готовых домов</a>
-      <a href="services.html#materials" class="footer__nav-link">Кирпич и газоблок</a>
-      <a href="services.html#roofing" class="footer__nav-link">Вальмовые кровли</a>
+      <span class="footer__nav-head">Где мы строим</span>
+      <span class="footer__nav-link">Краснодар и пригород</span>
+      <span class="footer__nav-link">Гулькевичи и Гулькевичский район</span>
+      <span class="footer__nav-link">Кропоткин и Кавказский район</span>
+      <span class="footer__nav-link">Ближайшие районы</span>
     </nav>
-    <nav class="footer__nav-col">
-      <span class="footer__nav-head">Компания</span>
+   <nav class="footer__nav-col">
+   <span class="footer__nav-head">Компания</span>
       <a href="catalog.html" class="footer__nav-link">Каталог домов</a>
       <a href="services.html" class="footer__nav-link">Наши услуги</a>
-      <a href="contacts.html" class="footer__nav-link">Контакты</a>
+</nav>
     </nav>
     <nav class="footer__nav-col">
       <span class="footer__nav-head">Связаться</span>
@@ -690,7 +683,7 @@ body{padding-top:72px}
     </nav>
   </div>
   <div class="footer__bottom">
-    <span class="footer__copy">© 2015–2025 ИСКОН. Строительство домов в Краснодарском крае.</span>
+    <span class="footer__copy">© 2026 ИСКОН. Строительство домов в Краснодарском крае.</span>
     <div class="footer__legal"><a href="#" onclick="openPrivacyModal();return false;">Политика конфиденциальности</a></div>
   </div>
 </footer>
@@ -748,28 +741,7 @@ async function loadGallery() {
     allProjects = allProjects.filter(p => p.visible !== false);
   } catch(e) { allProjects = []; }
 
-  // Build category buttons dynamically
-  const cats = [...new Set(allProjects.map(p => p.category).filter(Boolean))];
-  const ctrl = document.getElementById('gallery-controls');
-  // Remove existing dynamic buttons (keep "Все")
-  ctrl.querySelectorAll('[data-cat]:not([data-cat="all"])').forEach(b => b.remove());
-  cats.forEach(cat => {
-    const b = document.createElement('button');
-    b.className = 'gallery-btn';
-    b.dataset.cat = cat;
-    b.textContent = cat;
-    ctrl.appendChild(b);
-  });
-
   renderGallery('all');
-
-  ctrl.querySelectorAll('.gallery-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      ctrl.querySelectorAll('.gallery-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderGallery(btn.dataset.cat);
-    });
-  });
 }
 
 function renderGallery(cat) {

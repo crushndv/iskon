@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=2" />
+  <link rel="stylesheet" href="css/main.css?v=3" />
   <style>
 body{padding-top:72px}
 .page-hero{padding:36px 5vw 28px;border-bottom:var(--divider);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -93,9 +93,9 @@ body{padding-top:72px}
   <a href="index.html" class="nav__logo"><img src="images/logo-black.png" alt="ИСКОН" style="height:30px;width:auto;object-fit:contain;" /></a>
   <ul class="nav__links">
     <li><a href="index.html">Главная</a></li>
-    <li><a href="catalog.html" class="active">Каталог домов</a></li>
+    <li><a href="catalog.html" class="active">Готовые дома</a></li>
     <li><a href="services.html">Услуги</a></li>
-    <li><a href="contacts.html">Контакты</a></li>
+    <li><a href="#footer">Контакты</a></li>
   </ul>
   <div class="nav__right">
     <a href="tel:+79181269996" class="nav__phone">8 918 126 99 96</a>
@@ -104,19 +104,20 @@ body{padding-top:72px}
   <button class="nav__burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav__mobile" id="mobile-menu">
-  <a href="index.html">Главная</a><a href="catalog.html">Каталог домов</a>
-  <a href="services.html">Услуги</a><a href="contacts.html">Контакты</a>
+  <a href="index.html">Главная</a><a href="catalog.html">Готовые дома</a>
+  <a href="services.html">Услуги</a><a href="#footer">Контакты</a>
   <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a>
 </div>
 
 <div class="page-hero">
   <div>
-    <div class="t-label" style="margin-bottom:8px;">Каталог 2025</div>
+    <div class="t-label" style="margin-bottom:8px;">Дома в продаже</div>
     <h1 class="t-h2" style="font-size:clamp(1.2rem,3vw,1.9rem);">Готовые дома в Краснодарском крае</h1>
   </div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;">
     <span class="ipoteka-badge">Семейная ипотека</span>
     <span class="ipoteka-badge">Стандартная ипотека</span>
+    <span class="ipoteka-badge">IT ипотека</span>
     <span class="ipoteka-badge">Наличные</span>
   </div>
 </div>
@@ -125,7 +126,7 @@ body{padding-top:72px}
 <div class="catalog-wrap">
   <div class="results-bar">
     <span class="results-count">Найдено: <strong id="count">0</strong> объектов</span>
-    <a href="index.html#form" class="btn btn--ghost" style="padding:8px 18px;font-size:.46rem;"><span>Строим на вашем участке</span></a>
+    <a href="index.html#form" class="btn btn--ghost" style="padding:8px 18px;font-size:.46rem;"><span>Построить на вашем участке</span></a>
   </div>
   <div class="homes-grid" id="homes-list"></div>
 </div>
@@ -177,24 +178,24 @@ body{padding-top:72px}
   </div>
 </div>
 
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="footer__grid-bg" aria-hidden="true"></div>
   <div class="footer__wordmark" aria-hidden="true">ИСКОН</div>
   <div class="footer__nav-block">
     <div class="footer__brand">
       <a href="index.html" class="footer__logo"><img src="images/logo-white.png" alt="ИСКОН" style="height:26px;width:auto;object-fit:contain;filter:none;" /></a>
-      <p class="footer__tagline">Надёжное строительство<br />в Краснодаре<br />и Краснодарском крае</p>
+      <p class="footer__tagline">Индивидуальное жилищное<br/> строительство<br/>в Краснодарском крае</p>
     </div>
     <nav class="footer__nav-col">
-      <span class="footer__nav-head">Услуги</span>
-      <a href="services.html#own-land" class="footer__nav-link">Строительство на вашем участке</a>
-      <a href="catalog.html" class="footer__nav-link">Продажа готовых домов</a>
-      <a href="services.html" class="footer__nav-link">Кирпич и газоблок</a>
-      <a href="services.html" class="footer__nav-link">Вальмовые кровли</a>
+   <span class="footer__nav-head">Где мы строим</span>
+      <span class="footer__nav-link">Краснодар и пригород</span>
+      <span class="footer__nav-link">Гулькевичи и Гулькевичский район</span>
+      <span class="footer__nav-link">Кропоткин и Кавказский район</span>
+      <span class="footer__nav-link">Ближайшие районы</span>
     </nav>
     <nav class="footer__nav-col">
       <span class="footer__nav-head">Компания</span>
-      <a href="catalog.html" class="footer__nav-link">Каталог домов</a>
+      <a href="catalog.html" class="footer__nav-link">Готовые дома</a>
       <a href="services.html" class="footer__nav-link">Наши услуги</a>
     </nav>
     <nav class="footer__nav-col">
@@ -204,7 +205,7 @@ body{padding-top:72px}
     </nav>
   </div>
   <div class="footer__bottom">
-    <span class="footer__copy">© 2015–2025 ИСКОН. Строительство домов в Краснодарском крае.</span>
+    <span class="footer__copy">© 2026 ИСКОН. Строительство домов в Краснодарском крае.</span>
     <div class="footer__legal"><a href="#" onclick="openPrivacyModal();return false;">Политика конфиденциальности</a></div>
   </div>
 </footer>

@@ -703,6 +703,35 @@ input, select, textarea { font-family: inherit; }
   scrollbar-width: none;
 }
 .geo-strip::-webkit-scrollbar { display: none; }
+/* Увеличенный вариант гео-стрипа */
+.geo-strip--lg {
+  padding: 20px 5vw;
+  gap: 24px;
+  background: #f5f5f7;
+  border-top: 2px solid rgba(255,69,0,0.18);
+  border-bottom: 2px solid rgba(255,69,0,0.18);
+}
+.geo-strip--lg .geo-strip__label {
+  font-size: 0.62rem;
+  gap: 9px;
+}
+.geo-strip--lg .geo-strip__sep {
+  height: 22px;
+}
+.geo-strip--lg .geo-tag {
+  font-size: 0.6rem;
+  padding: 8px 16px;
+  border-color: rgba(142,142,147,0.35);
+  gap: 9px;
+}
+.geo-strip--lg .geo-tag::before {
+  width: 6px; height: 6px;
+}
+@media(max-width:600px) {
+  .geo-strip--lg { padding: 18px 5vw; gap: 10px; }
+  .geo-strip--lg .geo-strip__label { font-size: 0.6rem; }
+  .geo-strip--lg .geo-tag { font-size: 0.58rem; padding: 7px 13px; }
+}
 .geo-strip__label {
   font-family: var(--f-head);
   font-size: 0.46rem;
