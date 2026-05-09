@@ -524,43 +524,32 @@ img{display:block;max-width:100%}
         </div>
         <div class="form-card">
           <div class="form-sec">
-            <div class="form-sec-ttl">Информация о проекте</div>
-            <div class="fg">
-              <div class="field"><label>Название *</label><input id="pf-title" type="text" placeholder="Кирпичный дом 140 м²" /></div>
-              <div class="field">
-                <label>Категория</label>
-                <select id="pf-category">
-                  <option>Кирпич</option><option>Газоблок</option><option>Отсевной блок</option><option>Монолит</option>
-                </select>
-              </div>
-              <div class="field"><label>Площадь м²</label><input id="pf-area" type="number" placeholder="140" /></div>
-              <div class="field"><label>Год сдачи</label><input id="pf-year" type="number" placeholder="2024" /></div>
-              <div class="field fg-full"><label>Адрес</label><input id="pf-address" type="text" placeholder="Краснодарский край, Динской р-н" /></div>
-              <div class="field fg-full"><label>Краткое описание</label><textarea id="pf-description" rows="3" placeholder="Двухэтажный дом из кирпича..."></textarea></div>
-              <div class="field">
-                <label>Видимость</label>
-                <select id="pf-visible">
-                  <option value="1">Показывать</option>
-                  <option value="0">Скрыть</option>
-                </select>
-              </div>
+            <div class="form-sec-ttl">Название</div>
+            <div class="field">
+              <label>Название *</label>
+              <input id="pf-title" type="text" placeholder="Кирпичный дом 140 м²" />
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label>Видимость</label>
+              <select id="pf-visible">
+                <option value="1">Показывать</option>
+                <option value="0">Скрыть</option>
+              </select>
             </div>
           </div>
           <div class="form-sec">
             <div class="form-sec-ttl">Фотографии проекта</div>
+            <div class="info-box">
+              <p><strong>Фото загружаются прямо в GitHub-репозиторий.</strong><br />
+              Первое фото станет главным. Для работы нужен GitHub-токен в разделе <strong>Настройки</strong>.</p>
+            </div>
             <div class="photo-drop" id="project-photo-drop" onclick="document.getElementById('project-photo-input').click()">
               <input type="file" id="project-photo-input" accept="image/*" multiple />
               <div class="photo-drop-txt">Перетащите фото сюда или нажмите</div>
-              <div class="photo-drop-sub">Первое фото станет главным · загружается в GitHub</div>
+              <div class="photo-drop-sub">JPG, PNG, WEBP · загружается в GitHub</div>
             </div>
             <div class="imgbb-status" id="project-imgbb-status"></div>
             <div class="photo-previews" id="project-photo-previews"></div>
-            <div style="margin-top:16px;">
-              <div class="field">
-                <label>Или вставьте URL фото (каждый с новой строки)</label>
-                <textarea id="pf-photos" rows="3" placeholder="https://...&#10;https://..."></textarea>
-              </div>
-            </div>
           </div>
           <input type="hidden" id="pf-id" />
         </div>
@@ -977,8 +966,6 @@ function renderProjects() {
       </div>
       <div class="listing-info">
         <div class="listing-title">${p.title} ${hidden?'<span class="pill pill-hidden">Скрыт</span>':''}</div>
-        <div class="listing-meta">${p.address||'—'} · ${p.area||'?'} м² · ${p.year||'—'}</div>
-        <div style="font-family:var(--f-head);font-size:.5rem;color:var(--orange);margin-top:3px;">${p.category||''}</div>
       </div>
       <div class="listing-status">
         <button class="btn-act btn-toggle-vis ${hidden?'hidden-on':''}" onclick="toggleProjectVisible(${i})">
@@ -1011,11 +998,7 @@ let projectPhotos = [];
 function openAddProject() {
   document.getElementById('pf-id').value = '';
   document.getElementById('project-form-title').textContent = 'Добавить проект';
-  ['title','area','year','address','description','photos'].forEach(id => {
-    const el = document.getElementById('pf-'+id);
-    if (el) el.value = '';
-  });
-  document.getElementById('pf-category').value = 'Кирпич';
+  document.getElementById('pf-title').value = '';
   document.getElementById('pf-visible').value = '1';
   projectPhotos = [];
   renderPhotoPreview('project');
@@ -1027,14 +1010,8 @@ function editProject(i) {
   document.getElementById('pf-id').value = p.id;
   document.getElementById('project-form-title').textContent = 'Ред.: ' + p.title;
   document.getElementById('pf-title').value = p.title || '';
-  document.getElementById('pf-category').value = p.category || 'Кирпич';
-  document.getElementById('pf-area').value = p.area || '';
-  document.getElementById('pf-year').value = p.year || '';
-  document.getElementById('pf-address').value = p.address || '';
-  document.getElementById('pf-description').value = p.description || '';
-  document.getElementById('pf-photos').value = (p.photos || []).join('\n');
   document.getElementById('pf-visible').value = (p.visible === false || p.visible === 0) ? '0' : '1';
-  projectPhotos = (p.photos || []).map((url, idx) => ({ url, isMain: idx === 0 }));
+  projectPhotos = (p.photos || []).filter(u => u && !u.startsWith('data:')).map((url, idx) => ({ url, isMain: idx === 0 }));
   renderPhotoPreview('project');
   showPanel('add-project');
 }
@@ -1045,18 +1022,11 @@ function saveProject() {
   const existingId = document.getElementById('pf-id').value;
   const id = existingId || 'proj-' + Date.now();
 
-  const manualPhotos = document.getElementById('pf-photos').value.split('\n').map(s=>s.trim()).filter(s => s && !s.startsWith('data:'));
-  const uploaderPhotos = projectPhotos.map(p => p.url).filter(url => url && !url.startsWith('data:'));
-  const allPhotos = [...new Set([...uploaderPhotos, ...manualPhotos])];
+  // Only use uploader photos — no textarea to avoid phantom URL bug
+  const allPhotos = projectPhotos.map(p => p.url).filter(url => url && !url.startsWith('data:'));
 
   const p = {
     id, title,
-    category: document.getElementById('pf-category').value,
-    technology: document.getElementById('pf-category').value,
-    area: parseInt(document.getElementById('pf-area').value) || 0,
-    year: parseInt(document.getElementById('pf-year').value) || null,
-    address: document.getElementById('pf-address').value.trim(),
-    description: document.getElementById('pf-description').value.trim(),
     mainPhoto: allPhotos[0] || '',
     photos: allPhotos,
     visible: document.getElementById('pf-visible').value === '1',

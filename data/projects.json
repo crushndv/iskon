@@ -5,14 +5,13 @@
     "category": "Кирпич",
     "technology": "Кирпич",
     "area": 87,
-    "year": 2026,
+    "year": null,
     "address": "",
     "description": "",
     "mainPhoto": "images/projects/proj-001/1778185869089_uzm3c.jpg",
     "photos": [
       "images/projects/proj-001/1778185869089_uzm3c.jpg",
-      "images/projects/proj-001/1778185872225_90430.jpg",
-      "images/homes/dom-001/main.jpg"
+      "images/projects/proj-001/1778185872225_90430.jpg"
     ],
     "visible": true
   },
@@ -22,7 +21,7 @@
     "category": "Кирпич",
     "technology": "Кирпич",
     "area": 110,
-    "year": 2026,
+    "year": null,
     "address": "",
     "description": "",
     "mainPhoto": "images/projects/proj-002/1778186031726_nkd5f.jpeg",
@@ -30,8 +29,7 @@
       "images/projects/proj-002/1778186031726_nkd5f.jpeg",
       "images/projects/proj-002/1778186023773_13p2m.jpeg",
       "images/projects/proj-002/1778186027259_zcp42.jpeg",
-      "images/projects/proj-002/1778186029439_xok8t.jpeg",
-      "images/homes/dom-002/main.jpg"
+      "images/projects/proj-002/1778186029439_xok8t.jpeg"
     ],
     "visible": true
   },
@@ -41,7 +39,7 @@
     "category": "Кирпич",
     "technology": "Кирпич",
     "area": 190,
-    "year": 2023,
+    "year": null,
     "address": "Краснодарский край, Краснодар, п. Пашковский",
     "mainPhoto": "images/homes/dom-003/main.jpg",
     "photos": [

@@ -960,12 +960,8 @@ function buildProjectCard(p, idx) {
     </div>
     <div class="card__body">
       <h3 class="card__title">${p.title}</h3>
-      <div class="card__specs">
-        <div class="card__spec"><span class="spec-val">${p.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
-        <div class="card__spec"><span class="spec-val" style="font-size:0.65rem;">${p.technology}</span><span class="spec-key">Материал</span></div>
-      </div>
       <div class="card__footer">
-        <p style="font-family:var(--f-body);font-size:0.72rem;font-weight:300;color:var(--grey);">${p.address}</p>
+        <span></span>
         <span class="card__cta"><span>Смотреть</span><span class="btn__arr"></span></span>
       </div>
     </div>
@@ -1005,15 +1001,7 @@ function openProjectModal(idx) {
       ${_projSliderHtml(p)}
     </div>
     <div class="proj-m__body">
-      <div>
-        <h2 style="font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;">${p.title}</h2>
-        <p style="font-family:var(--f-body);font-size:.76rem;font-weight:300;color:var(--grey);margin-top:5px;">${p.address}</p>
-      </div>
-      <div class="proj-m__specs">
-        <div class="proj-m__spec"><span class="spec-val">${p.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
-        <div class="proj-m__spec"><span class="spec-val" style="font-size:.62rem;">${p.technology}</span><span class="spec-key">Материал</span></div>
-      </div>
-      ${p.description ? `<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);">${p.description}</p>` : ''}
+      <h2 style="font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;">${p.title}</h2>
     </div>`;
   document.getElementById('proj-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
