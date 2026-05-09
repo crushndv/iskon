@@ -44,5 +44,17 @@
       "images/projects/proj-1778361463218/1778361465191_gf8mc.jpeg"
     ],
     "visible": true
+  },
+  {
+    "id": "proj-1778363409650",
+    "title": "Одноэтажный дом 88 м2",
+    "mainPhoto": "images/projects/proj-1778363383379/1778363383456_f8brz.jpg",
+    "photos": [
+      "images/projects/proj-1778363383379/1778363383456_f8brz.jpg",
+      "images/projects/proj-1778363383405/1778363383516_kv20c.jpg",
+      "images/projects/proj-1778363383379/1778363390299_n0ygx.jpg",
+      "images/projects/proj-1778363383405/1778363391007_kkkry.jpg"
+    ],
+    "visible": true
   }
 ]
