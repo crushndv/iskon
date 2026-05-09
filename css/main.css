@@ -265,12 +265,22 @@ input, select, textarea { font-family: inherit; }
 
 /* Arrow inside button */
 .btn__arr {
-  width: 18px; height: 1px;
-  background: currentColor;
+  width: 26px; height: 1px;
   flex-shrink: 0;
-  transition: width 0.3s var(--ease);
   position: relative;
+  background: transparent; /* line drawn via ::before to avoid layout shift */
 }
+.btn__arr::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: currentColor;
+  transform-origin: left;
+  transform: scaleX(0.7);
+  transition: transform 0.3s var(--ease);
+}
+.btn:hover .btn__arr::before { transform: scaleX(1); }
 .btn__arr::after {
   content: '';
   position: absolute;
@@ -280,7 +290,6 @@ input, select, textarea { font-family: inherit; }
   border-right: 1px solid currentColor;
   transform: rotate(45deg);
 }
-.btn:hover .btn__arr { width: 26px; }
 
 /* ================================================================
    TAGS / BADGES
