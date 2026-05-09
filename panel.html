@@ -1045,8 +1045,8 @@ function saveProject() {
   const existingId = document.getElementById('pf-id').value;
   const id = existingId || 'proj-' + Date.now();
 
-  const manualPhotos = document.getElementById('pf-photos').value.split('\n').map(s=>s.trim()).filter(Boolean);
-  const uploaderPhotos = projectPhotos.map(p => p.url);
+  const manualPhotos = document.getElementById('pf-photos').value.split('\n').map(s=>s.trim()).filter(s => s && !s.startsWith('data:'));
+  const uploaderPhotos = projectPhotos.map(p => p.url).filter(url => url && !url.startsWith('data:'));
   const allPhotos = [...new Set([...uploaderPhotos, ...manualPhotos])];
 
   const p = {
@@ -1054,7 +1054,7 @@ function saveProject() {
     category: document.getElementById('pf-category').value,
     technology: document.getElementById('pf-category').value,
     area: parseInt(document.getElementById('pf-area').value) || 0,
-    year: parseInt(document.getElementById('pf-year').value) || new Date().getFullYear(),
+    year: parseInt(document.getElementById('pf-year').value) || null,
     address: document.getElementById('pf-address').value.trim(),
     description: document.getElementById('pf-description').value.trim(),
     mainPhoto: allPhotos[0] || '',

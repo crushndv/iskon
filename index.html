@@ -957,14 +957,12 @@ function buildProjectCard(p, idx) {
   <article class="card" role="listitem" onclick="openProjectModal(${idx})" style="cursor:pointer;">
     <div class="card__photo">
       ${photo}
-      <span class="card__series">${p.category || 'Реализован'}</span>
     </div>
     <div class="card__body">
       <h3 class="card__title">${p.title}</h3>
       <div class="card__specs">
         <div class="card__spec"><span class="spec-val">${p.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
         <div class="card__spec"><span class="spec-val" style="font-size:0.65rem;">${p.technology}</span><span class="spec-key">Материал</span></div>
-        <div class="card__spec"><span class="spec-val">${p.year}</span><span class="spec-key">Год</span></div>
       </div>
       <div class="card__footer">
         <p style="font-family:var(--f-body);font-size:0.72rem;font-weight:300;color:var(--grey);">${p.address}</p>
@@ -1008,14 +1006,12 @@ function openProjectModal(idx) {
     </div>
     <div class="proj-m__body">
       <div>
-        <span class="t-label">${p.category || 'Реализован'}</span>
-        <h2 style="font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;margin-top:7px;">${p.title}</h2>
+        <h2 style="font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;">${p.title}</h2>
         <p style="font-family:var(--f-body);font-size:.76rem;font-weight:300;color:var(--grey);margin-top:5px;">${p.address}</p>
       </div>
       <div class="proj-m__specs">
         <div class="proj-m__spec"><span class="spec-val">${p.area}<span class="spec-unit">м²</span></span><span class="spec-key">Площадь</span></div>
         <div class="proj-m__spec"><span class="spec-val" style="font-size:.62rem;">${p.technology}</span><span class="spec-key">Материал</span></div>
-        <div class="proj-m__spec"><span class="spec-val">${p.year}</span><span class="spec-key">Год</span></div>
       </div>
       ${p.description ? `<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);">${p.description}</p>` : ''}
     </div>`;
