@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=4" />
+  <link rel="stylesheet" href="css/main.css?v=5" />
   <style>
 body{padding-top:72px}
 .page-hero{padding:36px 5vw 28px;border-bottom:var(--divider);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -351,15 +351,13 @@ function openModal(h){
       ${(h.lat&&h.lng)?`
       <div style="margin-top:12px;">
         <div class="t-label" style="margin-bottom:8px;">Расположение объекта</div>
-        <a href="https://yandex.ru/maps/?pt=${h.lng},${h.lat}&z=15&l=map" target="_blank" rel="noopener" style="display:block;border-radius:0;overflow:hidden;border:var(--divider);">
-          <img src="https://static-maps.yandex.ru/1.x/?ll=${h.lng},${h.lat}&size=440,160&z=15&pt=${h.lng},${h.lat},pm2rdm&l=map" alt="Карта" style="width:100%;height:auto;display:block;" loading="lazy" />
-        </a>
-        <div style="font-size:.68rem;color:var(--grey);margin-top:5px;">Нажмите на карту, чтобы открыть в Яндекс.Картах</div>
+        <iframe src="https://yandex.ru/map-widget/v1/?pt=${h.lng},${h.lat}&z=15&l=map" width="100%" height="220" frameborder="0" style="display:block;border:var(--divider);" allowfullscreen loading="lazy"></iframe>
       </div>`:''}
       <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:var(--divider);">
-        <a href="index.html#form" class="btn btn--primary"><span>Запросить расчёт</span><span class="btn__arr"></span></a>
+        <button onclick="toggleInquiryForm()" class="btn btn--primary" type="button"><span>Узнать подробнее</span><span class="btn__arr"></span></button>
         <a href="tel:+79181269996" class="btn btn--ghost"><span>8 918 126 99 96</span></a>
       </div>
+      ${_inquiryFormHtml(h)}
     </div>`;
   document.getElementById('modal').classList.add('open');
 }
@@ -411,6 +409,90 @@ function resetFilters(){
 }
 function initFilters(){/* фильтры убраны */}
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+
+/* ── INQUIRY FORM IN MODAL ── */
+function _inquiryFormHtml(h){
+  const t=(h.title||'').replace(/'/g,"&#39;").replace(/"/g,"&quot;");
+  return `<div id="modal-inquiry-form" style="display:none;margin-top:16px;padding:24px;background:#f5f5f7;border:var(--divider);">
+  <div style="font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);margin-bottom:18px;">Оставить заявку</div>
+  <form onsubmit="submitInquiryForm(event,'${t}')" style="display:flex;flex-direction:column;gap:14px;">
+    <div>
+      <label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Ваше имя</label>
+      <input id="inq-name" type="text" required placeholder="Иван" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(142,142,147,0.3);font-family:var(--f-body);font-size:0.85rem;background:#fff;outline:none;" />
+    </div>
+    <div>
+      <label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Телефон</label>
+      <input id="inq-phone" type="tel" required placeholder="+7 918 000 00 00" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(142,142,147,0.3);font-family:var(--f-body);font-size:0.85rem;background:#fff;outline:none;" />
+    </div>
+    <div>
+      <label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Форма оплаты</label>
+      <select id="inq-payment" required onchange="inquiryPaymentChange(this)" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(142,142,147,0.3);font-family:var(--f-body);font-size:0.85rem;background:#fff;outline:none;cursor:pointer;appearance:auto;">
+        <option value="">— выберите —</option>
+        <option value="Семейная ипотека">Семейная ипотека</option>
+        <option value="IT ипотека">IT ипотека</option>
+        <option value="Стандартная ипотека">Стандартная ипотека</option>
+        <option value="Военная ипотека">Военная ипотека</option>
+        <option value="Наличные">Наличные</option>
+        <option value="Не понимаю">Не понимаю</option>
+      </select>
+    </div>
+    <div id="inq-term-row" style="display:none;">
+      <label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Срок ипотеки</label>
+      <select id="inq-term" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(142,142,147,0.3);font-family:var(--f-body);font-size:0.85rem;background:#fff;outline:none;cursor:pointer;appearance:auto;">
+        <option value="">— выберите —</option>
+        <option value="5 лет">5 лет</option>
+        <option value="10 лет">10 лет</option>
+        <option value="15 лет">15 лет</option>
+        <option value="20 лет">20 лет</option>
+        <option value="25 лет">25 лет</option>
+        <option value="30 лет">30 лет</option>
+      </select>
+    </div>
+    <button id="inq-submit" type="submit" class="btn btn--primary" style="align-self:flex-start;"><span>Отправить заявку</span><span class="btn__arr"></span></button>
+  </form>
+</div>`;
+}
+
+function toggleInquiryForm(){
+  const f=document.getElementById('modal-inquiry-form');
+  if(!f)return;
+  const show=f.style.display==='none';
+  f.style.display=show?'block':'none';
+  if(show)setTimeout(()=>f.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+
+function inquiryPaymentChange(sel){
+  const isIpoteka=sel.value.includes('ипотека');
+  const row=document.getElementById('inq-term-row');
+  if(row)row.style.display=isIpoteka?'block':'none';
+}
+
+async function submitInquiryForm(e,homeTitle){
+  e.preventDefault();
+  const btn=document.getElementById('inq-submit');
+  btn.disabled=true;
+  btn.querySelector('span').textContent='Отправляем…';
+  const name=document.getElementById('inq-name').value;
+  const phone=document.getElementById('inq-phone').value;
+  const payment=document.getElementById('inq-payment').value;
+  const term=document.getElementById('inq-term').value;
+  const msg=`Объект: ${homeTitle}\nИмя: ${name}\nТелефон: ${phone}\nОплата: ${payment}${term?'\nСрок: '+term:''}`;
+  try{
+    const r=await fetch('https://formsubmit.co/ajax/info@iskon.pro',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name,phone,message:msg,_subject:'🏠 Заявка по объекту — '+homeTitle,_captcha:'false'})
+    });
+    const d=await r.json();
+    if(d.success==='true'||d.success===true){
+      document.getElementById('modal-inquiry-form').innerHTML='<p style="text-align:center;padding:28px 0;font-family:var(--f-body);font-size:.9rem;color:var(--black);">✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.</p>';
+    }else{throw new Error();}
+  }catch{
+    btn.disabled=false;
+    btn.querySelector('span').textContent='Отправить заявку';
+    alert('Ошибка отправки. Позвоните нам: 8 918 126 99 96');
+  }
+}
 
 function openPrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='flex';document.body.style.overflow='hidden';}
 function closePrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='none';document.body.style.overflow='';}
