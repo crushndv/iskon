@@ -422,7 +422,10 @@ function _inquiryFormHtml(h){
     </div>
     <div>
       <label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Телефон</label>
-      <input id="inq-phone" type="tel" required placeholder="+7 918 000 00 00" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(142,142,147,0.3);font-family:var(--f-body);font-size:0.85rem;background:#fff;outline:none;" />
+      <div style="display:flex;border:1px solid rgba(142,142,147,0.3);background:#fff;">
+        <span style="padding:10px 10px 10px 12px;font-family:var(--f-body);font-size:0.85rem;color:var(--grey);user-select:none;white-space:nowrap;">+7</span>
+        <input id="inq-phone" type="tel" required maxlength="10" pattern="[0-9]{10}" placeholder="9181269996" oninput="this.value=this.value.replace(/\D/g,'')" style="flex:1;min-width:0;padding:10px 12px 10px 4px;border:none;font-family:var(--f-body);font-size:0.85rem;background:transparent;outline:none;" />
+      </div>
     </div>
     <div>
       <label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Форма оплаты</label>
@@ -473,7 +476,7 @@ async function submitInquiryForm(e,homeTitle){
   btn.disabled=true;
   btn.querySelector('span').textContent='Отправляем…';
   const name=document.getElementById('inq-name').value;
-  const phone=document.getElementById('inq-phone').value;
+  const phone='+7'+document.getElementById('inq-phone').value;
   const payment=document.getElementById('inq-payment').value;
   const term=document.getElementById('inq-term').value;
   const msg=`Объект: ${homeTitle}\nИмя: ${name}\nТелефон: ${phone}\nОплата: ${payment}${term?'\nСрок: '+term:''}`;
