@@ -1403,17 +1403,29 @@ document.getElementById('quiz-form').addEventListener('submit', async function(e
 quizRender();
 /* ======== /QUIZ ======== */
 
-// Load privacy policy from JSON
+// Load privacy policy from JSON and render plain text as HTML
+function _privacyToHtml(text) {
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return text.trim().split(/\n{2,}/).filter(p => p.trim()).map(p => {
+    let html = esc(p.trim()).replace(/\n/g, '<br>');
+    html = html.replace(/([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g,
+      '<a href="mailto:$1" style="color:var(--orange);">$1</a>');
+    html = html.replace(/(https?:\/\/[^\s<&]+)/g,
+      '<a href="$1" style="color:var(--orange);">$1</a>');
+    return `<p style="margin-bottom:16px;">${html}</p>`;
+  }).join('');
+}
+
 (async function loadPrivacy() {
   try {
     const r = await fetch('data/privacy.json?' + Date.now());
     const d = await r.json();
     const body = document.getElementById('privacy-body');
-    if (body && d.html) {
-      body.innerHTML = d.html +
-        `<p style="font-size:0.72rem;color:var(--grey);margin-top:8px;">Дата последнего обновления: ${d.updatedAt || ''}</p>`;
-    }
-  } catch(e) { /* fallback: content stays as-is */ }
+    if (!body) return;
+    const content = d.text ? _privacyToHtml(d.text) : (d.html || '');
+    body.innerHTML = content +
+      `<p style="font-size:0.72rem;color:var(--grey);margin-top:8px;">Дата последнего обновления: ${d.updatedAt || ''}</p>`;
+  } catch(e) {}
 })();
 
 function openPrivacyModal() {

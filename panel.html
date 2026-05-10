@@ -295,37 +295,12 @@ img{display:block;max-width:100%}
 .seo-preview__desc{font-size:.72rem;color:#545454;font-weight:300;line-height:1.5;}
 
 /* PRIVACY EDITOR */
-.prv-toolbar{display:flex;gap:4px;flex-wrap:wrap;padding:8px;background:#f5f5f7;border:var(--border);border-bottom:none;}
-.prv-btn{
-  padding:5px 11px;border:var(--border);background:#fff;cursor:pointer;
-  font-family:var(--f-body);font-size:.72rem;color:var(--black);
-  transition:all .15s;white-space:nowrap;
-}
-.prv-btn:hover{background:var(--black);color:#fff;border-color:var(--black);}
-.prv-btn b{font-weight:700;}
 .prv-editor{
-  width:100%;min-height:420px;padding:16px;border:var(--border);
-  font-family:var(--f-body);font-size:.82rem;line-height:1.85;color:var(--black);
-  background:#fff;resize:vertical;outline:none;
+  width:100%;min-height:480px;padding:16px;border:var(--border);
+  font-family:var(--f-body);font-size:.85rem;line-height:1.9;color:var(--black);
+  background:#fff;resize:vertical;outline:none;white-space:pre-wrap;
 }
 .prv-editor:focus{border-color:var(--black);}
-.prv-preview-box{
-  border:var(--border);padding:24px 28px;background:var(--snow);
-  font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.85;color:#333;
-  max-height:400px;overflow-y:auto;
-}
-.prv-preview-box strong{font-weight:600;}
-.prv-preview-box ul{padding-left:20px;margin-bottom:16px;}
-.prv-preview-box li{margin-bottom:6px;}
-.prv-preview-box p{margin-bottom:14px;}
-.prv-tabs{display:flex;gap:0;border-bottom:var(--border);margin-bottom:16px;}
-.prv-tab{
-  padding:9px 20px;border:none;background:transparent;cursor:pointer;
-  font-family:var(--f-head);font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s;
-}
-.prv-tab:hover{color:var(--black);}
-.prv-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
 
 /* PASS CHANGE */
 .pw-change-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
@@ -656,57 +631,31 @@ img{display:block;max-width:100%}
         <div class="pnl-hdr">
           <div>
             <div class="pnl-title">Политика конфиденциальности</div>
-            <div class="pnl-sub">Текст отображается во всплывающем окне на сайте</div>
+            <div class="pnl-sub">Просто вставьте текст — переносы строк сохранятся на сайте</div>
           </div>
           <button class="btn-hdr btn-orange" onclick="savePrivacy()">⬆ Сохранить и опубликовать</button>
         </div>
 
-        <div class="prv-tabs">
-          <button class="prv-tab active" onclick="switchPrvTab('edit',this)">✏️ Редактор</button>
-          <button class="prv-tab" onclick="switchPrvTab('preview',this)">👁 Предпросмотр</button>
-        </div>
-
-        <!-- EDITOR TAB -->
-        <div id="prv-edit-tab">
-          <div class="form-card" style="margin-bottom:16px;">
-            <div class="form-sec">
-              <div class="form-sec-ttl">Дата последнего обновления</div>
-              <div class="field" style="max-width:280px;">
-                <input id="prv-date" type="text" placeholder="01 января 2026 г." />
-              </div>
-            </div>
-          </div>
-
-          <div class="form-card">
-            <div class="form-sec">
-              <div class="form-sec-ttl">Текст политики</div>
-              <div class="hint" style="margin-bottom:10px;">Используйте кнопки тулбара для форматирования. Вставляйте текст из Word — форматирование сохраняется.</div>
-              <div class="prv-toolbar">
-                <button class="prv-btn" onclick="prvInsert('heading')" title="Заголовок раздела"><b>Заголовок</b></button>
-                <button class="prv-btn" onclick="prvInsert('bold')" title="Жирный текст"><b>Жирный</b></button>
-                <button class="prv-btn" onclick="prvInsert('paragraph')" title="Новый абзац">¶ Абзац</button>
-                <button class="prv-btn" onclick="prvInsert('ul-open')" title="Начать список">• Список</button>
-                <button class="prv-btn" onclick="prvInsert('li')" title="Пункт списка">  · Пункт</button>
-                <button class="prv-btn" onclick="prvInsert('ul-close')" title="Закрыть список">Конец списка</button>
-                <button class="prv-btn" onclick="prvInsert('link')" title="Ссылка">🔗 Ссылка</button>
-                <button class="prv-btn" onclick="prvCleanup()" title="Убрать лишние пробелы и пустые строки" style="color:var(--orange);">🧹 Очистить</button>
-              </div>
-              <textarea class="prv-editor" id="prv-html" oninput="prvLivePreview()"></textarea>
+        <div class="form-card" style="margin-bottom:14px;">
+          <div class="form-sec">
+            <div class="form-sec-ttl">Дата последнего обновления</div>
+            <div class="field" style="max-width:260px;">
+              <input id="prv-date" type="text" placeholder="01 января 2026 г." />
             </div>
           </div>
         </div>
 
-        <!-- PREVIEW TAB -->
-        <div id="prv-preview-tab" style="display:none;">
-          <div class="form-card">
-            <div class="form-sec">
-              <div class="form-sec-ttl">Предпросмотр — как видит посетитель сайта</div>
-              <div style="font-family:var(--f-head);font-size:0.42rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">
-                Политика конфиденциальности
-              </div>
-              <div class="prv-preview-box" id="prv-preview"></div>
-              <div style="font-size:.65rem;color:var(--grey);margin-top:8px;">Дата обновления: <span id="prv-preview-date"></span></div>
+        <div class="form-card">
+          <div class="form-sec">
+            <div class="form-sec-ttl">Текст политики</div>
+            <div class="hint" style="margin-bottom:12px;">
+              Вставьте обычный текст — пустая строка между абзацами создаёт новый абзац, одиночный перенос строки отображается как перенос. Никакие теги не нужны.
             </div>
+            <textarea class="prv-editor" id="prv-text" placeholder="1. Общие положения
+
+Настоящая Политика...
+
+2. Цели обработки..."></textarea>
           </div>
         </div>
 
@@ -1691,74 +1640,35 @@ async function _applySeoToFile(owner, repo, filename, seo, token) {
 }
 
 // ── PRIVACY EDITOR ────────────────────────────────────────────────
-let privacyData = { updatedAt: '', html: '' };
-
 async function loadPrivacy() {
   try {
     const r = await fetch('data/privacy.json?' + Date.now());
-    privacyData = await r.json();
+    const d = await r.json();
+    const dateEl = document.getElementById('prv-date');
+    const textEl = document.getElementById('prv-text');
+    if (dateEl) dateEl.value = d.updatedAt || '';
+    // Support both old html field and new text field
+    if (textEl) textEl.value = d.text || _htmlToPlain(d.html || '');
   } catch(e) {}
-  const dateEl = document.getElementById('prv-date');
-  const htmlEl = document.getElementById('prv-html');
-  if (dateEl) dateEl.value = privacyData.updatedAt || '';
-  if (htmlEl) htmlEl.value = privacyData.html || '';
 }
 
-function switchPrvTab(tab, btn) {
-  document.querySelectorAll('.prv-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('prv-edit-tab').style.display    = tab === 'edit'    ? '' : 'none';
-  document.getElementById('prv-preview-tab').style.display = tab === 'preview' ? '' : 'none';
-  if (tab === 'preview') prvLivePreview();
-}
-
-function prvLivePreview() {
-  const html = document.getElementById('prv-html')?.value || '';
-  const date = document.getElementById('prv-date')?.value || '';
-  const pv = document.getElementById('prv-preview');
-  const pd = document.getElementById('prv-preview-date');
-  if (pv) pv.innerHTML = html;
-  if (pd) pd.textContent = date;
-}
-
-// Toolbar helpers — insert snippet at cursor position in textarea
-function prvInsert(type) {
-  const ta = document.getElementById('prv-html');
-  if (!ta) return;
-  const s = ta.selectionStart, e = ta.selectionEnd;
-  const sel = ta.value.slice(s, e);
-  const snippets = {
-    heading:  `\n<p style="margin-bottom:16px;"><strong>${sel || 'Заголовок раздела'}</strong></p>\n`,
-    bold:     `<strong>${sel || 'текст'}</strong>`,
-    paragraph:`\n<p style="margin-bottom:16px;">${sel || 'Текст абзаца...'}</p>\n`,
-    'ul-open':`\n<ul style="margin-bottom:16px;padding-left:20px;">\n`,
-    li:       `  <li style="margin-bottom:6px;">${sel || 'Пункт списка'}</li>\n`,
-    'ul-close':`</ul>\n`,
-    link:     `<a href="${sel || 'https://'}" style="color:var(--orange);">${sel || 'Ссылка'}</a>`,
-  };
-  const insert = snippets[type] || '';
-  ta.setRangeText(insert, s, e, 'end');
-  ta.focus();
-}
-
-function prvCleanup() {
-  const ta = document.getElementById('prv-html');
-  if (!ta) return;
-  let v = ta.value;
-  // Remove excessive blank lines (3+ → 1)
-  v = v.replace(/\n{3,}/g, '\n\n');
-  // Trim trailing spaces on lines
-  v = v.replace(/[ \t]+\n/g, '\n');
-  ta.value = v.trim();
-  toast('Текст очищен', '');
+// Convert old HTML format to plain text (for backwards compatibility)
+function _htmlToPlain(html) {
+  return html
+    .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
+    .replace(/<p[^>]*>/gi, '').replace(/<\/p>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<li[^>]*>/gi, '• ').replace(/<\/li>/gi, '\n')
+    .replace(/<\/?ul[^>]*>/gi, '').replace(/<\/?ol[^>]*>/gi, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"')
+    .replace(/\n{3,}/g, '\n\n').trim();
 }
 
 async function savePrivacy() {
-  const html = document.getElementById('prv-html')?.value?.trim() || '';
+  const text = document.getElementById('prv-text')?.value?.trim() || '';
   const date = document.getElementById('prv-date')?.value?.trim() || '';
-  if (!html) { toast('Текст политики пустой', 'red'); return; }
-
-  privacyData = { updatedAt: date, html };
+  if (!text) { toast('Текст политики пустой', 'red'); return; }
 
   const owner = localStorage.getItem('adv_gh_user');
   const repo  = localStorage.getItem('adv_gh_repo');
@@ -1773,7 +1683,8 @@ async function savePrivacy() {
 
   try {
     await pushFileToGitHub(owner, repo, 'data/privacy.json',
-      JSON.stringify(privacyData, null, 2), token, 'panel: update privacy.json');
+      JSON.stringify({ updatedAt: date, text }, null, 2),
+      token, 'panel: update privacy.json');
     toast('✅ Политика обновлена! Сайт обновится через ~60 сек.', 'green');
   } catch(e) {
     toast('❌ Ошибка: ' + e.message, 'red');
