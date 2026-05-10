@@ -44,5 +44,52 @@
       "images/projects/proj-1778361463218/1778361465191_gf8mc.jpeg"
     ],
     "visible": true
+  },
+  {
+    "id": "proj-1778363409650",
+    "title": "Одноэтажный дом 88 м2",
+    "mainPhoto": "images/projects/proj-1778363383379/1778363383456_f8brz.jpg",
+    "photos": [
+      "images/projects/proj-1778363383379/1778363383456_f8brz.jpg",
+      "images/projects/proj-1778363383405/1778363383516_kv20c.jpg",
+      "images/projects/proj-1778363383379/1778363390299_n0ygx.jpg",
+      "images/projects/proj-1778363383405/1778363391007_kkkry.jpg"
+    ],
+    "visible": true
+  },
+  {
+    "id": "proj-1778363550813",
+    "title": "Одноэтажный дом 115 м2",
+    "mainPhoto": "images/projects/proj-1778363488390/1778363488464_0kzog.jpeg",
+    "photos": [
+      "images/projects/proj-1778363488390/1778363488464_0kzog.jpeg",
+      "images/projects/proj-1778363488390/1778363497027_vae2v.jpeg",
+      "images/projects/proj-1778363488390/1778363499150_xipfm.jpeg",
+      "images/projects/proj-1778363488390/1778363503598_ptd9q.jpeg",
+      "images/projects/proj-1778363488390/1778363505748_zg37o.jpeg"
+    ],
+    "visible": true
+  },
+  {
+    "id": "proj-1778363676104",
+    "title": "Одноэтажный дом 125 м2",
+    "mainPhoto": "images/projects/proj-1778363582057/1778363582089_untl4.jpeg",
+    "photos": [
+      "images/projects/proj-1778363582057/1778363582089_untl4.jpeg",
+      "images/projects/proj-1778363596660/1778363596731_s9wv3.jpeg",
+      "images/projects/proj-1778363632870/1778363636042_wrklj.jpeg"
+    ],
+    "visible": true
+  },
+  {
+    "id": "proj-1778363787055",
+    "title": "Одноэтажный дом 117 м2",
+    "mainPhoto": "images/projects/proj-1778363787055/1778363805744_zlj4u.jpeg",
+    "photos": [
+      "images/projects/proj-1778363787055/1778363805744_zlj4u.jpeg",
+      "images/projects/proj-1778363787055/1778363846825_0gjiw.jpeg",
+      "images/projects/proj-1778363787055/1778363920386_dq51g.jpeg"
+    ],
+    "visible": true
   }
 ]

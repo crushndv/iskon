@@ -3,27 +3,27 @@
     {
       "id": "stage-1",
       "title": "Инженерная подготовка участка",
-      "photo": "images/services/stage-1/1778222130790_osk3h.jpg"
+      "photo": "images/services/stage-1/1778365177561_zh4f4.jpg"
     },
     {
       "id": "stage-2",
       "title": "Фундамент и коробка",
-      "photo": "images/services/stage-2/1778221495671_6oo7s.jpg"
+      "photo": "images/services/stage-2/1778365521019_7bsio.jpg"
     },
     {
       "id": "stage-3",
       "title": "Перекрытия, кровля, окна",
-      "photo": "images/services/stage-3/1778222159437_2soxv.jpg"
+      "photo": "images/services/stage-3/1778367138938_a4cru.jpg"
     },
     {
       "id": "stage-4",
       "title": "Инженерные системы",
-      "photo": ""
+      "photo": "images/services/stage-4/1778366374941_ivlop.webp"
     },
     {
       "id": "stage-5",
       "title": "Отделка и сдача объекта",
-      "photo": ""
+      "photo": "images/services/stage-5/1778364076084_82kyu.jpeg"
     }
   ]
 }
