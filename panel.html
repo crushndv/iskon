@@ -274,6 +274,26 @@ img{display:block;max-width:100%}
 /* EMPTY STATE */
 .empty{padding:60px 20px;text-align:center;color:var(--grey);font-size:.82rem;font-weight:300}
 
+/* SEO TABS */
+.seo-tabs{display:flex;gap:0;border-bottom:var(--border);margin-bottom:20px;background:#fff;overflow-x:auto;}
+.seo-tab{
+  padding:11px 22px;border:none;background:transparent;cursor:pointer;
+  font-family:var(--f-head);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px;
+  white-space:nowrap;transition:all .18s;
+}
+.seo-tab:hover{color:var(--black);}
+.seo-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.seo-char{font-size:.62rem;font-weight:300;color:var(--grey);text-align:right;margin-top:3px;}
+.seo-char.warn{color:#cc7700;}
+.seo-char.bad{color:var(--red);}
+.seo-preview{
+  padding:14px 16px;background:#f0f0f2;border:1px solid #ddd;margin-top:12px;
+}
+.seo-preview__url{font-size:.65rem;color:#1a6c37;font-weight:300;margin-bottom:3px;}
+.seo-preview__title{font-size:.9rem;color:#1a0dab;font-weight:400;line-height:1.3;margin-bottom:3px;}
+.seo-preview__desc{font-size:.72rem;color:#545454;font-weight:300;line-height:1.5;}
+
 /* PASS CHANGE */
 .pw-change-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
 
@@ -339,6 +359,9 @@ img{display:block;max-width:100%}
         </div>
         <div class="s-item" onclick="showPanel('services')">
           <span class="s-icon">🛠️</span> Страница услуг
+        </div>
+        <div class="s-item" onclick="showPanel('seo')">
+          <span class="s-icon">🔍</span> SEO / Мета-теги
         </div>
         <div class="s-item" onclick="showPanel('settings')">
           <span class="s-icon">⚙️</span> Настройки
@@ -567,6 +590,31 @@ img{display:block;max-width:100%}
         <div id="services-stages-list" class="form-card"></div>
       </div>
 
+      <!-- ── SEO ── -->
+      <div class="panel" id="panel-seo">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title">SEO / Мета-теги</div>
+            <div class="pnl-sub">Заголовок, описание и ключевые слова для каждой страницы сайта</div>
+          </div>
+          <button class="btn-hdr btn-orange" onclick="saveSeo()">⬆ Сохранить и применить</button>
+        </div>
+
+        <div class="info-box" style="margin-bottom:16px;">
+          <p><strong>Как работает:</strong> при нажатии «Сохранить» мета-теги записываются прямо в HTML-файлы на GitHub. Поисковики увидят изменения при следующем обходе сайта.<br />
+          Нужен GitHub-токен в разделе <strong>Настройки</strong>.</p>
+        </div>
+
+        <div class="seo-tabs" id="seo-tabs">
+          <button class="seo-tab active" onclick="switchSeoTab('index',this)">🏠 Главная</button>
+          <button class="seo-tab" onclick="switchSeoTab('catalog',this)">🏘 Каталог</button>
+          <button class="seo-tab" onclick="switchSeoTab('services',this)">🛠 Услуги</button>
+        </div>
+
+        <div class="form-card" id="seo-form"></div>
+        <div id="seo-status" style="margin-top:12px;font-size:.72rem;font-weight:300;color:var(--grey);"></div>
+      </div>
+
       <!-- ── SETTINGS ── -->
       <div class="panel" id="panel-settings">
         <div class="pnl-hdr">
@@ -757,6 +805,7 @@ async function loadAll() {
   renderProjects();
   renderServicesPanel();
   fillSettings();
+  loadSeo();
   updateBadges();
 }
 
@@ -783,7 +832,7 @@ function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.s-item').forEach(s => s.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
-  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, services:4, settings:5, export:6 };
+  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, services:4, seo:5, settings:6, export:7 };
   document.querySelectorAll('.s-item')[map[id] ?? 0]?.classList.add('active');
 }
 
@@ -1321,6 +1370,226 @@ function saveSettings() {
     if (el) siteSettings[k] = el.value.trim();
   });
   toast('Настройки сохранены', 'green');
+}
+
+// ── SEO ───────────────────────────────────────────────────────────
+const SEO_PAGES = {
+  index:    { file: 'index.html',    label: 'Главная',  url: 'https://iskon.pro/' },
+  catalog:  { file: 'catalog.html',  label: 'Каталог',  url: 'https://iskon.pro/catalog.html' },
+  services: { file: 'services.html', label: 'Услуги',   url: 'https://iskon.pro/services.html' },
+};
+
+let seoData = {
+  index:    { title: '', description: '', keywords: '' },
+  catalog:  { title: '', description: '', keywords: '' },
+  services: { title: '', description: '', keywords: '' },
+};
+let _seoTab = 'index';
+
+async function loadSeo() {
+  try {
+    const r = await fetch('data/seo.json?' + Date.now());
+    const d = await r.json();
+    Object.keys(seoData).forEach(k => { if (d[k]) Object.assign(seoData[k], d[k]); });
+  } catch(e) {}
+  renderSeoForm();
+}
+
+function _seoCollectCurrent() {
+  const t = document.getElementById('seo-title');
+  const d = document.getElementById('seo-desc');
+  const k = document.getElementById('seo-kw');
+  if (t) seoData[_seoTab].title       = t.value.trim();
+  if (d) seoData[_seoTab].description = d.value.trim();
+  if (k) seoData[_seoTab].keywords    = k.value.trim();
+}
+
+function switchSeoTab(key, btn) {
+  _seoCollectCurrent();
+  _seoTab = key;
+  document.querySelectorAll('.seo-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSeoForm();
+}
+
+function renderSeoForm() {
+  const el = document.getElementById('seo-form');
+  if (!el) return;
+  const page = SEO_PAGES[_seoTab];
+  const d = seoData[_seoTab];
+  const tLen = (d.title || '').length;
+  const dLen = (d.description || '').length;
+
+  function charCls(len, min, max) {
+    if (len === 0) return '';
+    if (len < min || len > max) return 'bad';
+    if (len > max - 10) return 'warn';
+    return '';
+  }
+
+  el.innerHTML = `
+  <div class="form-sec">
+    <div class="form-sec-ttl">Заголовок страницы (title)</div>
+    <div class="field">
+      <label>Текст заголовка</label>
+      <input id="seo-title" type="text" value="${_esc(d.title)}"
+        oninput="seoUpdate()" placeholder="ИСКОН — Строительство домов в Краснодаре" />
+    </div>
+    <div class="seo-char ${charCls(tLen,30,60)}" id="seo-t-char">
+      ${tLen} симв. · рекомендуется 30–60
+    </div>
+    <div class="hint" style="margin-top:6px;">Отображается во вкладке браузера и в результатах поиска. Оптимальная длина — 50–60 символов.</div>
+  </div>
+
+  <div class="form-sec">
+    <div class="form-sec-ttl">Мета-описание (description)</div>
+    <div class="field">
+      <label>Текст описания</label>
+      <textarea id="seo-desc" rows="3" oninput="seoUpdate()" placeholder="Краткое описание страницы для поисковой выдачи...">${_esc(d.description)}</textarea>
+    </div>
+    <div class="seo-char ${charCls(dLen,100,160)}" id="seo-d-char">
+      ${dLen} симв. · рекомендуется 100–160
+    </div>
+    <div class="hint" style="margin-top:6px;">Показывается под заголовком в результатах Google и Яндекс. Пишите для людей, вставляйте ключевые слова естественно.</div>
+  </div>
+
+  <div class="form-sec">
+    <div class="form-sec-ttl">Ключевые слова (keywords)</div>
+    <div class="field">
+      <label>Ключевые слова через запятую</label>
+      <input id="seo-kw" type="text" value="${_esc(d.keywords)}"
+        placeholder="строительство домов Краснодар, купить дом в крае" />
+    </div>
+    <div class="hint" style="margin-top:6px;">Google игнорирует этот тег, но Яндекс учитывает. Укажите 5–10 фраз через запятую.</div>
+  </div>
+
+  <div class="form-sec" style="background:#fafafa;">
+    <div class="form-sec-ttl" style="color:var(--grey);">Предпросмотр в поиске</div>
+    <div class="seo-preview">
+      <div class="seo-preview__url" id="seo-pv-url">${_esc(page.url)}</div>
+      <div class="seo-preview__title" id="seo-pv-title">${_esc(d.title) || '—'}</div>
+      <div class="seo-preview__desc" id="seo-pv-desc">${_esc(d.description) || '—'}</div>
+    </div>
+  </div>`;
+}
+
+function seoUpdate() {
+  const t = document.getElementById('seo-title');
+  const d = document.getElementById('seo-desc');
+  const tLen = t ? t.value.length : 0;
+  const dLen = d ? d.value.length : 0;
+
+  function cls(len, min, max) {
+    if (len === 0) return '';
+    if (len < min || len > max) return 'bad';
+    if (len > max - 10) return 'warn';
+    return '';
+  }
+  const tc = document.getElementById('seo-t-char');
+  const dc = document.getElementById('seo-d-char');
+  if (tc) { tc.textContent = tLen + ' симв. · рекомендуется 30–60'; tc.className = 'seo-char ' + cls(tLen,30,60); }
+  if (dc) { dc.textContent = dLen + ' симв. · рекомендуется 100–160'; dc.className = 'seo-char ' + cls(dLen,100,160); }
+
+  const pvTitle = document.getElementById('seo-pv-title');
+  const pvDesc  = document.getElementById('seo-pv-desc');
+  if (pvTitle) pvTitle.textContent = t?.value || '—';
+  if (pvDesc)  pvDesc.textContent  = d?.value || '—';
+}
+
+function _esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function _escAttr(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+}
+
+async function saveSeo() {
+  _seoCollectCurrent();
+
+  const owner = localStorage.getItem('adv_gh_user');
+  const repo  = localStorage.getItem('adv_gh_repo');
+  const token = localStorage.getItem('adv_gh_token');
+  if (!owner || !repo || !token) {
+    toast('⚙️ Настройте GitHub-токен в разделе Настройки', 'orange');
+    showPanel('settings'); return;
+  }
+
+  const btn = document.querySelector('#panel-seo .btn-orange');
+  if (btn) { btn.textContent = '⏳ Применяю...'; btn.disabled = true; }
+  const statusEl = document.getElementById('seo-status');
+  if (statusEl) statusEl.textContent = '';
+
+  const errors = [];
+
+  // 1. Save seo.json
+  try {
+    await pushFileToGitHub(owner, repo, 'data/seo.json',
+      JSON.stringify(seoData, null, 2), token, 'panel: update seo.json');
+  } catch(e) { errors.push('seo.json: ' + e.message); }
+
+  // 2. Update each HTML file
+  for (const [key, page] of Object.entries(SEO_PAGES)) {
+    const d = seoData[key];
+    try {
+      await _applySeoToFile(owner, repo, page.file, d, token);
+    } catch(e) { errors.push(page.file + ': ' + e.message); }
+  }
+
+  if (btn) { btn.textContent = '⬆ Сохранить и применить'; btn.disabled = false; }
+
+  if (errors.length) {
+    toast('❌ Ошибки: ' + errors.join('; '), 'red');
+    if (statusEl) statusEl.textContent = '❌ ' + errors.join(' | ');
+  } else {
+    toast('✅ Мета-теги обновлены на всех страницах! Сайт обновится через ~60 сек.', 'green');
+    if (statusEl) statusEl.textContent = '✅ Успешно применено на всех страницах';
+  }
+}
+
+async function _applySeoToFile(owner, repo, filename, seo, token) {
+  // Fetch current file
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filename}`, {
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
+  const data = await res.json();
+  const sha = data.sha;
+
+  // Decode content
+  let content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+
+  // Replace <title>
+  if (seo.title) {
+    content = content.replace(/<title>[^<]*<\/title>/, `<title>${_escAttr(seo.title)}</title>`);
+  }
+
+  // Replace or add <meta name="description">
+  const descTag = `<meta name="description" content="${_escAttr(seo.description)}" />`;
+  if (/<meta\s+name="description"/.test(content)) {
+    content = content.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/g, descTag);
+  } else if (seo.description) {
+    content = content.replace(/(<\/title>)/, `$1\n  ${descTag}`);
+  }
+
+  // Replace or add <meta name="keywords">
+  if (seo.keywords) {
+    const kwTag = `<meta name="keywords" content="${_escAttr(seo.keywords)}" />`;
+    if (/<meta\s+name="keywords"/.test(content)) {
+      content = content.replace(/<meta\s+name="keywords"\s+content="[^"]*"\s*\/?>/g, kwTag);
+    } else {
+      content = content.replace(/(<meta\s+name="description"[^>]*\/?>)/, `$1\n  ${kwTag}`);
+    }
+  }
+
+  // Push updated file
+  const newContent = btoa(unescape(encodeURIComponent(content)));
+  const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filename}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: `seo: update meta tags in ${filename}`, content: newContent, sha })
+  });
+  if (!putRes.ok) { const e = await putRes.json(); throw new Error(e.message || putRes.status); }
 }
 
 // ── GITHUB DEPLOY ─────────────────────────────────────────────────
