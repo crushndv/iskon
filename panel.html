@@ -365,6 +365,13 @@ img{display:block;max-width:100%}
         <div class="s-item" onclick="showPanel('add-project')">
           <span class="s-icon">➕</span> Добавить проект
         </div>
+        <div class="s-item" onclick="showPanel('lands')">
+          <span class="s-icon">🌿</span> Участки
+          <span class="s-badge" id="badge-lands">0</span>
+        </div>
+        <div class="s-item" onclick="showPanel('add-land')">
+          <span class="s-icon">➕</span> Добавить участок
+        </div>
         <div class="s-item" onclick="showPanel('services')">
           <span class="s-icon">🛠️</span> Страница услуг
         </div>
@@ -589,6 +596,121 @@ img{display:block;max-width:100%}
         </div>
       </div>
 
+      <!-- ── LANDS ── -->
+      <div class="panel" id="panel-lands">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title">Земельные участки</div>
+            <div class="pnl-sub">Участки на продажу в каталоге. Скрытые — не видны покупателям.</div>
+          </div>
+          <button class="btn-hdr btn-orange" onclick="openAddLand()">+ Добавить участок</button>
+        </div>
+        <div class="listings" id="lands-table"></div>
+      </div>
+
+      <!-- ── ADD / EDIT LAND ── -->
+      <div class="panel" id="panel-add-land">
+        <div class="pnl-hdr">
+          <div>
+            <div class="pnl-title" id="land-form-title">Добавить участок</div>
+            <div class="pnl-sub">Земельный участок на продажу</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-hdr btn-outline-w" style="color:var(--grey);border-color:rgba(0,0,0,.2);" onclick="showPanel('lands')">← Назад</button>
+            <button class="btn-hdr btn-orange" onclick="saveLand()">Сохранить</button>
+          </div>
+        </div>
+        <div class="form-card">
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Основная информация</div>
+            <div class="fg">
+              <div class="field"><label>Название *</label><input id="llf-title" type="text" placeholder="Участок 12 соток в Динской" /></div>
+              <div class="field">
+                <label>Статус *</label>
+                <select id="llf-status">
+                  <option value="sale">В продаже</option>
+                  <option value="reserved">Резерв</option>
+                  <option value="sold">Продан</option>
+                </select>
+              </div>
+              <div class="field"><label>Цена (₽) *</label><input id="llf-price" type="number" placeholder="1500000" /></div>
+              <div class="field">
+                <label>Видимость</label>
+                <select id="llf-visible">
+                  <option value="1">Показывать на сайте</option>
+                  <option value="0">Скрыть</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Характеристики участка</div>
+            <div class="fg">
+              <div class="field"><label>Площадь (соток) *</label><input id="llf-area" type="number" placeholder="12" /></div>
+              <div class="field">
+                <label>Категория</label>
+                <select id="llf-category">
+                  <option value="ИЖС">ИЖС</option>
+                  <option value="СНТ">СНТ</option>
+                  <option value="ЛПХ">ЛПХ</option>
+                  <option value="КФХ">КФХ</option>
+                  <option value="Не указана">Не указана</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:14px;">
+              <div class="form-sec-ttl" style="margin-bottom:10px;">Коммуникации</div>
+              <div style="display:flex;flex-wrap:wrap;gap:14px 28px;">
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="llf-comm-gas" style="accent-color:var(--orange);" /> Газ</label>
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="llf-comm-power" style="accent-color:var(--orange);" /> Электричество</label>
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="llf-comm-water" style="accent-color:var(--orange);" /> Водоснабжение</label>
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="llf-comm-sewage" style="accent-color:var(--orange);" /> Канализация</label>
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.78rem;"><input type="checkbox" id="llf-comm-road" style="accent-color:var(--orange);" /> Дорога</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Адрес</div>
+            <div class="field fg-full">
+              <label>Адрес объекта *</label>
+              <input id="llf-address" type="text" placeholder="Краснодарский край, Динской р-н, ст. Динская" />
+            </div>
+            <div class="fg" style="margin-top:12px;">
+              <div class="field"><label>Широта</label><input id="llf-lat" type="number" step="0.0001" placeholder="45.1834" /></div>
+              <div class="field"><label>Долгота</label><input id="llf-lng" type="number" step="0.0001" placeholder="39.2069" /></div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Описание</div>
+            <div class="field">
+              <label>Текст описания</label>
+              <textarea id="llf-description" rows="4" placeholder="Ровный участок с хорошим подъездом, в тихом районе..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <div class="form-sec-ttl">Фотографии</div>
+            <div class="info-box">
+              <p><strong>Фото загружаются прямо в GitHub-репозиторий.</strong><br />
+              Первое фото станет главным. Для работы нужен GitHub-токен в разделе <strong>Настройки</strong>.</p>
+            </div>
+            <div class="photo-drop" id="land-photo-drop" onclick="document.getElementById('land-photo-input').click()">
+              <input type="file" id="land-photo-input" accept="image/*" multiple />
+              <div class="photo-drop-txt">Перетащите фото сюда или нажмите</div>
+              <div class="photo-drop-sub">JPG, PNG, WEBP · загружается в GitHub</div>
+            </div>
+            <div class="imgbb-status" id="land-imgbb-status"></div>
+            <div class="photo-previews" id="land-photo-previews"></div>
+          </div>
+
+          <input type="hidden" id="llf-id" />
+        </div>
+      </div>
+
       <!-- ── SERVICES ── -->
       <div class="panel" id="panel-services">
         <div class="pnl-hdr">
@@ -726,6 +848,7 @@ img{display:block;max-width:100%}
             <div style="display:flex;flex-direction:column;gap:10px;max-width:320px;">
               <button class="btn-hdr btn-orange" style="text-align:left;padding:12px 18px;" onclick="downloadJSON(homes,'homes.json')">⬇ homes.json (объявления)</button>
               <button class="btn-hdr btn-orange" style="text-align:left;padding:12px 18px;" onclick="downloadJSON(projects,'projects.json')">⬇ projects.json (проекты)</button>
+              <button class="btn-hdr btn-orange" style="text-align:left;padding:12px 18px;" onclick="downloadJSON(lands,'lands.json')">⬇ lands.json (участки)</button>
             </div>
             <div style="margin-top:20px;border:var(--border);padding:16px;">
               <div class="form-sec-ttl" style="margin-bottom:10px;">Инструкция</div>
@@ -833,7 +956,7 @@ async function changePassword() {
 }
 
 // ── DATA ──────────────────────────────────────────────────────────
-let homes = [], projects = [];
+let homes = [], projects = [], lands = [];
 let siteSettings = { phone:'8 918 126 99 96', email:'info@iskon.pro', whatsapp:'', telegram:'', address:'' };
 let servicesData = { stage_photos: [
   { id: 'stage-1', title: 'Инженерная подготовка участка', photo: '' },
@@ -846,9 +969,11 @@ let servicesData = { stage_photos: [
 async function loadAll() {
   try { const r = await fetch('data/homes.json?' + Date.now()); homes = await r.json(); } catch(e) { homes = []; }
   try { const r = await fetch('data/projects.json?' + Date.now()); projects = await r.json(); } catch(e) { projects = []; }
+  try { const r = await fetch('data/lands.json?' + Date.now()); lands = await r.json(); } catch(e) { lands = []; }
   try { const r = await fetch('data/services.json?' + Date.now()); const d = await r.json(); if (d && d.stage_photos) servicesData.stage_photos = d.stage_photos; } catch(e) {}
   renderListings();
   renderProjects();
+  renderLands();
   renderServicesPanel();
   fillSettings();
   loadSeo();
@@ -859,6 +984,7 @@ async function loadAll() {
 function updateBadges() {
   document.getElementById('badge-listings').textContent = homes.length;
   document.getElementById('badge-projects').textContent = projects.length;
+  document.getElementById('badge-lands').textContent = lands.length;
 }
 
 // ── DIRTY STATE (несохранённые изменения) ────────────────────────
@@ -879,7 +1005,7 @@ function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.s-item').forEach(s => s.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
-  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, services:4, seo:5, privacy:6, settings:7, export:8 };
+  const map = { listings:0, 'add-listing':1, projects:2, 'add-project':3, lands:4, 'add-land':5, services:6, seo:7, privacy:8, settings:9, export:10 };
   document.querySelectorAll('.s-item')[map[id] ?? 0]?.classList.add('active');
 }
 
@@ -1091,6 +1217,9 @@ function deleteProject(i) {
 // ── PROJECT FORM ──────────────────────────────────────────────────
 let projectPhotos = [];
 
+// ── LAND PHOTOS ───────────────────────────────────────────────────
+let landPhotos = [];
+
 function openAddProject() {
   document.getElementById('pf-id').value = '';
   document.getElementById('project-form-title').textContent = 'Добавить проект';
@@ -1143,6 +1272,7 @@ function saveProject() {
 function initPhotoDrops() {
   setupDrop('listing');
   setupDrop('project');
+  setupDrop('land');
 }
 
 function setupDrop(prefix) {
@@ -1162,7 +1292,7 @@ function setupDrop(prefix) {
 
 async function handleFiles(prefix, files) {
   if (!files || !files.length) return;
-  const photosArr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  const photosArr = prefix === 'listing' ? listingPhotos : (prefix === 'project' ? projectPhotos : landPhotos);
   const statusEl = document.getElementById(prefix + '-imgbb-status');
 
   const owner = localStorage.getItem('adv_gh_user');
@@ -1171,9 +1301,11 @@ async function handleFiles(prefix, files) {
   const hasGitHub = owner && repo && token;
 
   // Determine folder based on current form's ID field
-  const currentId = document.getElementById(prefix === 'listing' ? 'lf-id' : 'pf-id').value
-    || (prefix === 'listing' ? 'dom-' + Date.now() : 'proj-' + Date.now());
-  const folder = prefix === 'listing' ? `images/homes/${currentId}` : `images/projects/${currentId}`;
+  const idFieldMap = { listing: 'lf-id', project: 'pf-id', land: 'llf-id' };
+  const defaultIdMap = { listing: 'dom-', project: 'proj-', land: 'land-' };
+  const folderMap = { listing: 'images/homes', project: 'images/projects', land: 'images/lands' };
+  const currentId = document.getElementById(idFieldMap[prefix]).value || (defaultIdMap[prefix] + Date.now());
+  const folder = `${folderMap[prefix]}/${currentId}`;
 
   for (const file of files) {
     if (!file.type.startsWith('image/')) continue;
@@ -1263,7 +1395,7 @@ function readFileAsDataURL(file) {
 }
 
 function renderPhotoPreview(prefix) {
-  const photosArr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  const photosArr = prefix === 'listing' ? listingPhotos : (prefix === 'project' ? projectPhotos : landPhotos);
   const container = document.getElementById(prefix + '-photo-previews');
   if (!container) return;
   container.innerHTML = photosArr.map((p, i) => `
@@ -1275,7 +1407,7 @@ function renderPhotoPreview(prefix) {
 }
 
 function setMainPhoto(prefix, idx) {
-  const arr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  const arr = prefix === 'listing' ? listingPhotos : (prefix === 'project' ? projectPhotos : landPhotos);
   arr.forEach((p, i) => p.isMain = i === idx);
   // Move to front
   const [item] = arr.splice(idx, 1);
@@ -1284,10 +1416,142 @@ function setMainPhoto(prefix, idx) {
 }
 
 function removePhoto(prefix, idx) {
-  const arr = prefix === 'listing' ? listingPhotos : projectPhotos;
+  const arr = prefix === 'listing' ? listingPhotos : (prefix === 'project' ? projectPhotos : landPhotos);
   arr.splice(idx, 1);
   if (arr.length && !arr.some(p => p.isMain)) arr[0].isMain = true;
   renderPhotoPreview(prefix);
+}
+
+// ── LANDS RENDER ─────────────────────────────────────────────────
+function renderLands() {
+  const el = document.getElementById('lands-table');
+  if (!lands.length) { el.innerHTML = '<div class="empty">Участков нет. Добавьте первый.</div>'; return; }
+  el.innerHTML = lands.map((l, i) => {
+    const hidden = l.visible === false || l.visible === 0;
+    return `<div class="listing-row">
+      <div class="listing-photo">
+        ${l.mainPhoto ? `<img src="${l.mainPhoto}" alt="">` : '<div class="listing-ph">🌿</div>'}
+      </div>
+      <div class="listing-info">
+        <div class="listing-title">${l.title} <span class="pill ${hidden ? 'pill-hidden' : pillCls(l.status)}">${hidden ? 'Скрыт' : pillLbl(l.status)}</span></div>
+        <div class="listing-meta">${l.address || '—'} · ${l.area} сот. · ${l.category || 'ИЖС'}</div>
+        <div class="listing-price">${fmt(l.price)}</div>
+      </div>
+      <div class="listing-status">
+        <button class="btn-act btn-toggle-vis ${hidden ? 'hidden-on' : ''}" onclick="toggleLandVisible(${i})" title="${hidden ? 'Показать на сайте' : 'Скрыть с сайта'}">
+          ${hidden ? '👁 Показать' : '🙈 Скрыть'}
+        </button>
+      </div>
+      <div class="listing-actions">
+        <button class="btn-act btn-edit" onclick="editLand(${i})">✏️ Ред.</button>
+        <button class="btn-act btn-del" onclick="deleteLand(${i})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleLandVisible(i) {
+  lands[i].visible = lands[i].visible === false ? true : false;
+  renderLands(); markDirty();
+  toast((lands[i].visible === false ? 'Участок скрыт' : 'Участок показан') + ' — нажмите «Опубликовать»', '');
+}
+
+function deleteLand(i) {
+  if (!confirm(`Удалить "${lands[i].title}"?`)) return;
+  lands.splice(i, 1);
+  updateBadges(); renderLands(); markDirty();
+  toast('Участок удалён — нажмите «Опубликовать»', '');
+}
+
+// ── LAND FORM ─────────────────────────────────────────────────────
+function openAddLand() {
+  document.getElementById('llf-id').value = '';
+  document.getElementById('land-form-title').textContent = 'Добавить участок';
+  ['title','price','area','address','lat','lng','description'].forEach(id => {
+    const el = document.getElementById('llf-' + id);
+    if (el) el.value = '';
+  });
+  document.getElementById('llf-status').value = 'sale';
+  document.getElementById('llf-category').value = 'ИЖС';
+  document.getElementById('llf-visible').value = '1';
+  ['gas','power','water','sewage','road'].forEach(k => {
+    const el = document.getElementById('llf-comm-' + k);
+    if (el) el.checked = false;
+  });
+  landPhotos = [];
+  renderPhotoPreview('land');
+  showPanel('add-land');
+}
+
+function editLand(i) {
+  const l = lands[i];
+  document.getElementById('llf-id').value = l.id;
+  document.getElementById('land-form-title').textContent = 'Ред.: ' + l.title;
+  document.getElementById('llf-title').value = l.title || '';
+  document.getElementById('llf-status').value = l.status || 'sale';
+  document.getElementById('llf-price').value = l.price || '';
+  document.getElementById('llf-visible').value = (l.visible === false || l.visible === 0) ? '0' : '1';
+  document.getElementById('llf-area').value = l.area || '';
+  document.getElementById('llf-category').value = l.category || 'ИЖС';
+  document.getElementById('llf-address').value = l.address || '';
+  document.getElementById('llf-lat').value = l.lat || '';
+  document.getElementById('llf-lng').value = l.lng || '';
+  document.getElementById('llf-description').value = l.description || '';
+  const commMap = { gas: 'Газ', power: 'Электричество', water: 'Водоснабжение', sewage: 'Канализация', road: 'Дорога' };
+  Object.entries(commMap).forEach(([k, v]) => {
+    const el = document.getElementById('llf-comm-' + k);
+    if (el) el.checked = (l.communications || []).includes(v);
+  });
+  landPhotos = (l.photos || []).filter(u => u && !u.startsWith('data:')).map((url, idx) => ({ url, isMain: idx === 0 }));
+  renderPhotoPreview('land');
+  showPanel('add-land');
+}
+
+function saveLand() {
+  const title = document.getElementById('llf-title').value.trim();
+  if (!title) { toast('Введите название', 'red'); return; }
+  const price = parseInt(document.getElementById('llf-price').value) || 0;
+  if (!price) { toast('Введите цену', 'red'); return; }
+  const area = parseFloat(document.getElementById('llf-area').value) || 0;
+  if (!area) { toast('Укажите площадь участка', 'red'); return; }
+
+  const existingId = document.getElementById('llf-id').value;
+  const id = existingId || 'land-' + Date.now();
+
+  const allPhotos = landPhotos.map(p => p.url).filter(u => u && !u.startsWith('data:'));
+
+  const commMap = { gas: 'Газ', power: 'Электричество', water: 'Водоснабжение', sewage: 'Канализация', road: 'Дорога' };
+  const communications = Object.entries(commMap)
+    .filter(([k]) => document.getElementById('llf-comm-' + k)?.checked)
+    .map(([, v]) => v);
+
+  const l = {
+    id, slug: id,
+    type: 'land',
+    title,
+    status: document.getElementById('llf-status').value,
+    visible: document.getElementById('llf-visible').value === '1',
+    price,
+    area,
+    category: document.getElementById('llf-category').value,
+    communications,
+    address: document.getElementById('llf-address').value.trim(),
+    lat: parseFloat(document.getElementById('llf-lat').value) || null,
+    lng: parseFloat(document.getElementById('llf-lng').value) || null,
+    mainPhoto: allPhotos[0] || '',
+    photos: allPhotos,
+    description: document.getElementById('llf-description').value.trim(),
+  };
+
+  if (existingId) {
+    const idx = lands.findIndex(x => x.id === existingId);
+    if (idx !== -1) lands[idx] = l; else lands.push(l);
+  } else {
+    lands.push(l);
+  }
+  updateBadges(); renderLands(); markDirty();
+  toast('Участок сохранён — нажмите «Опубликовать» чтобы показать на сайте', 'green');
+  showPanel('lands');
 }
 
 // ── SERVICES PANEL ────────────────────────────────────────────────
@@ -1759,8 +2023,14 @@ async function deployToGitHub() {
     }));
     const homesJson = JSON.stringify(cleanHomes, null, 2);
     const projJson  = JSON.stringify(cleanProjects, null, 2);
+    const cleanLands = lands.map(l => ({
+      ...l,
+      photos: (l.photos || []).filter(u => !u.startsWith('data:')),
+      mainPhoto: (l.mainPhoto && l.mainPhoto.startsWith('data:')) ? ((l.photos||[]).filter(u=>!u.startsWith('data:'))[0]||'') : (l.mainPhoto||''),
+    }));
     await pushFileToGitHub(owner, repo, 'data/homes.json', homesJson, token, 'panel: update homes.json');
     await pushFileToGitHub(owner, repo, 'data/projects.json', projJson, token, 'panel: update projects.json');
+    await pushFileToGitHub(owner, repo, 'data/lands.json', JSON.stringify(cleanLands, null, 2), token, 'panel: update lands.json');
     await pushFileToGitHub(owner, repo, 'data/services.json', JSON.stringify(servicesData, null, 2), token, 'panel: update services.json');
     markClean();
     toast('✅ Опубликовано! Сайт обновится через ~60 сек.', 'green');
