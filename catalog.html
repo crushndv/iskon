@@ -62,24 +62,7 @@ body{padding-top:72px}
 .h-card:hover .h-card__cta{background:var(--black);}
 .empty-state{padding:80px 20px;text-align:center;grid-column:1/-1;}
 
-/* Вкладки Дома / Участки */
-.cat-tabs{display:flex;gap:0;padding:0 0 0 0;border-bottom:1px solid rgba(142,142,147,.18);margin:0 0 0 0;background:var(--snow);}
-.cat-tab{
-  padding:14px 28px;border:none;background:transparent;cursor:pointer;
-  font-family:var(--f-head);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px;
-  transition:all .2s;display:flex;align-items:center;gap:8px;
-}
-.cat-tab:hover{color:var(--black);}
-.cat-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
-.cat-tab__count{
-  min-width:20px;height:20px;border-radius:10px;
-  background:rgba(142,142,147,.18);color:var(--grey);
-  font-size:.44rem;display:flex;align-items:center;justify-content:center;padding:0 5px;
-}
-.cat-tab.active .cat-tab__count{background:rgba(255,69,0,.12);color:var(--orange);}
-
-/* Карточки участков */
+/* Карточки участков (не используется на этой странице, зарезервировано) */
 .l-card{display:flex;flex-direction:column;border-right:var(--divider);border-bottom:var(--divider);cursor:pointer;transition:background .2s;text-decoration:none;color:inherit;position:relative;background:var(--snow);}
 .l-card:hover{background:rgba(255,69,0,.03);}
 .l-card__photo{width:100%;aspect-ratio:4/3;overflow:hidden;background:#d8d8da;position:relative;}
@@ -151,7 +134,14 @@ body{padding-top:72px}
   <a href="index.html" class="nav__logo"><img src="images/logo-black.png" alt="ИСКОН" style="height:30px;width:auto;object-fit:contain;" /></a>
   <ul class="nav__links">
     <li><a href="index.html">Главная</a></li>
-    <li><a href="catalog.html" class="active">Готовые дома</a></li>
+    <li class="nav__item">
+      <button class="nav__drop-btn active">Каталог <span class="nav__drop-arr">▾</span></button>
+      <div class="nav__drop-menu">
+        <a href="catalog.html" class="active">🏘 Готовые дома</a>
+        <a href="lands.html">🌿 Земельные участки</a>
+      </div>
+    </li>
+    <li><a href="offer-land.html">Предложить участок</a></li>
     <li><a href="services.html">Услуги</a></li>
     <li><a href="#footer">Контакты</a></li>
   </ul>
@@ -162,8 +152,12 @@ body{padding-top:72px}
   <button class="nav__burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav__mobile" id="mobile-menu">
-  <a href="index.html">Главная</a><a href="catalog.html">Готовые дома</a>
-  <a href="services.html">Услуги</a><a href="#footer">Контакты</a>
+  <a href="index.html">Главная</a>
+  <a href="catalog.html" style="color:var(--orange);">Готовые дома</a>
+  <a href="lands.html">Земельные участки</a>
+  <a href="offer-land.html">Предложить участок</a>
+  <a href="services.html">Услуги</a>
+  <a href="#footer">Контакты</a>
   <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a>
 </div>
 
@@ -182,14 +176,6 @@ body{padding-top:72px}
 
 
 <div class="catalog-wrap">
-  <div class="cat-tabs">
-    <button class="cat-tab active" id="tab-homes" onclick="switchTab('homes')">
-      🏘 Готовые дома <span class="cat-tab__count" id="tab-homes-cnt">0</span>
-    </button>
-    <button class="cat-tab" id="tab-lands" onclick="switchTab('lands')">
-      🌿 Участки <span class="cat-tab__count" id="tab-lands-cnt">0</span>
-    </button>
-  </div>
   <div class="results-bar">
     <span class="results-count">Найдено: <strong id="count">0</strong> объектов</span>
     <a href="index.html#form" class="btn btn--ghost" style="padding:8px 18px;font-size:.46rem;"><span>Построить на вашем участке</span></a>
@@ -262,7 +248,9 @@ body{padding-top:72px}
     <nav class="footer__nav-col">
       <span class="footer__nav-head">Компания</span>
       <a href="catalog.html" class="footer__nav-link">Готовые дома</a>
+      <a href="lands.html" class="footer__nav-link">Земельные участки</a>
       <a href="services.html" class="footer__nav-link">Наши услуги</a>
+      <a href="offer-land.html" class="footer__nav-link">Предложить участок</a>
     </nav>
     <nav class="footer__nav-col">
       <span class="footer__nav-head">Связаться</span>
@@ -277,39 +265,18 @@ body{padding-top:72px}
 </footer>
 
 <script>
-let allHomes=[],allLands=[],yaMap=null,activeId=null,activeTab='homes';
+let allHomes=[],yaMap=null,activeId=null;
 let af={status:'all',tech:null,price:null};
 const fmt=n=>n.toLocaleString('ru-RU')+' ₽';
 const stLbl=s=>({sale:'В продаже',reserved:'Резерв',sold:'Продан'})[s]||s;
 
 async function init(){
   try{const r=await fetch('data/homes.json?'+Date.now());allHomes=await r.json();}catch(e){allHomes=[];}
-  try{const r=await fetch('data/lands.json?'+Date.now());allLands=await r.json();}catch(e){allLands=[];}
   allHomes=allHomes.filter(h=>h.visible!==false&&h.visible!==0);
-  allLands=allLands.filter(l=>l.visible!==false&&l.visible!==0);
-  updateTabCounts();
   renderList(allHomes);
   initMap();
   const hash=location.hash.replace('#','');
-  if(hash){
-    const h=allHomes.find(x=>x.id===hash);
-    if(h)setTimeout(()=>openModal(h),400);
-    const l=allLands.find(x=>x.id===hash);
-    if(l)setTimeout(()=>{switchTab('lands');openLandModal(l);},400);
-  }
-}
-
-function updateTabCounts(){
-  document.getElementById('tab-homes-cnt').textContent=allHomes.length;
-  document.getElementById('tab-lands-cnt').textContent=allLands.length;
-}
-
-function switchTab(tab){
-  activeTab=tab;
-  document.getElementById('tab-homes').classList.toggle('active',tab==='homes');
-  document.getElementById('tab-lands').classList.toggle('active',tab==='lands');
-  if(tab==='homes'){renderList(allHomes);}
-  else{renderLandList(allLands);}
+  if(hash){const h=allHomes.find(x=>x.id===hash);if(h)setTimeout(()=>openModal(h),400);}
 }
 
 function initMap(){

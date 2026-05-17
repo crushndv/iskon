@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109135165', 'ym');
+    ym(109135165, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/109135165" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Земельные участки в продаже — ИСКОН | Краснодарский край</title>
+  <meta name="description" content="Земельные участки ИЖС на продажу в Краснодаре и Краснодарском крае. Подходят для строительства дома. Коммуникации, документы, прямая продажа от застройщика." />
+  <meta name="keywords" content="купить земельный участок Краснодар, участки ИЖС Краснодарский край, земля под строительство, участок под ИЖС Гулькевичи, Кропоткин земля" />
+  <link rel="canonical" href="https://iskon.pro/lands.html" />
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="images/favicon-32x32.png" type="image/png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css?v=5" />
+  <style>
+body{padding-top:72px}
+.page-hero{padding:36px 5vw 28px;border-bottom:var(--divider);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* Каталог */
+.catalog-wrap{padding:32px 5vw 80px;}
+.results-bar{padding:14px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:var(--divider);margin-bottom:32px;}
+.results-count{font-family:var(--f-body);font-size:.78rem;color:var(--grey)}
+.results-count strong{color:var(--black);font-weight:500}
+.lands-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:var(--divider);border-left:var(--divider);}
+.empty-state{padding:80px 20px;text-align:center;grid-column:1/-1;}
+
+/* Карточки участков */
+.l-card{display:flex;flex-direction:column;border-right:var(--divider);border-bottom:var(--divider);cursor:pointer;transition:background .2s;text-decoration:none;color:inherit;position:relative;background:var(--snow);}
+.l-card:hover{background:rgba(255,69,0,.03);}
+.l-card__photo{width:100%;aspect-ratio:4/3;overflow:hidden;background:#d8d8da;position:relative;}
+.l-card__photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.l-card:hover .l-card__photo img{transform:scale(1.05);}
+.l-card__ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:linear-gradient(135deg,#dce8d0,#c8d8b8);}
+.l-card__status-bar{position:absolute;bottom:0;left:0;right:0;padding:10px 16px;background:linear-gradient(to top,rgba(13,13,13,.55),transparent);display:flex;align-items:center;justify-content:space-between;}
+.l-card__body{padding:20px 22px;display:flex;flex-direction:column;gap:10px;flex:1;}
+.l-card__badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-head);font-size:.38rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);}
+.l-card__title{font-family:var(--f-head);font-size:.88rem;text-transform:uppercase;letter-spacing:.04em;color:var(--black);line-height:1.2;}
+.l-card__addr{font-family:var(--f-body);font-size:.72rem;font-weight:300;color:var(--grey);}
+.l-card__specs{display:grid;grid-template-columns:repeat(2,1fr);border:var(--divider);margin-top:4px;}
+.l-card__spec{padding:8px 10px;border-right:var(--divider);display:flex;flex-direction:column;gap:2px;}
+.l-card__spec:last-child{border-right:none;}
+.l-card__spec-val{font-family:var(--f-head);font-size:.75rem;color:var(--black);line-height:1;}
+.l-card__spec-key{font-family:var(--f-body);font-size:.58rem;font-weight:300;color:var(--grey);}
+.l-card__comms{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;}
+.l-card__comm{padding:2px 7px;border:var(--divider);font-family:var(--f-head);font-size:.36rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);}
+.l-card__foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:var(--divider);}
+.l-card__price{font-family:var(--f-head);font-size:1.05rem;color:var(--black);letter-spacing:-.01em;}
+.l-card__cta{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;background:var(--orange);color:#fff;font-family:var(--f-head);font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));transition:background .3s;}
+.l-card:hover .l-card__cta{background:var(--black);}
+
+/* Модал */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,13,13,.72);z-index:300;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--snow);max-width:860px;width:100%;max-height:92vh;overflow-y:auto;position:relative;}
+.modal__close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:var(--black);color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
+.modal__photos{position:relative;aspect-ratio:16/9;overflow:hidden;background:#111;touch-action:pan-y;}
+.modal__photos img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
+.modal__arr{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(13,13,13,.6);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s;}
+.modal__arr:hover{background:rgba(13,13,13,.9);}
+.modal__arr--l{left:10px;}
+.modal__arr--r{right:10px;}
+.modal__counter{position:absolute;bottom:10px;right:12px;background:rgba(13,13,13,.6);color:#fff;font-family:var(--f-head);font-size:.4rem;letter-spacing:.14em;padding:4px 10px;pointer-events:none;}
+.modal__body{padding:26px;display:flex;flex-direction:column;gap:16px;}
+.modal__specs{display:grid;grid-template-columns:repeat(3,1fr);border:var(--divider);}
+.modal__spec{padding:9px 12px;border-right:var(--divider);display:flex;flex-direction:column;gap:3px;}
+.modal__spec:last-child{border-right:none;}
+.modal__features{display:flex;flex-wrap:wrap;gap:7px;}
+.modal__feature{padding:3px 9px;border:var(--divider);font-family:var(--f-head);font-size:.4rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);}
+
+/* Промо-полоса внизу */
+.offer-banner{margin:0 5vw 60px;padding:32px 40px;background:var(--black);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.offer-banner__text{color:#fff;}
+.offer-banner__title{font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;letter-spacing:.02em;margin-bottom:8px;}
+.offer-banner__sub{font-family:var(--f-body);font-size:.8rem;font-weight:300;color:rgba(255,255,255,.6);line-height:1.6;}
+
+@media(max-width:1024px){.lands-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.lands-grid{grid-template-columns:1fr;}}
+@media(max-width:480px){
+  body{padding-top:60px;}
+  .page-hero{padding:24px 4vw 18px;flex-direction:column;gap:10px;}
+  .catalog-wrap{padding:20px 4vw 60px;}
+  .offer-banner{padding:24px 20px;flex-direction:column;align-items:flex-start;}
+  .modal__specs{grid-template-columns:repeat(2,1fr);}
+}
+  </style>
+</head>
+<body>
+
+<nav class="nav" role="navigation">
+  <a href="index.html" class="nav__logo"><img src="images/logo-black.png" alt="ИСКОН" style="height:30px;width:auto;object-fit:contain;" /></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Главная</a></li>
+    <li class="nav__item">
+      <button class="nav__drop-btn active">Каталог <span class="nav__drop-arr">▾</span></button>
+      <div class="nav__drop-menu">
+        <a href="catalog.html">🏘 Готовые дома</a>
+        <a href="lands.html" class="active">🌿 Земельные участки</a>
+      </div>
+    </li>
+    <li><a href="offer-land.html">Предложить участок</a></li>
+    <li><a href="services.html">Услуги</a></li>
+    <li><a href="#footer">Контакты</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="tel:+79181269996" class="nav__phone">8 918 126 99 96</a>
+    <a href="index.html#form" class="btn btn--primary"><span>Заявка</span><span class="btn__arr"></span></a>
+  </div>
+  <button class="nav__burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__mobile" id="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="catalog.html">Готовые дома</a>
+  <a href="lands.html" style="color:var(--orange);">Земельные участки</a>
+  <a href="offer-land.html">Предложить участок</a>
+  <a href="services.html">Услуги</a>
+  <a href="#footer">Контакты</a>
+  <a href="tel:+79181269996" style="color:var(--orange);">8 918 126 99 96</a>
+</div>
+
+<div class="page-hero">
+  <div>
+    <div class="t-label" style="margin-bottom:8px;">Участки в продаже</div>
+    <h1 class="t-h2" style="font-size:clamp(1.2rem,3vw,1.9rem);">Земельные участки в Краснодарском крае</h1>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="offer-land.html" class="btn btn--ghost" style="padding:9px 18px;font-size:.46rem;"><span>Предложить свой участок</span></a>
+  </div>
+</div>
+
+<div class="catalog-wrap">
+  <div class="results-bar">
+    <span class="results-count">Найдено: <strong id="count">0</strong> участков</span>
+    <a href="index.html#form" class="btn btn--ghost" style="padding:8px 18px;font-size:.46rem;"><span>Построить дом на вашем участке</span></a>
+  </div>
+  <div class="lands-grid" id="lands-list"></div>
+</div>
+
+<!-- Промо: предложи свой участок -->
+<div class="offer-banner">
+  <div class="offer-banner__text">
+    <div class="offer-banner__title">Есть участок, который хотите продать?</div>
+    <div class="offer-banner__sub">Рассматриваем участки под ИЖС и МКД в Краснодарском крае. Оценим, дадим обратную связь в течение 3–5 дней.</div>
+  </div>
+  <a href="offer-land.html" class="btn btn--primary"><span>Предложить участок</span><span class="btn__arr"></span></a>
+</div>
+
+<!-- Модал -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal__close" id="modal-close" aria-label="Закрыть">×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- Политика конфиденциальности модал -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(13,13,13,0.80);z-index:500;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:var(--snow);max-width:760px;width:100%;max-height:90vh;overflow-y:auto;position:relative;padding:48px 52px;">
+    <button onclick="closePrivacyModal()" style="position:sticky;top:0;float:right;margin:-16px -16px 0 0;width:36px;height:36px;background:var(--black);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;z-index:2;">×</button>
+    <div style="font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">Политика конфиденциальности</div>
+    <div id="privacy-body" style="font-family:var(--f-body);font-size:0.82rem;font-weight:300;line-height:1.85;color:#333;">Загрузка...</div>
+  </div>
+</div>
+
+<footer class="footer" id="footer">
+  <div class="footer__grid-bg" aria-hidden="true"></div>
+  <div class="footer__wordmark" aria-hidden="true">ИСКОН</div>
+  <div class="footer__nav-block">
+    <div class="footer__brand">
+      <a href="index.html" class="footer__logo"><img src="images/logo-white.png" alt="ИСКОН" style="height:26px;width:auto;object-fit:contain;filter:none;" /></a>
+      <p class="footer__tagline">Индивидуальное жилищное<br/> строительство<br/>в Краснодарском крае</p>
+    </div>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Где мы строим</span>
+      <span class="footer__nav-link">Краснодар и пригород</span>
+      <span class="footer__nav-link">Гулькевичи и Гулькевичский район</span>
+      <span class="footer__nav-link">Кропоткин и Кавказский район</span>
+      <span class="footer__nav-link">Ближайшие районы</span>
+    </nav>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Компания</span>
+      <a href="catalog.html" class="footer__nav-link">Готовые дома</a>
+      <a href="lands.html" class="footer__nav-link">Земельные участки</a>
+      <a href="services.html" class="footer__nav-link">Наши услуги</a>
+      <a href="offer-land.html" class="footer__nav-link">Предложить участок</a>
+    </nav>
+    <nav class="footer__nav-col">
+      <span class="footer__nav-head">Связаться</span>
+      <a href="tel:+79181269996" class="footer__nav-link footer__phone-link">8 918 126 99 96</a>
+      <a href="mailto:info@iskon.pro" class="footer__nav-link footer__phone-link">info@iskon.pro</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2026 ИП Николаенко Д.В. Все права защищены. ИСКОН — коммерческое обозначение</span>
+    <div class="footer__legal"><a href="#" onclick="openPrivacyModal();return false;">Политика конфиденциальности</a></div>
+  </div>
+</footer>
+
+<script>
+let allLands=[];
+const fmt=n=>n.toLocaleString('ru-RU')+' ₽';
+const stLbl=s=>({sale:'В продаже',reserved:'Резерв',sold:'Продан'})[s]||s;
+
+async function init(){
+  try{const r=await fetch('data/lands.json?'+Date.now());allLands=await r.json();}catch(e){allLands=[];}
+  allLands=allLands.filter(l=>l.visible!==false&&l.visible!==0);
+  renderList(allLands);
+  const hash=location.hash.replace('#','');
+  if(hash){const l=allLands.find(x=>x.id===hash);if(l)setTimeout(()=>openModal(l),400);}
+}
+
+function renderList(lands){
+  document.getElementById('count').textContent=lands.length;
+  const list=document.getElementById('lands-list');
+  if(!lands.length){
+    list.innerHTML=`<div class="empty-state">
+      <p class="t-body">Участков на продажу пока нет.</p>
+      <p class="t-body" style="margin-top:8px;">Хотите продать свой участок?</p>
+      <a href="offer-land.html" class="btn btn--primary" style="margin-top:18px;display:inline-flex;"><span>Предложить нам участок</span><span class="btn__arr"></span></a>
+    </div>`;
+    return;
+  }
+  list.innerHTML=lands.map(l=>{
+    const commHtml=(l.communications||[]).map(c=>`<span class="l-card__comm">${c}</span>`).join('');
+    return `
+  <a class="l-card" id="card-${l.id}" href="javascript:void(0)" onclick="cardClick('${l.id}')">
+    <div class="l-card__photo">
+      ${l.mainPhoto
+        ?`<img src="${l.mainPhoto}" alt="${l.title}" loading="lazy">`
+        :`<div class="l-card__ph"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity:.3;"><path d="M4 40L14 18L24 30L36 12L44 40H4Z" stroke="#3a5a28" stroke-width="1.5" fill="none"/><circle cx="36" cy="10" r="3" stroke="#3a5a28" stroke-width="1.5"/></svg><span style="font-family:var(--f-head);font-size:.38rem;letter-spacing:.14em;color:#5a7a48;text-transform:uppercase;">Участок</span></div>`}
+      <div class="l-card__status-bar">
+        <span class="status-tag status-tag--${l.status}" style="font-size:.38rem;padding:2px 8px;">${stLbl(l.status)}</span>
+        <span style="font-family:var(--f-head);font-size:.38rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);">${l.category||'ИЖС'}</span>
+      </div>
+    </div>
+    <div class="l-card__body">
+      <div class="l-card__badge">🌿 Земельный участок</div>
+      <div class="l-card__title">${l.title}</div>
+      ${l.address?`<div class="l-card__addr">${l.address}</div>`:''}
+      <div class="l-card__specs">
+        <div class="l-card__spec"><span class="l-card__spec-val">${l.area} <span style="font-size:.6em;color:var(--orange);">сот</span></span><span class="l-card__spec-key">Площадь</span></div>
+        <div class="l-card__spec"><span class="l-card__spec-val" style="font-size:.62rem;">${(l.communications||[]).length?(l.communications||[]).slice(0,2).join(', ')+(l.communications.length>2?'…':''):'Уточняйте'}</span><span class="l-card__spec-key">Коммуникации</span></div>
+      </div>
+      ${commHtml?`<div class="l-card__comms">${commHtml}</div>`:''}
+      <div class="l-card__foot">
+        <span class="l-card__price">${fmt(l.price)}</span>
+        <span class="l-card__cta">Подробнее <span style="display:inline-block;width:14px;height:1px;background:currentColor;vertical-align:middle;margin-left:4px;"></span></span>
+      </div>
+    </div>
+  </a>`;
+  }).join('');
+}
+
+function cardClick(id){
+  const l=allLands.find(x=>x.id===id);if(!l)return;
+  openModal(l);
+}
+
+let currentLand=null,photoIdx=0,touchX=0;
+
+function _photos(l){
+  const all=(l.photos||[]).filter(x=>x&&x.trim()!=='');
+  return all.length?all:(l.mainPhoto?[l.mainPhoto]:[]);
+}
+
+function _sliderHtml(l){
+  const photos=_photos(l);
+  const total=photos.length;
+  const src=photos[photoIdx];
+  const img=src?`<img src="${src}" alt="${l.title}" draggable="false">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#dce8d0;"><svg width="56" height="56" viewBox="0 0 48 48" fill="none" style="opacity:.3;"><path d="M4 40L14 18L24 30L36 12L44 40H4Z" stroke="#3a5a28" stroke-width="1.5" fill="none"/></svg></div>`;
+  const arrows=total>1?`
+    <button class="modal__arr modal__arr--l" onclick="photoPrev(event)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="modal__arr modal__arr--r" onclick="photoNext(event)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="modal__counter">${photoIdx+1} / ${total}</div>`:'';
+  return img+arrows;
+}
+
+function openModal(l){
+  currentLand=l;photoIdx=0;
+  const commHtml=(l.communications||[]).map(c=>`<span class="modal__feature">${c}</span>`).join('');
+  document.getElementById('modal-content').innerHTML=`
+    <div id="modal-slider" class="modal__photos" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)">
+      ${_sliderHtml(l)}
+    </div>
+    <div class="modal__body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+        <div>
+          <span class="t-label">🌿 Земельный участок · ${l.category||'ИЖС'}</span>
+          <h2 style="font-family:var(--f-head);font-size:clamp(.9rem,2vw,1.3rem);text-transform:uppercase;margin-top:7px;">${l.title}</h2>
+          ${l.address?`<p style="font-family:var(--f-body);font-size:.76rem;font-weight:300;color:var(--grey);margin-top:5px;">${l.address}</p>`:''}
+        </div>
+        <div>
+          <div style="font-family:var(--f-body);font-size:.58rem;color:var(--grey);">Стоимость</div>
+          <div style="font-family:var(--f-head);font-size:1.6rem;color:var(--black);letter-spacing:-.02em;">${fmt(l.price)}</div>
+        </div>
+      </div>
+      <div class="modal__specs">
+        <div class="modal__spec"><span class="spec-val">${l.area}<span class="spec-unit">сот</span></span><span class="spec-key">Площадь</span></div>
+        <div class="modal__spec"><span class="spec-val" style="font-size:.56rem;">${l.category||'ИЖС'}</span><span class="spec-key">Категория</span></div>
+        <div class="modal__spec"><span class="spec-val" style="font-size:.5rem;">${stLbl(l.status)}</span><span class="spec-key">Статус</span></div>
+      </div>
+      ${commHtml?`<div><div class="t-label" style="margin-bottom:7px;">Коммуникации</div><div class="modal__features">${commHtml}</div></div>`:''}
+      ${l.description?`<p style="font-family:var(--f-body);font-size:.82rem;font-weight:300;line-height:1.75;color:var(--grey);white-space:pre-line;">${l.description}</p>`:''}
+      ${(l.lat&&l.lng)?`
+      <div>
+        <div class="t-label" style="margin-bottom:8px;">Расположение на карте</div>
+        <iframe src="https://yandex.ru/map-widget/v1/?pt=${l.lng},${l.lat}&z=15&l=map" width="100%" height="220" frameborder="0" style="display:block;border:var(--divider);" allowfullscreen loading="lazy"></iframe>
+      </div>`:''}
+      <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:var(--divider);">
+        <button onclick="toggleInquiryForm()" class="btn btn--primary" type="button"><span>Узнать подробнее</span><span class="btn__arr"></span></button>
+        <a href="tel:+79181269996" class="btn btn--ghost"><span>8 918 126 99 96</span></a>
+      </div>
+      <div id="inquiry-form" style="display:none;margin-top:16px;padding:24px;background:#f5f5f7;border:var(--divider);">
+        <div style="font-family:var(--f-head);font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);margin-bottom:18px;">Оставить заявку</div>
+        <form onsubmit="submitInquiry(event)" style="display:flex;flex-direction:column;gap:14px;">
+          <div><label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Ваше имя</label>
+          <input id="inq-name" type="text" required placeholder="Иван" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(142,142,147,0.3);font-family:var(--f-body);font-size:0.85rem;background:#fff;outline:none;" /></div>
+          <div><label style="display:block;font-family:var(--f-head);font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey);margin-bottom:5px;">Телефон</label>
+          <div style="display:flex;border:1px solid rgba(142,142,147,0.3);background:#fff;">
+            <span style="padding:10px 10px 10px 12px;font-family:var(--f-body);font-size:0.85rem;color:var(--grey);user-select:none;">+7</span>
+            <input id="inq-phone" type="tel" required maxlength="10" pattern="[0-9]{10}" placeholder="9181269996" oninput="this.value=this.value.replace(/\D/g,'')" style="flex:1;min-width:0;padding:10px 12px 10px 4px;border:none;font-family:var(--f-body);font-size:0.85rem;background:transparent;outline:none;" />
+          </div></div>
+          <button id="inq-submit" type="submit" class="btn btn--primary" style="align-self:flex-start;"><span>Отправить заявку</span><span class="btn__arr"></span></button>
+        </form>
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function photoPrev(e){if(e)e.stopPropagation();const p=_photos(currentLand);photoIdx=(photoIdx-1+p.length)%p.length;document.getElementById('modal-slider').innerHTML=_sliderHtml(currentLand);}
+function photoNext(e){if(e)e.stopPropagation();const p=_photos(currentLand);photoIdx=(photoIdx+1)%p.length;document.getElementById('modal-slider').innerHTML=_sliderHtml(currentLand);}
+function touchStart(e){touchX=e.changedTouches[0].clientX;}
+function touchEnd(e){const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>40){dx<0?photoNext():photoPrev();}}
+
+document.getElementById('modal-close').addEventListener('click',()=>document.getElementById('modal').classList.remove('open'));
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))document.getElementById('modal').classList.remove('open');});
+document.addEventListener('keydown',e=>{
+  const mOpen=document.getElementById('modal').classList.contains('open');
+  if(mOpen&&e.key==='ArrowLeft')photoPrev();
+  if(mOpen&&e.key==='ArrowRight')photoNext();
+  if(e.key==='Escape'){document.getElementById('modal').classList.remove('open');closePrivacyModal();}
+});
+
+function toggleInquiryForm(){
+  const f=document.getElementById('inquiry-form');
+  if(!f)return;
+  const show=f.style.display==='none';
+  f.style.display=show?'block':'none';
+  if(show)setTimeout(()=>f.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+
+async function submitInquiry(e){
+  e.preventDefault();
+  const btn=document.getElementById('inq-submit');
+  btn.disabled=true;btn.querySelector('span').textContent='Отправляем…';
+  const name=document.getElementById('inq-name').value;
+  const phone='+7'+document.getElementById('inq-phone').value;
+  const title=currentLand?.title||'Участок';
+  const msg=`Объект: ${title}\nИмя: ${name}\nТелефон: ${phone}`;
+  try{
+    const r=await fetch('https://formsubmit.co/ajax/info@iskon.pro',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,phone,message:msg,_subject:'🌿 Заявка по участку — '+title,_captcha:'false'})});
+    const d=await r.json();
+    if(d.success==='true'||d.success===true){document.getElementById('inquiry-form').innerHTML='<p style="text-align:center;padding:28px 0;font-family:var(--f-body);font-size:.9rem;color:var(--black);">✅ Заявка отправлена! Мы свяжемся с вами в ближайшее время.</p>';}
+    else{throw new Error();}
+  }catch{btn.disabled=false;btn.querySelector('span').textContent='Отправить заявку';alert('Ошибка отправки. Позвоните нам: 8 918 126 99 96');}
+}
+
+function openPrivacyModal(){
+  const m=document.getElementById('privacy-modal');
+  m.style.display='flex';document.body.style.overflow='hidden';
+  if(!document.getElementById('privacy-body').dataset.loaded){
+    fetch('data/privacy.json?'+Date.now()).then(r=>r.json()).then(d=>{
+      const body=document.getElementById('privacy-body');
+      if(d.text){
+        body.innerHTML=d.text.trim().split(/\n{2,}/).map(p=>`<p style="margin-bottom:16px;">${p.trim().replace(/\n/g,'<br>')}</p>`).join('');
+      } else {body.innerHTML=d.html||'';}
+      body.dataset.loaded='1';
+    }).catch(()=>{});
+  }
+}
+function closePrivacyModal(){const m=document.getElementById('privacy-modal');m.style.display='none';document.body.style.overflow='';}
+document.getElementById('privacy-modal').addEventListener('click',function(e){if(e.target===this)closePrivacyModal();});
+
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+
+init();
+</script>
+</body>
+</html>

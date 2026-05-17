@@ -165,6 +165,84 @@ input, select, textarea { font-family: inherit; }
   letter-spacing: 0.03em;
 }
 
+/* Nav dropdown */
+.nav__item { position: relative; list-style: none; }
+.nav__drop-btn {
+  font-family: var(--f-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+  padding: 0;
+  position: relative;
+}
+.nav__drop-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--orange);
+  transition: width 0.3s var(--ease);
+}
+.nav__item:hover .nav__drop-btn,
+.nav__drop-btn.active { color: var(--orange); }
+.nav__item:hover .nav__drop-btn::after,
+.nav__drop-btn.active::after { width: 100%; }
+.nav__drop-arr {
+  font-size: 0.65em;
+  transition: transform 0.2s;
+  display: inline-block;
+  line-height: 1;
+}
+.nav__item:hover .nav__drop-arr { transform: rotate(180deg); }
+.nav__drop-menu {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--snow);
+  border: var(--divider);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  min-width: 230px;
+  display: none;
+  flex-direction: column;
+  z-index: 200;
+}
+/* bridge gap so mouse can move from button to menu */
+.nav__drop-menu::before {
+  content: '';
+  position: absolute;
+  top: -18px; left: 0; right: 0;
+  height: 18px;
+}
+.nav__item:hover .nav__drop-menu { display: flex; }
+.nav__drop-menu a {
+  font-family: var(--f-body);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  padding: 13px 20px;
+  border-bottom: var(--divider);
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.nav__drop-menu a:last-child { border-bottom: none; }
+.nav__drop-menu a:hover { color: var(--orange); background: rgba(255,69,0,0.03); }
+.nav__drop-menu a.active { color: var(--orange); }
+.nav__drop-menu a::after { display: none; }
+
 /* Burger (mobile) */
 .nav__burger {
   display: none;
