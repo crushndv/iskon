@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=5" />
+  <link rel="stylesheet" href="css/main.css?v=6" />
   <style>
 body{padding-top:72px}
 .page-hero{padding:36px 5vw 28px;border-bottom:var(--divider);display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -602,6 +602,13 @@ function resetFilters(){
 }
 function initFilters(){/* фильтры убраны */}
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+
+document.querySelectorAll('.nav__item').forEach(function(item) {
+  var menu = item.querySelector('.nav__drop-menu');
+  if (!menu) return;
+  item.addEventListener('mouseenter', function() { menu.style.display = 'flex'; });
+  item.addEventListener('mouseleave', function() { menu.style.display = 'none'; });
+});
 
 /* ── INQUIRY FORM IN MODAL ── */
 function _inquiryFormHtml(h){
