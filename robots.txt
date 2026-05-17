@@ -1,7 +1,10 @@
 User-agent: *
 Allow: /
+
+# Закрываем панель управления и служебные файлы
 Disallow: /panel.html
 Disallow: /admin-panel.html
 Disallow: /data/
 
+# Карта сайта
 Sitemap: https://iskon.pro/sitemap.xml
