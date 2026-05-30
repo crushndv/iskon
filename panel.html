@@ -741,6 +741,8 @@ img{display:block;max-width:100%}
         <div class="seo-tabs" id="seo-tabs">
           <button class="seo-tab active" onclick="switchSeoTab('index',this)">🏠 Главная</button>
           <button class="seo-tab" onclick="switchSeoTab('catalog',this)">🏘 Каталог</button>
+          <button class="seo-tab" onclick="switchSeoTab('lands',this)">🌿 Участки</button>
+          <button class="seo-tab" onclick="switchSeoTab('offer-land',this)">📋 Предложить</button>
           <button class="seo-tab" onclick="switchSeoTab('services',this)">🛠 Услуги</button>
         </div>
 
@@ -1685,15 +1687,19 @@ function saveSettings() {
 
 // ── SEO ───────────────────────────────────────────────────────────
 const SEO_PAGES = {
-  index:    { file: 'index.html',    label: 'Главная',  url: 'https://iskon.pro/' },
-  catalog:  { file: 'catalog.html',  label: 'Каталог',  url: 'https://iskon.pro/catalog.html' },
-  services: { file: 'services.html', label: 'Услуги',   url: 'https://iskon.pro/services.html' },
+  index:        { file: 'index.html',      label: 'Главная',            url: 'https://iskon.pro/' },
+  catalog:      { file: 'catalog.html',    label: 'Каталог',            url: 'https://iskon.pro/catalog.html' },
+  lands:        { file: 'lands.html',      label: 'Участки',            url: 'https://iskon.pro/lands.html' },
+  'offer-land': { file: 'offer-land.html', label: 'Предложить участок', url: 'https://iskon.pro/offer-land.html' },
+  services:     { file: 'services.html',   label: 'Услуги',             url: 'https://iskon.pro/services.html' },
 };
 
 let seoData = {
-  index:    { title: '', description: '', keywords: '' },
-  catalog:  { title: '', description: '', keywords: '' },
-  services: { title: '', description: '', keywords: '' },
+  index:        { title: '', description: '', keywords: '' },
+  catalog:      { title: '', description: '', keywords: '' },
+  lands:        { title: '', description: '', keywords: '' },
+  'offer-land': { title: '', description: '', keywords: '' },
+  services:     { title: '', description: '', keywords: '' },
 };
 let _seoTab = 'index';
 
